@@ -135,6 +135,7 @@ function handleMessage(senderPsid, receivedMessage) {
   // Send the response message
   sendOptInRequest(senderPsid, response);
   // callSendAPI(senderPsid, response);
+
 }
 
 // Handles messaging_postbacks events
