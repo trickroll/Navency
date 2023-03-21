@@ -59,6 +59,9 @@ app.get("/webhook", (req, res) => {
       res.sendStatus(403);
     }
   }
+  
+  // Bing's edits
+  console.log('res', res.body);
 });
 
 // Creates the endpoint for your webhook
@@ -164,9 +167,9 @@ function handlePostback(senderPsid, receivedPostback) {
 }
 
 // Handles messaging_optin  events
-function handleOptin(senderPsid, receivedOptin) {
-  console.log("optin-received")
-}
+// function handleOptin(senderPsid, receivedOptin) {
+//   console.log("optin-received")
+// }
 
 // Sends response messages via the Send API
 function callSendAPI(senderPsid, response) {
@@ -309,20 +312,20 @@ var listener = app.listen(process.env.PORT, function () {
 });
 
 
-const url = `https://graph.facebook.com/${API_VERSION_NUMBER}/${PAGE_ID}/notification_message_tokens`;
+// const url = `https://graph.facebook.com/${API_VERSION_NUMBER}/${PAGE_ID}/notification_message_tokens`;
 
-const options = {
-  method: 'GET',
-  url: url,
-  qs: {
-    access_token: PAGE_ACCESS_TOKEN,
-  },
-};
+// const options = {
+//   method: 'GET',
+//   url: url,
+//   qs: {
+//     access_token: PAGE_ACCESS_TOKEN,
+//   },
+// };
 
-request(options, (error, response, body) => {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log(body);
-  }
-});
+// request(options, (error, response, body) => {
+//   if (error) {
+//     console.error(error);
+//   } else {
+//     console.log(body);
+//   }
+// });
