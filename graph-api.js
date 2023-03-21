@@ -36,6 +36,8 @@ module.exports = class GraphApi {
     }
   }
 
+  
+  
   static async callMessengerProfileAPI(requestBody) {
     // Send the HTTP request to the Messenger Profile API
 
@@ -137,65 +139,4 @@ module.exports = class GraphApi {
   }
 
 
-
-  
-
-  static async callNLPConfigsAPI() {
-    // Send the HTTP request to the Built-in NLP Configs API
-    // https://developers.facebook.com/docs/graph-api/reference/page/nlp_configs/
-
-    console.log(`Enable Built-in NLP for Page ${config.pageId}`);
-
-    let url = new URL(`${config.apiUrl}/me/nlp_configs`);
-    url.search = new URLSearchParams({
-      access_token: config.pageAccesToken,
-      nlp_enabled: true
-    });
-    let response = await fetch(url, {
-      method: "POST"
-    });
-    if (response.ok) {
-      console.log(`Request sent.`);
-    } else {
-      console.error(`Unable to activate built-in NLP: ${response.statusText}`);
-    }
-  }
-
-  static async reportLeadSubmittedEvent(psid) {
-    let url = new URL(`${config.apiUrl}/${config.appId}/page_activities`);
-    url.search = new URLSearchParams({
-      access_token: config.pageAccesToken
-    });
-    let requestBody = {
-      custom_events: [
-        {
-          _eventName: "lead_submitted"
-        }
-      ],
-      advertiser_tracking_enabled: 1,
-      application_tracking_enabled: 1,
-      page_id: config.pageId,
-      page_scoped_user_id: psid,
-      logging_source: "messenger_bot",
-      logging_target: "page"
-    };
-    console.warn(
-      "Request to " + url + "\nWith body:\n" + JSON.stringify(requestBody)
-    );
-    try {
-      let response = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody)
-      });
-      if (!response.ok) {
-        console.warn(
-          `Unable to call App Event API: ${response.statusText}`,
-          await response.json()
-        );
-      }
-    } catch (error) {
-      console.error("Error while reporting lead submitted", error);
-    }
-  }
 };
