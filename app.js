@@ -21,6 +21,11 @@ const request = require("request"),
   { urlencoded, json } = require("body-parser"),
   app = express();
 
+const PAGE_ID="106030262429449"
+const NOTIFICATION_MESSAGES_TOKEN= "8183222379117308817"
+const API_VERSION_NUMBER = 'v16.0';
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+
 // Parse application/x-www-form-urlencoded
 app.use(urlencoded({ extended: true }));
 
@@ -301,4 +306,18 @@ function sendOptInRequest(senderPsid, response) {
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
   console.log("Your app is listening on port " + listener.address().port);
+});
+
+const url = `https://graph.facebook.com/${API_VERSION_NUMBER}/${PAGE_ID}/notification_message_tokens`;
+
+app.get(url, {
+  params: {
+    access_token: PAGE_ACCESS_TOKEN,
+  },
+})
+.then((response) => {
+  console.log(response.data);
+})
+.catch((error) => {
+  console.error(error);
 });
