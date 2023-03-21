@@ -19,14 +19,14 @@ module.exports = class GraphApi {
   static async callSendApi(requestBody) {
     let url = new URL(`${config.apiUrl}/me/messages`);
     url.search = new URLSearchParams({
-      access_token: config.pageAccesToken
+      access_token: config.pageAccesToken,
     });
     console.warn("Request body is\n" + JSON.stringify(requestBody));
     console.warn("Request body is\n" + JSON.stringify(requestBody));
     let response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify(requestBody),
     });
     if (!response.ok) {
       console.warn(
@@ -36,20 +36,18 @@ module.exports = class GraphApi {
     }
   }
 
-  
-  
   static async callMessengerProfileAPI(requestBody) {
     // Send the HTTP request to the Messenger Profile API
 
     console.log(`Setting Messenger Profile for app ${config.appId}`);
     let url = new URL(`${config.apiUrl}/me/messenger_profile`);
     url.search = new URLSearchParams({
-      access_token: config.pageAccesToken
+      access_token: config.pageAccesToken,
     });
     let response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify(requestBody),
     });
     if (response.ok) {
       console.log(`Request sent.`);
@@ -87,11 +85,11 @@ module.exports = class GraphApi {
       callback_url: config.webhookUrl,
       verify_token: config.verifyToken,
       fields: fields,
-      include_values: "true"
+      include_values: "true",
     });
     let response = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
     });
     if (response.ok) {
       console.log(`Request sent.`);
@@ -123,10 +121,10 @@ module.exports = class GraphApi {
     let url = new URL(`${config.apiUrl}/${config.pageId}/subscribed_apps`);
     url.search = new URLSearchParams({
       access_token: config.pageAccesToken,
-      subscribed_fields: fields
+      subscribed_fields: fields,
     });
     let response = await fetch(url, {
-      method: "POST"
+      method: "POST",
     });
     if (response.ok) {
       console.log(`Request sent.`);
@@ -137,6 +135,4 @@ module.exports = class GraphApi {
       );
     }
   }
-
-
 };
