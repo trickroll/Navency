@@ -308,16 +308,21 @@ var listener = app.listen(process.env.PORT, function () {
   console.log("Your app is listening on port " + listener.address().port);
 });
 
+
 const url = `https://graph.facebook.com/${API_VERSION_NUMBER}/${PAGE_ID}/notification_message_tokens`;
 
-app.get(url, {
-  params: {
+const options = {
+  method: 'GET',
+  url: url,
+  qs: {
     access_token: PAGE_ACCESS_TOKEN,
   },
-})
-.then((response) => {
-  console.log(response.data);
-})
-.catch((error) => {
-  console.error(error);
+};
+
+request(options, (error, response, body) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log(body);
+  }
 });
