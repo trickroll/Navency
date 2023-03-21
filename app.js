@@ -21,10 +21,10 @@ const request = require("request"),
   { urlencoded, json } = require("body-parser"),
   app = express();
 
-const PAGE_ID="106030262429449"
-const NOTIFICATION_MESSAGES_TOKEN= "8183222379117308817"
-const API_VERSION_NUMBER = 'v16.0';
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+// const PAGE_ID="106030262429449"
+// const NOTIFICATION_MESSAGES_TOKEN= "8183222379117308817"
+// const API_VERSION_NUMBER = 'v16.0';
+// const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
 // Parse application/x-www-form-urlencoded
 app.use(urlencoded({ extended: true }));
@@ -285,13 +285,13 @@ function sendOptInRequest(senderPsid, response) {
           image_url: "https://picsum.photos/200",
           payload: "promotional",
           // bing's edits
-          "elements":[
-            {
-              "type": "postback",
-              "title":"Bing Button",
-              "payload": "The person clicked get messages"
-            }
-          ]
+          // "elements":[
+          //   {
+          //     "type": "postback",
+          //     "title":"Bing Button",
+          //     "payload": "The person clicked get messages"
+          //   }
+          // ]
         },
       },
     },
