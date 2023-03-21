@@ -86,9 +86,6 @@ app.post("/webhook", (req, res) => {
         handleMessage(senderPsid, webhookEvent.message);
       } else if (webhookEvent.postback) {
         handlePostback(senderPsid, webhookEvent.postback);
-      } else if (webhookEvent.messaging_optins) {
-        console.log("if else logic")
-        handleOptin(senderPsid, webhookEvent.messaging_optins);
       } 
     });
 
@@ -166,10 +163,6 @@ function handlePostback(senderPsid, receivedPostback) {
   callSendAPI(senderPsid, response);
 }
 
-// Handles messaging_optin  events
-// function handleOptin(senderPsid, receivedOptin) {
-//   console.log("optin-received")
-// }
 
 // Sends response messages via the Send API
 function callSendAPI(senderPsid, response) {
