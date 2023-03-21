@@ -61,7 +61,7 @@ app.get("/webhook", (req, res) => {
   }
   
   // Bing's edits
-  console.log('res', res.body);
+  console.log('res', 'response body in webhook' + res.body);
 });
 
 // Creates the endpoint for your webhook
@@ -284,6 +284,14 @@ function sendOptInRequest(senderPsid, response) {
           notification_messages_reoptin: "ENABLED",
           image_url: "https://picsum.photos/200",
           payload: "promotional",
+          // bing's edits
+          "elements":[
+            {
+              "type": "postback",
+              "title":"Bing Button",
+              "payload": "The person clicked get messages"
+            }
+          ]
         },
       },
     },
