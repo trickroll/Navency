@@ -81,9 +81,7 @@ app.post("/webhook", (req, res) => {
       } else if (webhookEvent.messaging_optins) {
         console.log("if else logic")
         handleOptin(senderPsid, webhookEvent.messaging_optins);
-      } else {
-        console.log("incorrect conditions")
-      }
+      } 
     });
 
     // Returns a '200 OK' response to all requests
