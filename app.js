@@ -19,6 +19,7 @@
 const request = require("request"),
   express = require("express"),
   { urlencoded, json } = require("body-parser"),
+  Receive = require("./receive"),
   app = express();
 
 // const PAGE_ID="106030262429449"
