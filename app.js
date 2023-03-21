@@ -29,7 +29,7 @@ app.use(json());
 
 // Respond with 'Hello World' when a GET request is made to the homepage
 app.get("/", function (_req, res) {
-  res.send("Hello World");
+  res.send("Hello World!");
 });
 
 // Adds support for GET requests to our webhook
@@ -180,6 +180,68 @@ function callSendAPI(senderPsid, response) {
         console.log("Message sent!");
       } else {
         console.error("Unable to send message:" + err);
+      }
+    }
+  );
+}
+
+// Sends response messages via the Send API
+function sendBroadcast(senderPsid, response) {
+  // The page access token we have generated in your app settings
+  const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+
+  // Construct the message body
+  let requestBody = {
+    recipient: {
+      notification_messages_token: "8183222379117308817", //this is the opt-in token id
+    },
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements: [
+            {
+              title: "First msg!",
+              image_url: "https://picsum.photos/200",
+              subtitle: "We have the right hat for everyone.",
+              default_action: {
+                type: "web_url",
+                url: "https://www.originalcoastclothing.com/",
+                webview_height_ratio: "tall",
+              },
+              buttons: [
+                {
+                  type: "web_url",
+                  url: "https://www.navency.com/",
+                  title: "Check it out Website",
+                },
+                {
+                  type: "postback",
+                  title: "Start Chatting",
+                  payload: "ADDITIONAL-WEBHOOK-INFORMATION",
+                },
+              ],
+            },
+          ],
+        },
+      },
+    },
+  };
+
+  // Send the HTTP request to the Messenger Platform
+  request(
+    {
+      uri: "https://graph.facebook.com/v16.0/106030262429449/messages",
+      qs: { access_token: PAGE_ACCESS_TOKEN },
+      method: "POST",
+      json: requestBody,
+    },
+    (err, _res, _body) => {
+      if (!err) {
+        console.log("Broadcast message sent!");
+      } else {
+        console.error("Unable to send broadcast message:" + err);
       }
     }
   );
