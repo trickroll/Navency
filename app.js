@@ -141,7 +141,8 @@ function handleMessage(senderPsid, receivedMessage) {
   }
 
   // Send the response message
-  callSendAPI(senderPsid, response);
+  sendOptInRequest(senderPsid, response);
+  // callSendAPI(senderPsid, response);
 }
 
 // Handles messaging_postbacks events
@@ -191,16 +192,17 @@ function callSendAPI(senderPsid, response) {
 }
 
 // Sends opt-in request
-function sendOptInRequest(senderPsid, receivedMessage){
+function sendOptInRequest(senderPsid, response){
   
   // The page access token we have generated in your app settings
   const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
   
-  
-  "recipient":{
-    "id":"5707552952688273"
-  },
-  "message":{
+  // Construct the message body
+  let requestBody = {
+    'recipient': {
+      'id': senderPsid
+    },
+    'message': {
     "attachment":{
       "type":"template", 
       "payload":{
@@ -211,9 +213,22 @@ function sendOptInRequest(senderPsid, receivedMessage){
       }
     }
   }
-"https://graph.facebook.com/v16.0/106030262429449/messages?access_token=EAADKDK5b3jMBAKYsnwy3hRjsvDTozfgbSUmNnyCKnQ8ZBtvGQAfrPauAg9UPrqtonnV32ZCZBvvjBu7Au6CZBW7lQXazMju56qUXhgMBC6akHFFdZCYk2UOCoSMdPxkVoHcizYtSZBZAT4wgdqT2qp2yPXXpZAqCVatjeOZCzEXTx9Ah1BYuv4lmy"
+  };
+  // Send the HTTP request to the Messenger Platform
+  request({
+    'uri': 'https://graph.facebook.com/v16.0/106030262429449/messages',
+    'qs': { 'access_token': PAGE_ACCESS_TOKEN },
+    'method': 'POST',
+    'json': requestBody
+  }, (err, _res, _body) => {
+    if (!err) {
+      console.log('optin sent!');
+    } else {
+      console.error('Unable to send optin:' + err);
+    }
+  });
+  };
 
-}
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function() {
