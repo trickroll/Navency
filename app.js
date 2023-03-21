@@ -190,6 +190,31 @@ function callSendAPI(senderPsid, response) {
   });
 }
 
+// Sends opt-in request
+function sendOptInRequest(senderPsid, receivedMessage){
+  
+  // The page access token we have generated in your app settings
+  const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+  
+  
+  "recipient":{
+    "id":"5707552952688273"
+  },
+  "message":{
+    "attachment":{
+      "type":"template", 
+      "payload":{
+         "template_type":"notification_messages", 
+          "title":"test-optin",
+          "image_url":"https://picsum.photos/200",
+          "payload": "promotional",
+      }
+    }
+  }
+"https://graph.facebook.com/v16.0/106030262429449/messages?access_token=EAADKDK5b3jMBAKYsnwy3hRjsvDTozfgbSUmNnyCKnQ8ZBtvGQAfrPauAg9UPrqtonnV32ZCZBvvjBu7Au6CZBW7lQXazMju56qUXhgMBC6akHFFdZCYk2UOCoSMdPxkVoHcizYtSZBZAT4wgdqT2qp2yPXXpZAqCVatjeOZCzEXTx9Ah1BYuv4lmy"
+
+}
+
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function() {
   console.log('Your app is listening on port ' + listener.address().port);
