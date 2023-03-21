@@ -143,7 +143,7 @@ module.exports = class Response {
 
     return response;
   }
-
+};
 //   static genNuxMessage(user) {
 //     let welcome = this.genText(
 //       i18n.__("get_started.welcome", {
