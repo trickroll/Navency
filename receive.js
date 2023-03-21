@@ -10,8 +10,8 @@
 
 "use strict";
 
-const Response = require("./response");
-
+const Response = require("./response"),
+      GraphApi = require("./graph-api");
 
 module.exports = class Receive {
   constructor(user, webhookEvent, isUserRef) {
@@ -51,7 +51,7 @@ module.exports = class Receive {
       console.error(error);
       responses = {
         text: `An error has occured: '${error}'. We have been notified and \
-        will fix the issue shortly!`
+        will fix the issue shortly!`,
       };
     }
 
@@ -86,7 +86,7 @@ module.exports = class Receive {
       message.includes("start over")
     ) {
       response = Response.genNuxMessage(this.user);
-    } 
+    }
 
     return response;
   }
@@ -118,8 +118,6 @@ module.exports = class Receive {
     return this.handlePayload(payload.toUpperCase());
   }
 
-
-
   // Handles optins events
   handleOptIn() {
     let optin = this.webhookEvent.optin;
@@ -132,5 +130,33 @@ module.exports = class Receive {
     }
     return null;
   }
+  sendMessage(response, delay = 0, isUserRef) {
+    // Check if there is delay in the response
+    if (response === undefined || response === null) {
+      return;
+    }
+    if ("delay" in response) {
+      delay = response["delay"];
+      delete response["delay"];
+    }
+    // Construct the message body
+    let requestBody = {};
+    if (isUserRef) {
+      // For chat plugin
+      requestBody = {
+        recipient: {
+          user_ref: this.user.psid,
+        },
+        message: response,
+      };
+    } else {
+      requestBody = {
+        recipient: {
+          id: this.user.psid,
+        },
+        message: response,
+      };
+    }
+   setTimeout(() => GraphApi.callSendApi(requestBody), delay);
+  }
 };
- 
