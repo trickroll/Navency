@@ -14,6 +14,8 @@ const Response = require("./response"),
   GraphApi = require("./graph-api"),
   PAGE_ID = process.env.PAGE_ID;
 
+  let topic = "Subscription"
+
 module.exports = class Receive {
   constructor(user, webhookEvent, isUserRef) {
     this.user = user;
@@ -78,7 +80,11 @@ module.exports = class Receive {
 
     let message = event.message.text.trim().toLowerCase();
 
-    let response = { text: `hey this the handled txt for ${message}` };
+    let response = Response.genRecurringNotificationsTemplate(
+        `https://picsum.photos/200`,
+        topic,
+        "12345"
+      );
 
     return response;
   }
@@ -163,7 +169,6 @@ module.exports = class Receive {
     console.log("Received Payload:", `${payload} for ${this.user.psid}`);
 
     let response;
-    let topic = "test-ooo"
     // Set the response based on the payload
     if (payload === "YES") {
       response = { text: "Thanks!" };
