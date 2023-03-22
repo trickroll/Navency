@@ -53,7 +53,6 @@ module.exports = class Response {
   static genRecurringNotificationsTemplate(
     image_url,
     title,
-    notification_messages_frequency,
     payload
   ) {
     let response = {
@@ -63,7 +62,6 @@ module.exports = class Response {
           template_type: "notification_messages",
           title: title,
           image_url: image_url,
-          notification_messages_frequency: notification_messages_frequency,
           payload: payload
         }
       }
