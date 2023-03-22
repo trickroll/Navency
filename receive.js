@@ -178,8 +178,9 @@ module.exports = class Receive {
       response = Response.genGenericTemplate(
             `https://picsum.photos/200`,
             'Thank you for subscribing',
-            `Please find 10% coupon`,
-            [Response.genPostbackButton(`GET COUPON`, "COUPON_50")]
+            `Use "MESSENGER10" for 10% off`,
+            [Response.genWebUrlButton(`Visit Site`, "navency.com")]
+            // [Response.genPostbackButton(`GET COUPON`, "COUPON_50")]
           );
     } else if (payload === "NO") {
       response = { text: "Oops, try sending another image." };
