@@ -159,4 +159,28 @@ module.exports = class Receive {
     }
    setTimeout(() => GraphApi.callSendApi(requestBody), delay);
   }
+//  sendRecurringMessage(notificationMessageToken, delay) {
+//     console.log("Received Recurring Message token");
+//     let requestBody = {},
+//       response,
+//       curation;
+//     //This example will send summer collection
+//     curation = new Curation(this.user, this.webhookEvent);
+//     response = curation.handlePayload("CURATION_BUDGET_50_DINNER");
+//     // Check if there is delay in the response
+//     if (response === undefined) {
+//       return;
+//     }
+//     requestBody = {
+//       recipient: {
+//         notification_messages_token: notificationMessageToken
+//       },
+//       message: response
+//     };
+
+//     setTimeout(() => GraphApi.callSendApi(requestBody), delay);
+//   }
+//   firstEntity(nlp, name) {
+//     return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
+//   }
 };

@@ -34,7 +34,7 @@ app.use(json());
 
 // Respond with 'Hello World' when a GET request is made to the homepage
 app.get("/", function (_req, res) {
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + "/index.html");
 });
 
 // Adds support for GET requests to our webhook
@@ -59,40 +59,103 @@ app.get("/webhook", (req, res) => {
       res.sendStatus(403);
     }
   }
-  
+
   // Bing's edits
-  console.log('res', 'response body in webhook' + res.body);
+  console.log("res", "response body in webhook" + res.body);
 });
 
-// Creates the endpoint for your webhook
+// // Creates the endpoint for your webhook
+// app.post("/webhook", (req, res) => {
+//   let body = req.body;
+
+//   // Checks if this is an event from a page subscription
+//   if (body.object === "page") {
+//     // Iterates over each entry - there may be multiple if batched
+//     body.entry.forEach(function (entry) {
+//       // Gets the body of the webhook event
+//       let webhookEvent = entry.messaging[0];
+//       console.log(webhookEvent);
+
+//       // Get the sender PSID
+//       let senderPsid = webhookEvent.sender.id;
+//       console.log("Sender PSID: " + senderPsid);
+
+//       // Check if the event is a message or postback and
+//       // pass the event to the appropriate handler function
+//       if (webhookEvent.message) {
+//         handleMessage(senderPsid, webhookEvent.message);
+//       } else if (webhookEvent.postback) {
+//         handlePostback(senderPsid, webhookEvent.postback);
+//       }
+//     });
+
+//     // Returns a '200 OK' response to all requests
+//     res.status(200).send("EVENT_RECEIVED");
+//   } else {
+//     // Returns a '404 Not Found' if event is not from a page subscription
+//     res.sendStatus(404);
+//   }
+// });
+
+// Create the endpoint for your webhook
 app.post("/webhook", (req, res) => {
   let body = req.body;
 
-  // Checks if this is an event from a page subscription
+  console.log(`\u{1F7EA} Received webhook:`);
+  console.dir(body, { depth: null });
+
+  // Check if this is an event from a page subscription
   if (body.object === "page") {
-    // Iterates over each entry - there may be multiple if batched
-    body.entry.forEach(function (entry) {
-      // Gets the body of the webhook event
-      let webhookEvent = entry.messaging[0];
-      console.log(webhookEvent);
-
-      // Get the sender PSID
-      let senderPsid = webhookEvent.sender.id;
-      console.log("Sender PSID: " + senderPsid);
-
-      // Check if the event is a message or postback and
-      // pass the event to the appropriate handler function
-      if (webhookEvent.message) {
-        handleMessage(senderPsid, webhookEvent.message);
-      } else if (webhookEvent.postback) {
-        handlePostback(senderPsid, webhookEvent.postback);
-      } 
-    });
-
     // Returns a '200 OK' response to all requests
     res.status(200).send("EVENT_RECEIVED");
+
+    // Iterate over each entry - there may be multiple if batched
+    body.entry.forEach(async function (entry) {
+      if ("changes" in entry) {
+        // Handle Page Changes event
+        let receiveMessage = new Receive();
+        if (entry.changes[0].field === "feed") {
+          let change = entry.changes[0].value;
+          switch (change.item) {
+            case "post":
+              return receiveMessage.handlePrivateReply(
+                "post_id",
+                change.post_id
+              );
+            case "comment":
+              return receiveMessage.handlePrivateReply(
+                "comment_id",
+                change.comment_id
+              );
+            default:
+              console.warn("Unsupported feed change type.");
+              return;
+          }
+        }
+      }
+
+      // Iterate over webhook events - there may be multiple
+      entry.messaging.forEach(async function (webhookEvent) {
+        // Discard uninteresting events
+        if ("read" in webhookEvent) {
+          console.log("Got a read event");
+          return;
+        } else if ("delivery" in webhookEvent) {
+          console.log("Got a delivery event");
+          return;
+        } else if (webhookEvent.message && webhookEvent.message.is_echo) {
+          console.log(
+            "Got an echo of our send, mid = " + webhookEvent.message.mid
+          );
+          return;
+        }
+
+        // Get the sender PSID
+        let senderPsid = webhookEvent.sender.id;
+      });
+    });
   } else {
-    // Returns a '404 Not Found' if event is not from a page subscription
+    // Return a '404 Not Found' if event is not from a page subscription
     res.sendStatus(404);
   }
 });
@@ -143,7 +206,6 @@ function handleMessage(senderPsid, receivedMessage) {
   // Send the response message
   sendOptInRequest(senderPsid, response);
   // callSendAPI(senderPsid, response);
-
 }
 
 // Handles messaging_postbacks events
@@ -162,7 +224,6 @@ function handlePostback(senderPsid, receivedPostback) {
   // Send the message to acknowledge the postback
   callSendAPI(senderPsid, response);
 }
-
 
 // Sends response messages via the Send API
 function callSendAPI(senderPsid, response) {
@@ -311,7 +372,6 @@ function sendOptInRequest(senderPsid, response) {
 var listener = app.listen(process.env.PORT, function () {
   console.log("Your app is listening on port " + listener.address().port);
 });
-
 
 // const url = `https://graph.facebook.com/${API_VERSION_NUMBER}/${PAGE_ID}/notification_message_tokens`;
 
