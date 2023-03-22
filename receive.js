@@ -62,9 +62,7 @@ module.exports = class Receive {
         delay++;
       }
     } else {
-      //@note changed to optin instead of message
       this.sendMessage(responses, this.isUserRef);
-      // this.sendOptInRequest(responses, this.isUserRef);
     }
   }
 
@@ -170,7 +168,7 @@ module.exports = class Receive {
       response = { text: "Thanks!" };
     } else if (payload === "RN") {
       response = {
-        text: `[INFO]The following message is a sample Recurring Notification for a weekly frequency. This is usually sent outside the 24 hour window to notify users on topics that they have opted in.`,
+        text: `[INFO]The following message is a sample Recurring Notification. This is usually sent outside the 24 hour window to notify users on topics that they have opted in.`,
       };
     } else if (payload === "NO") {
       response = { text: "Oops, try sending another image." };
@@ -220,28 +218,28 @@ module.exports = class Receive {
     setTimeout(() => GraphApi.callSendApi(requestBody), delay);
   }
 
-  //  sendRecurringMessage(notificationMessageToken, delay) {
-  //     console.log("Received Recurring Message token");
-  //     let requestBody = {},
-  //       response,
-  //       curation;
-  //     //This example will send summer collection
-  //     curation = new Curation(this.user, this.webhookEvent);
-  //     response = curation.handlePayload("CURATION_BUDGET_50_DINNER");
-  //     // Check if there is delay in the response
-  //     if (response === undefined) {
-  //       return;
-  //     }
-  //     requestBody = {
-  //       recipient: {
-  //         notification_messages_token: notificationMessageToken
-  //       },
-  //       message: response
-  //     };
+  sendRecurringMessage(notificationMessageToken, delay) {
+    console.log("Received Recurring Message token");
+    let requestBody = {},
+      response;
+    // curation;
+    //This example will send summer collection
+    // curation = new Curation(this.user, this.webhookEvent);
+    response = { text: `toke received ${notificationMessageToken}` };
+    // Check if there is delay in the response
+    if (response === undefined) {
+      return;
+    }
+    requestBody = {
+      recipient: {
+        notification_messages_token: notificationMessageToken,
+      },
+      message: response,
+    };
 
-  //     setTimeout(() => GraphApi.callSendApi(requestBody), delay);
-  //   }
-  //   firstEntity(nlp, name) {
-  //     return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
-  //   }
+    setTimeout(() => GraphApi.callSendApi(requestBody), delay);
+  }
+  // firstEntity(nlp, name) {
+  //   return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
+  // }
 };
