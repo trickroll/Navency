@@ -39,6 +39,7 @@ module.exports = class Receive {
           responses = this.handleTextMessage();
         }
       } else if (event.postback) {
+        console.log('its postback time')
         responses = this.handlePostback();
       } else if (event.referral) {
         responses = this.handleReferral();
@@ -63,8 +64,8 @@ module.exports = class Receive {
       }
     } else {
       //@note changed to optin instead of message
-      // this.sendMessage(responses, this.isUserRef);
-      this.sendOptInRequest(responses, this.isUserRef);
+      this.sendMessage(responses, this.isUserRef);
+      // this.sendOptInRequest(responses, this.isUserRef);
     }
   }
 
@@ -132,6 +133,35 @@ module.exports = class Receive {
       delay = response["delay"];
       delete response["delay"];
     }
+    
+    response = {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements: [
+            {
+              title: "Is this the right picture?",
+              subtitle: "Tap a button to answer.",
+              image_url: "https://picsum.photos/200",
+              buttons: [
+                {
+                  type: "postback",
+                  title: "Yes!",
+                  payload: "yes",
+                },
+                {
+                  type: "postback",
+                  title: "No!",
+                  payload: "no",
+                },
+              ],
+            },
+          ],
+        },
+      },
+    };
+    
     // Construct the message body
     let requestBody = {};
     if (isUserRef) {
