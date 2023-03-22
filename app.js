@@ -106,7 +106,6 @@ app.post("/webhook", (req, res) => {
   let body = req.body;
 
   console.log(`\u{1F7EA} Received webhook:`);
-  console.log(`optin-msg`);
   console.dir(body, { depth: null });
 
   // Check if this is an event from a page subscription
