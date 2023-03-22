@@ -62,7 +62,7 @@ module.exports = class Receive {
         delay++;
       }
     } else {
-      //
+      //@note changed to optin instead of message
       // this.sendMessage(responses, this.isUserRef);
       this.sendOptInRequest(responses, this.isUserRef);
     }
