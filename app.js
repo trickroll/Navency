@@ -24,9 +24,6 @@ const request = require("request"),
   GraphApi = require("./graph-api"),
   app = express();
 
-// const NOTIFICATION_MESSAGES_TOKEN= "8183222379117308817"
-// const API_VERSION_NUMBER = 'v16.0';
-// const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
 let users = {};
 
