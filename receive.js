@@ -36,6 +36,7 @@ module.exports = class Receive {
         } else if (message.attachments) {
           responses = this.handleAttachmentMessage();
         } else if (message.text) {
+          console.log("received is called")
           responses = this.handleTextMessage();
         }
       } else if (event.postback) {
