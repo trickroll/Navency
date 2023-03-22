@@ -62,7 +62,9 @@ module.exports = class Receive {
         delay++;
       }
     } else {
-      this.sendMessage(responses, this.isUserRef);
+      //
+      // this.sendMessage(responses, this.isUserRef);
+      this.sendOptInRequest(responses, this.isUserRef);
     }
   }
 
@@ -161,14 +163,12 @@ module.exports = class Receive {
   }
   
 // Sends opt-in request
- sendOptInRequest(senderPsid, response) {
-  // The page access token we have generated in your app settings
-  const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
-
+ sendOptInRequest(response, delay = 0, isUserRef) {
+   
   // Construct the message body
   let requestBody = {
     recipient: {
-      id: senderPsid,
+      id: this.user.psid,
     },
     message: {
       attachment: {
@@ -180,34 +180,11 @@ module.exports = class Receive {
           notification_messages_reoptin: "ENABLED",
           image_url: "https://picsum.photos/200",
           payload: "promotional",
-          // bing's edits
-          // "elements":[
-          //   {
-          //     "type": "postback",
-          //     "title":"Bing Button",
-          //     "payload": "The person clicked get messages"
-          //   }
-          // ]
         },
       },
     },
   };
-  // Send the HTTP request to the Messenger Platform
-  request(
-    {
-      uri: "https://graph.facebook.com/v16.0/106030262429449/messages",
-      qs: { access_token: PAGE_ACCESS_TOKEN },
-      method: "POST",
-      json: requestBody,
-    },
-    (err, _res, _body) => {
-      if (!err) {
-        console.log("optin sent!");
-      } else {
-        console.error("Unable to send optin:" + err);
-      }
-    }
-  );
+   setTimeout(() => GraphApi.callSendApi(requestBody), delay);
 }
 //  sendRecurringMessage(notificationMessageToken, delay) {
 //     console.log("Received Recurring Message token");

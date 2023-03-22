@@ -280,8 +280,7 @@ function handleMessage(senderPsid, receivedMessage) {
   }
 
   // Send the response message
-  sendOptInRequest(senderPsid, response);
-  // callSendAPI(senderPsid, response);
+  callSendAPI(senderPsid, response);
 }
 
 // Handles messaging_postbacks events
@@ -394,55 +393,6 @@ function sendBroadcast(senderPsid, response) {
   );
 }
 
-// Sends opt-in request
-function sendOptInRequest(senderPsid, response) {
-  // The page access token we have generated in your app settings
-  const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
-
-  // Construct the message body
-  let requestBody = {
-    recipient: {
-      id: senderPsid,
-    },
-    message: {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "notification_messages",
-          title: "test-optin",
-          image_aspect_ratio: "SQUARE",
-          notification_messages_reoptin: "ENABLED",
-          image_url: "https://picsum.photos/200",
-          payload: "promotional",
-          // bing's edits
-          // "elements":[
-          //   {
-          //     "type": "postback",
-          //     "title":"Bing Button",
-          //     "payload": "The person clicked get messages"
-          //   }
-          // ]
-        },
-      },
-    },
-  };
-  // Send the HTTP request to the Messenger Platform
-  request(
-    {
-      uri: "https://graph.facebook.com/v16.0/106030262429449/messages",
-      qs: { access_token: PAGE_ACCESS_TOKEN },
-      method: "POST",
-      json: requestBody,
-    },
-    (err, _res, _body) => {
-      if (!err) {
-        console.log("optin sent!");
-      } else {
-        console.error("Unable to send optin:" + err);
-      }
-    }
-  );
-}
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
