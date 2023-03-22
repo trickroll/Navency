@@ -159,45 +159,49 @@ app.post("/webhook", (req, res) => {
         let guestUser = isGuestUser(webhookEvent);
 
         if (senderPsid != null && senderPsid != undefined) {
-          if (!(senderPsid in users)) {
-            if (!guestUser) {
-              // Make call to UserProfile API only if user is not guest
-              let user = new User(senderPsid);
-              GraphApi.getUserProfile(senderPsid)
-                .then((userProfile) => {
-                  user.setProfile(userProfile);
-                })
-                .catch((error) => {
-                  // The profile is unavailable
-                  console.log(JSON.stringify(body));
-                  console.log("Profile is unavailable:", error);
-                })
-                .finally(() => {
-                  console.log("locale: " + user.locale);
-                  users[senderPsid] = user;
-                  console.log(
-                    "New Profile PSID:",
-                    senderPsid,
-                    "with locale:",
-                  );
-                  return receiveAndReturn(
-                    users[senderPsid],
-                    webhookEvent,
-                    false
-                  );
-                });
-            } else {
-              setDefaultUser(senderPsid);
-              return receiveAndReturn(users[senderPsid], webhookEvent, false);
-            }
-          } else {
-            console.log(
-              "Profile already exists PSID:",
-              senderPsid,
-              "with locale:",
-            );
-            return receiveAndReturn(users[senderPsid], webhookEvent, false);
-          }
+              
+          setDefaultUser(senderPsid);
+          return receiveAndReturn(users[senderPsid], webhookEvent, false);    
+          
+          // if (!(senderPsid in users)) {
+          //   if (!guestUser) {
+          //     // Make call to UserProfile API only if user is not guest
+          //     let user = new User(senderPsid);
+          //     GraphApi.getUserProfile(senderPsid)
+          //       .then((userProfile) => {
+          //         user.setProfile(userProfile);
+          //       })
+          //       .catch((error) => {
+          //         // The profile is unavailable
+          //         console.log(JSON.stringify(body));
+          //         console.log("Profile is unavailable:", error);
+          //       })
+          //       .finally(() => {
+          //         console.log("locale: " + user.locale);
+          //         users[senderPsid] = user;
+          //         console.log(
+          //           "New Profile PSID:",
+          //           senderPsid,
+          //           "with locale:",
+          //         );
+          //         return receiveAndReturn(
+          //           users[senderPsid],
+          //           webhookEvent,
+          //           false
+          //         );
+          //       });
+          //   } else {
+          //     setDefaultUser(senderPsid);
+          //     return receiveAndReturn(users[senderPsid], webhookEvent, false);
+          //   }
+          // } else {
+          //   console.log(
+          //     "Profile already exists PSID:",
+          //     senderPsid,
+          //     "with locale:",
+          //   );
+          //   return receiveAndReturn(users[senderPsid], webhookEvent, false);
+          // }
         } else if (user_ref != null && user_ref != undefined) {
           // Handle user_ref
           setDefaultUser(user_ref);

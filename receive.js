@@ -24,7 +24,7 @@ module.exports = class Receive {
   // call the appropriate handler function
   handleMessage() {
     let event = this.webhookEvent;
-
+    console.log("its message time")
     let responses;
 
     try {
@@ -185,26 +185,32 @@ module.exports = class Receive {
   
 // Sends opt-in request
  sendOptInRequest(response, delay = 0, isUserRef) {
+   response = Response.genRecurringNotificationsTemplate(
+          `https://picsum.photos/200`,
+          "test-ooo",
+          "WEEKLY",
+          "12345"
+        );
    
   // Construct the message body
-  let requestBody = {
-    recipient: {
-      id: this.user.psid,
-    },
-    message: {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "notification_messages",
-          title: "test-optin",
-          image_aspect_ratio: "SQUARE",
-          notification_messages_reoptin: "ENABLED",
-          image_url: "https://picsum.photos/200",
-          payload: "promotional",
-        },
-      },
-    },
-  };
+  // let requestBody = {
+  //   recipient: {
+  //     id: this.user.psid,
+  //   },
+  //   message: {
+  //     attachment: {
+  //       type: "template",
+  //       payload: {
+  //         template_type: "notification_messages",
+  //         title: "test-optin",
+  //         image_aspect_ratio: "SQUARE",
+  //         notification_messages_reoptin: "ENABLED",
+  //         image_url: "https://picsum.photos/200",
+  //         payload: "promotional",
+  //       },
+  //     },
+  //   },
+  // };
    setTimeout(() => GraphApi.callSendApi(requestBody), delay);
 }
 //  sendRecurringMessage(notificationMessageToken, delay) {
