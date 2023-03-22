@@ -89,49 +89,49 @@ module.exports = class Receive {
     return response;
   }
 
-  // Handles mesage events with attachments
-  handleAttachmentMessage() {
-    let response;
+//   // Handles mesage events with attachments
+//   handleAttachmentMessage() {
+//     let response;
 
-    // Get the attachment
-    let attachment = this.webhookEvent.message.attachments[0];
-    console.log("Received attachment:", `${attachment} for ${this.user.psid}`);
+//     // Get the attachment
+//     let attachment = this.webhookEvent.message.attachments[0];
+//     console.log("Received attachment:", `${attachment} for ${this.user.psid}`);
 
-    response = {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "generic",
-          elements: [
-            {
-              title: "Is this the right picture?",
-              subtitle: "Tap a button to answer.",
-              image_url: "https://picsum.photos/200",
-              buttons: [
-                {
-                  type: "postback",
-                  title: "Yes!",
-                  payload: "yes",
-                },
-                {
-                  type: "postback",
-                  title: "No!",
-                  payload: "no",
-                },
-                {
-                  type: "postback",
-                  title: "Opt-in",
-                  payload: "OPTIN",
-                },
-              ],
-            },
-          ],
-        },
-      },
-    };
+//     response = {
+//       attachment: {
+//         type: "template",
+//         payload: {
+//           template_type: "generic",
+//           elements: [
+//             {
+//               title: "Is this the right picture?",
+//               subtitle: "Tap a button to answer.",
+//               image_url: "https://picsum.photos/200",
+//               buttons: [
+//                 {
+//                   type: "postback",
+//                   title: "Yes!",
+//                   payload: "yes",
+//                 },
+//                 {
+//                   type: "postback",
+//                   title: "No!",
+//                   payload: "no",
+//                 },
+//                 {
+//                   type: "postback",
+//                   title: "Opt-in",
+//                   payload: "OPTIN",
+//                 },
+//               ],
+//             },
+//           ],
+//         },
+//       },
+//     };
 
-    return response;
-  }
+//     return response;
+//   }
 
   // Handles postbacks events
   handlePostback() {
@@ -165,17 +165,22 @@ module.exports = class Receive {
     return null;
   }
 
+// automatically creates the subscription link: `https://m.me/rn/${PAGE_ID}?topic=${topic}`
+  
   handlePayload(payload) {
     console.log("Received Payload:", `${payload} for ${this.user.psid}`);
-
+    
     let response;
     // Set the response based on the payload
     if (payload === "YES") {
       response = { text: "Thanks!" };
     } else if (payload === "RN") {
-      response = {
-        text: `https://m.me/rn/${PAGE_ID}?topic=${topic}`,
-      };
+      response = Response.genGenericTemplate(
+            `https://picsum.photos/200`,
+            'Thank you for subscribing',
+            `Please find 10% coupon`,
+            [Response.genPostbackButton(`GET COUPON`, "COUPON_50")]
+          );
     } else if (payload === "NO") {
       response = { text: "Oops, try sending another image." };
     } else if (payload === "OPTIN") {
