@@ -11,7 +11,8 @@
 "use strict";
 
 const Response = require("./response"),
-  GraphApi = require("./graph-api");
+  GraphApi = require("./graph-api"),
+  PAGE_ID = process.env.PAGE_ID;
 
 module.exports = class Receive {
   constructor(user, webhookEvent, isUserRef) {
@@ -162,20 +163,20 @@ module.exports = class Receive {
     console.log("Received Payload:", `${payload} for ${this.user.psid}`);
 
     let response;
-
+    let topic = "test-ooo"
     // Set the response based on the payload
     if (payload === "YES") {
       response = { text: "Thanks!" };
     } else if (payload === "RN") {
       response = {
-        text: `https://m.me/rn/103706682206280?topic=Sunscrpot&cadence=daily`,
+        text: `https://m.me/rn/${PAGE_ID}?topic=${topic}`,
       };
     } else if (payload === "NO") {
       response = { text: "Oops, try sending another image." };
     } else if (payload === "OPTIN") {
       response = Response.genRecurringNotificationsTemplate(
         `https://picsum.photos/200`,
-        "test-ooo",
+        topic,
         "12345"
       );
     } else {
