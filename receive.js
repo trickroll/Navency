@@ -113,6 +113,11 @@ module.exports = class Receive {
                   title: "No!",
                   payload: "no",
                 },
+                {
+                  type: "postback",
+                  title: "Opt-in",
+                  payload: "OPTIN",
+                },
               ],
             },
           ],
@@ -148,7 +153,7 @@ module.exports = class Receive {
     // Check for the special Get Starded with referral
     let payload;
     if (optin.type === "notification_messages") {
-      payload = "RN_" + optin.notification_messages_frequency.toUpperCase();
+      payload = "RN";
       this.sendRecurringMessage(optin.notification_messages_token, 5000);
       return this.handlePayload(payload);
     }
@@ -163,12 +168,18 @@ module.exports = class Receive {
     // Set the response based on the payload
     if (payload === "YES") {
       response = { text: "Thanks!" };
-    } else if (payload === "RN_WEEKLY") {
+    } else if (payload === "RN") {
       response = {
         text: `[INFO]The following message is a sample Recurring Notification for a weekly frequency. This is usually sent outside the 24 hour window to notify users on topics that they have opted in.`,
       };
     } else if (payload === "NO") {
       response = { text: "Oops, try sending another image." };
+    } else if (payload === "OPTIN") {
+      response = Response.genRecurringNotificationsTemplate(
+        `https://picsum.photos/200`,
+        "test-ooo",
+        "12345"
+      );
     } else {
       response = {
         text: `This is a default postback message for payload: ${payload}!`,
@@ -209,35 +220,6 @@ module.exports = class Receive {
     setTimeout(() => GraphApi.callSendApi(requestBody), delay);
   }
 
-  // Sends opt-in request
-  sendOptInRequest(response, delay = 0, isUserRef) {
-    // response = Response.genRecurringNotificationsTemplate(
-    //        `https://picsum.photos/200`,
-    //        "test-ooo",
-    //        "12345"
-    //      );
-    // return response
-    // Construct the message body
-    let requestBody = {
-      recipient: {
-        id: this.user.psid,
-      },
-      message: {
-        attachment: {
-          type: "template",
-          payload: {
-            template_type: "notification_messages",
-            title: "test-optin",
-            image_aspect_ratio: "SQUARE",
-            notification_messages_reoptin: "ENABLED",
-            image_url: "https://picsum.photos/200",
-            payload: "promotional",
-          },
-        },
-      },
-    };
-    setTimeout(() => GraphApi.callSendApi(requestBody), delay);
-  }
   //  sendRecurringMessage(notificationMessageToken, delay) {
   //     console.log("Received Recurring Message token");
   //     let requestBody = {},

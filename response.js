@@ -62,7 +62,9 @@ module.exports = class Response {
           template_type: "notification_messages",
           title: title,
           image_url: image_url,
-          payload: payload
+          payload: payload,
+          notification_messages_reoptin: "ENABLED",
+          image_aspect_ratio: "SQUARE",
         }
       }
     };
