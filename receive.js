@@ -77,18 +77,9 @@ module.exports = class Receive {
 
     let event = this.webhookEvent;
 
-    // check greeting is here and is confident
-    // let greeting = this.firstEntity(event.message.nlp, "greetings");
     let message = event.message.text.trim().toLowerCase();
 
-    let response={text:"hey this the handled txt"};
-
-    // if (
-    //   (greeting && greeting.confidence > 0.8) ||
-    //   message.includes("start over")
-    // ) {
-    //   response = Response.genNuxMessage(this.user);
-    // }
+    let response={text:`hey this the handled txt for ${message}`}
 
     return response;
   }
