@@ -168,7 +168,7 @@ module.exports = class Receive {
       response = { text: "Thanks!" };
     } else if (payload === "RN") {
       response = {
-        text: `[INFO]The following message is a sample Recurring Notification. This is usually sent outside the 24 hour window to notify users on topics that they have opted in.`,
+        text: `https://m.me/rn/103706682206280?topic=Sunscrpot&cadence=daily`,
       };
     } else if (payload === "NO") {
       response = { text: "Oops, try sending another image." };

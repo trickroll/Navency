@@ -10,9 +10,6 @@
 
 "use strict";
 
-// Use dotenv to read .env vars into Node
-// require("dotenv").config();
-
 // Required environment variables
 const ENV_VARS = [
   "PAGE_ID",
