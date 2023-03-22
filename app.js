@@ -20,11 +20,15 @@ const request = require("request"),
   express = require("express"),
   { urlencoded, json } = require("body-parser"),
   Receive = require("./receive"),
+  User = require("./user"),
+  GraphApi = require("./graph-api"),
   app = express();
 
 // const NOTIFICATION_MESSAGES_TOKEN= "8183222379117308817"
 // const API_VERSION_NUMBER = 'v16.0';
 // const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+
+let users = {};
 
 // Parse application/x-www-form-urlencoded
 app.use(urlencoded({ extended: true }));
@@ -152,6 +156,56 @@ app.post("/webhook", (req, res) => {
 
         // Get the sender PSID
         let senderPsid = webhookEvent.sender.id;
+          // Get the user_ref if from Chat plugin logged in user
+        let user_ref = webhookEvent.sender.user_ref;
+        // Check if user is guest from Chat plugin guest user
+        let guestUser = isGuestUser(webhookEvent);
+
+        if (senderPsid != null && senderPsid != undefined) {
+          if (!(senderPsid in users)) {
+            if (!guestUser) {
+              // Make call to UserProfile API only if user is not guest
+              let user = new User(senderPsid);
+              GraphApi.getUserProfile(senderPsid)
+                .then((userProfile) => {
+                  user.setProfile(userProfile);
+                })
+                .catch((error) => {
+                  // The profile is unavailable
+                  console.log(JSON.stringify(body));
+                  console.log("Profile is unavailable:", error);
+                })
+                .finally(() => {
+                  console.log("locale: " + user.locale);
+                  users[senderPsid] = user;
+                  console.log(
+                    "New Profile PSID:",
+                    senderPsid,
+                    "with locale:",
+                  );
+                  return receiveAndReturn(
+                    users[senderPsid],
+                    webhookEvent,
+                    false
+                  );
+                });
+            } else {
+              setDefaultUser(senderPsid);
+              return receiveAndReturn(users[senderPsid], webhookEvent, false);
+            }
+          } else {
+            console.log(
+              "Profile already exists PSID:",
+              senderPsid,
+              "with locale:",
+            );
+            return receiveAndReturn(users[senderPsid], webhookEvent, false);
+          }
+        } else if (user_ref != null && user_ref != undefined) {
+          // Handle user_ref
+          setDefaultUser(user_ref);
+          return receiveAndReturn(users[user_ref], webhookEvent, true);
+        }
       });
     });
   } else {
@@ -159,6 +213,28 @@ app.post("/webhook", (req, res) => {
     res.sendStatus(404);
   }
 });
+
+function setDefaultUser(id) {
+  let user = new User(id);
+  users[id] = user;
+}
+
+function isGuestUser(webhookEvent) {
+  let guestUser = false;
+  if ("postback" in webhookEvent) {
+    if ("referral" in webhookEvent.postback) {
+      if ("is_guest_user" in webhookEvent.postback.referral) {
+        guestUser = true;
+      }
+    }
+  }
+  return guestUser;
+}
+
+function receiveAndReturn(user, webhookEvent, isUserRef) {
+  let receiveMessage = new Receive(user, webhookEvent, isUserRef);
+  return receiveMessage.handleMessage();
+}
 
 // Handles messages events
 function handleMessage(senderPsid, receivedMessage) {
