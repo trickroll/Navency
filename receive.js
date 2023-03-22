@@ -24,7 +24,7 @@ module.exports = class Receive {
   // call the appropriate handler function
   handleMessage() {
     let event = this.webhookEvent;
-    console.log("its message time")
+
     let responses;
 
     try {
@@ -124,6 +124,30 @@ module.exports = class Receive {
     }
     return null;
   }
+  
+   handlePayload(payload) {
+    console.log("Received Payload:", `${payload} for ${this.user.psid}`);
+
+    let response;
+
+    // Set the response based on the payload
+    if (payload === "yes" ) {
+      response =  {'text': 'Thanks!' };
+    } else if (payload === "RN_WEEKLY") {
+      response = {
+        text: `[INFO]The following message is a sample Recurring Notification for a weekly frequency. This is usually sent outside the 24 hour window to notify users on topics that they have opted in.`
+      };
+    } else if (payload === "no") {
+      response = { 'text': 'Oops, try sending another image.' };
+    } else {
+      response = {
+        text: `This is a default postback message for payload: ${payload}!`
+      };
+    }
+
+    return response;
+  }
+  
   sendMessage(response, delay = 0, isUserRef) {
     // Check if there is delay in the response
     if (response === undefined || response === null) {
