@@ -36,7 +36,6 @@ module.exports = class Receive {
         } else if (message.attachments) {
           responses = this.handleAttachmentMessage();
         } else if (message.text) {
-          console.log("received is called")
           responses = this.handleTextMessage();
         }
       } else if (event.postback) {
@@ -77,17 +76,17 @@ module.exports = class Receive {
     let event = this.webhookEvent;
 
     // check greeting is here and is confident
-    let greeting = this.firstEntity(event.message.nlp, "greetings");
+    // let greeting = this.firstEntity(event.message.nlp, "greetings");
     let message = event.message.text.trim().toLowerCase();
 
     let response;
 
-    if (
-      (greeting && greeting.confidence > 0.8) ||
-      message.includes("start over")
-    ) {
-      response = Response.genNuxMessage(this.user);
-    }
+    // if (
+    //   (greeting && greeting.confidence > 0.8) ||
+    //   message.includes("start over")
+    // ) {
+    //   response = Response.genNuxMessage(this.user);
+    // }
 
     return response;
   }
