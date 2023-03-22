@@ -22,7 +22,6 @@ const request = require("request"),
   Receive = require("./receive"),
   app = express();
 
-// const PAGE_ID="106030262429449"
 // const NOTIFICATION_MESSAGES_TOKEN= "8183222379117308817"
 // const API_VERSION_NUMBER = 'v16.0';
 // const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
