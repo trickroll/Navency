@@ -11,7 +11,7 @@
 "use strict";
 
 const Response = require("./response"),
-      GraphApi = require("./graph-api");
+  GraphApi = require("./graph-api");
 
 module.exports = class Receive {
   constructor(user, webhookEvent, isUserRef) {
@@ -39,7 +39,6 @@ module.exports = class Receive {
           responses = this.handleTextMessage();
         }
       } else if (event.postback) {
-        console.log('its postback time')
         responses = this.handlePostback();
       } else if (event.referral) {
         responses = this.handleReferral();
@@ -80,17 +79,48 @@ module.exports = class Receive {
 
     let message = event.message.text.trim().toLowerCase();
 
-    let response={text:`hey this the handled txt for ${message}`}
+    let response = { text: `hey this the handled txt for ${message}` };
 
     return response;
   }
 
-  // Handles mesage events with quick replies
-  handleQuickReply() {
-    // Get the payload of the quick reply
-    let payload = this.webhookEvent.message.quick_reply.payload;
+  // Handles mesage events with attachments
+  handleAttachmentMessage() {
+    let response;
 
-    return this.handlePayload(payload);
+    // Get the attachment
+    let attachment = this.webhookEvent.message.attachments[0];
+    console.log("Received attachment:", `${attachment} for ${this.user.psid}`);
+
+    response = {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements: [
+            {
+              title: "Is this the right picture?",
+              subtitle: "Tap a button to answer.",
+              image_url: "https://picsum.photos/200",
+              buttons: [
+                {
+                  type: "postback",
+                  title: "Yes!",
+                  payload: "yes",
+                },
+                {
+                  type: "postback",
+                  title: "No!",
+                  payload: "no",
+                },
+              ],
+            },
+          ],
+        },
+      },
+    };
+
+    return response;
   }
 
   // Handles postbacks events
@@ -124,30 +154,30 @@ module.exports = class Receive {
     }
     return null;
   }
-  
-   handlePayload(payload) {
+
+  handlePayload(payload) {
     console.log("Received Payload:", `${payload} for ${this.user.psid}`);
 
     let response;
 
     // Set the response based on the payload
-    if (payload === "yes" ) {
-      response =  {'text': 'Thanks!' };
+    if (payload === "YES") {
+      response = { text: "Thanks!" };
     } else if (payload === "RN_WEEKLY") {
       response = {
-        text: `[INFO]The following message is a sample Recurring Notification for a weekly frequency. This is usually sent outside the 24 hour window to notify users on topics that they have opted in.`
+        text: `[INFO]The following message is a sample Recurring Notification for a weekly frequency. This is usually sent outside the 24 hour window to notify users on topics that they have opted in.`,
       };
-    } else if (payload === "no") {
-      response = { 'text': 'Oops, try sending another image.' };
+    } else if (payload === "NO") {
+      response = { text: "Oops, try sending another image." };
     } else {
       response = {
-        text: `This is a default postback message for payload: ${payload}!`
+        text: `This is a default postback message for payload: ${payload}!`,
       };
     }
 
     return response;
   }
-  
+
   sendMessage(response, delay = 0, isUserRef) {
     // Check if there is delay in the response
     if (response === undefined || response === null) {
@@ -157,35 +187,7 @@ module.exports = class Receive {
       delay = response["delay"];
       delete response["delay"];
     }
-    
-    response = {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "generic",
-          elements: [
-            {
-              title: "Is this the right picture?",
-              subtitle: "Tap a button to answer.",
-              image_url: "https://picsum.photos/200",
-              buttons: [
-                {
-                  type: "postback",
-                  title: "Yes!",
-                  payload: "yes",
-                },
-                {
-                  type: "postback",
-                  title: "No!",
-                  payload: "no",
-                },
-              ],
-            },
-          ],
-        },
-      },
-    };
-    
+
     // Construct the message body
     let requestBody = {};
     if (isUserRef) {
@@ -204,60 +206,60 @@ module.exports = class Receive {
         message: response,
       };
     }
-   setTimeout(() => GraphApi.callSendApi(requestBody), delay);
+    setTimeout(() => GraphApi.callSendApi(requestBody), delay);
   }
-  
-// Sends opt-in request
- sendOptInRequest(response, delay = 0, isUserRef) {
-   // response = Response.genRecurringNotificationsTemplate(
-   //        `https://picsum.photos/200`,
-   //        "test-ooo",
-   //        "12345"
-   //      );
-   // return response
-  // Construct the message body
-  let requestBody = {
-    recipient: {
-      id: this.user.psid,
-    },
-    message: {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "notification_messages",
-          title: "test-optin",
-          image_aspect_ratio: "SQUARE",
-          notification_messages_reoptin: "ENABLED",
-          image_url: "https://picsum.photos/200",
-          payload: "promotional",
+
+  // Sends opt-in request
+  sendOptInRequest(response, delay = 0, isUserRef) {
+    // response = Response.genRecurringNotificationsTemplate(
+    //        `https://picsum.photos/200`,
+    //        "test-ooo",
+    //        "12345"
+    //      );
+    // return response
+    // Construct the message body
+    let requestBody = {
+      recipient: {
+        id: this.user.psid,
+      },
+      message: {
+        attachment: {
+          type: "template",
+          payload: {
+            template_type: "notification_messages",
+            title: "test-optin",
+            image_aspect_ratio: "SQUARE",
+            notification_messages_reoptin: "ENABLED",
+            image_url: "https://picsum.photos/200",
+            payload: "promotional",
+          },
         },
       },
-    },
-  };
-   setTimeout(() => GraphApi.callSendApi(requestBody), delay);
-}
-//  sendRecurringMessage(notificationMessageToken, delay) {
-//     console.log("Received Recurring Message token");
-//     let requestBody = {},
-//       response,
-//       curation;
-//     //This example will send summer collection
-//     curation = new Curation(this.user, this.webhookEvent);
-//     response = curation.handlePayload("CURATION_BUDGET_50_DINNER");
-//     // Check if there is delay in the response
-//     if (response === undefined) {
-//       return;
-//     }
-//     requestBody = {
-//       recipient: {
-//         notification_messages_token: notificationMessageToken
-//       },
-//       message: response
-//     };
+    };
+    setTimeout(() => GraphApi.callSendApi(requestBody), delay);
+  }
+  //  sendRecurringMessage(notificationMessageToken, delay) {
+  //     console.log("Received Recurring Message token");
+  //     let requestBody = {},
+  //       response,
+  //       curation;
+  //     //This example will send summer collection
+  //     curation = new Curation(this.user, this.webhookEvent);
+  //     response = curation.handlePayload("CURATION_BUDGET_50_DINNER");
+  //     // Check if there is delay in the response
+  //     if (response === undefined) {
+  //       return;
+  //     }
+  //     requestBody = {
+  //       recipient: {
+  //         notification_messages_token: notificationMessageToken
+  //       },
+  //       message: response
+  //     };
 
-//     setTimeout(() => GraphApi.callSendApi(requestBody), delay);
-//   }
-//   firstEntity(nlp, name) {
-//     return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
-//   }
+  //     setTimeout(() => GraphApi.callSendApi(requestBody), delay);
+  //   }
+  //   firstEntity(nlp, name) {
+  //     return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
+  //   }
 };
