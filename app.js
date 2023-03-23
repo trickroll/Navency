@@ -28,11 +28,13 @@ const request = require("request"),
 // const connectionString = process.env.DB_STRING;
 let connectionString =
   "mongodb+srv://leebeensg:SbQ6tS7QJahoR7Do@cluster0.qj3dtfz.mongodb.net/?retryWrites=true&w=majority",
-  db
+    db,
+    dbName = 'message'
 
 MongoClient.connect(connectionString, { useUnifiedTopology: true })
   .then((client) => {
-    console.log("Connected to Database");
+    console.log(`Connected to ${dbName} Database`);
+    db = client.db(dbName)
   })
   .catch((error) => console.error(error));
 
@@ -78,8 +80,12 @@ app.post("/webhook", (req, res) => {
   let body = req.body;
 
   console.log(`\u{1F7EA} Received webhook:`);
-  console.dir(body, { depth: null });
-
+ 
+  db.collection('msg').insertOne(body)
+    .then(result => {
+     console.dir(body, { depth: null })
+  })
+    .catch(error => console.error(error))
   // Check if this is an event from a page subscription
   if (body.object === "page") {
     // Returns a '200 OK' response to all requests
