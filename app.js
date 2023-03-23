@@ -26,8 +26,9 @@ const request = require("request"),
   app = express();
 
 // const connectionString = process.env.DB_STRING;
-const connectionString =
-  "mongodb+srv://leebeensg:SbQ6tS7QJahoR7Do@cluster0.qj3dtfz.mongodb.net/?retryWrites=true&w=majority";
+let connectionString =
+  "mongodb+srv://leebeensg:SbQ6tS7QJahoR7Do@cluster0.qj3dtfz.mongodb.net/?retryWrites=true&w=majority",
+  db
 
 MongoClient.connect(connectionString, { useUnifiedTopology: true })
   .then((client) => {
