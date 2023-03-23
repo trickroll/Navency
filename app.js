@@ -22,8 +22,15 @@ const request = require("request"),
   Receive = require("./receive"),
   User = require("./user"),
   GraphApi = require("./graph-api"),
+ MongoClient = require('mongodb').MongoClient,
   app = express();
 
+let connectionString = "mongodb+srv://leebeensg:G1Ga1xtr6fyVs9W6@cluster0.qj3dtfz.mongodb.net/?retryWrites=true&w=majority"
+
+MongoClient.connect(connectionString, (err, client) => {
+  if (err) return console.error(err)
+  console.log('Connected to Database')
+})
 
 let users = {};
 
@@ -33,7 +40,7 @@ app.use(urlencoded({ extended: true }));
 // Parse application/json
 app.use(json());
 
-// Respond with 'Hello World' when a GET request is made to the homepage
+// Respond with website when a GET request is made to the homepage
 app.get("/", function (_req, res) {
   res.sendFile(__dirname + "/index.html");
 });
