@@ -22,21 +22,21 @@ const request = require("request"),
   Receive = require("./receive"),
   User = require("./user"),
   GraphApi = require("./graph-api"),
-  MongoClient = require("mongodb").MongoClient,
+  Mongo = require("./mongodb"),
   app = express();
 
 // const connectionString = process.env.DB_STRING;
-let connectionString =
-  "mongodb+srv://leebeensg:SbQ6tS7QJahoR7Do@cluster0.qj3dtfz.mongodb.net/?retryWrites=true&w=majority",
-    db,
-    dbName = 'message'
+// let connectionString =
+//   "mongodb+srv://leebeensg:SbQ6tS7QJahoR7Do@cluster0.qj3dtfz.mongodb.net/?retryWrites=true&w=majority",
+//     db,
+//     dbName = 'message'
 
-MongoClient.connect(connectionString, { useUnifiedTopology: true })
-  .then((client) => {
-    console.log(`Connected to ${dbName} Database`);
-    db = client.db(dbName)
-  })
-  .catch((error) => console.error(error));
+// MongoClient.connect(connectionString, { useUnifiedTopology: true })
+//   .then((client) => {
+//     console.log(`Connected to ${dbName} Database`);
+//     db = client.db(dbName)
+//   })
+//   .catch((error) => console.error(error));
 
 let users = {};
 
@@ -89,12 +89,16 @@ app.post("/webhook", (req, res) => {
     obj: body['object']
   }
   
-  db.collection('msg').insertOne(bodyTwo)
-    .then(result => {
-     // console.dir(body, { depth: null })
-     console.dir('msg stored')
-  })
-    .catch(error => console.error(error))
+  Mongo.mongoWrite(bodyTwo, 'msg')
+  
+  // db.collection('msg').insertOne(bodyTwo)
+  //   .then(result => {
+  //    // console.dir(body, { depth: null })
+  //    console.dir('msg stored')
+  // })
+  //   .catch(error => console.error(error))
+  
+  
   // Check if this is an event from a page subscription
   if (body.object === "page") {
     // Returns a '200 OK' response to all requests
