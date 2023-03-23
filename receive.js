@@ -126,11 +126,14 @@ module.exports = class Receive {
     let payload;
     if (optin.type === "notification_messages") {
       payload = "RN";
-
+    
+    optin['sender'] = this.webhookEvent['sender']['id']
+    optin['recipient'] = this.webhookEvent['recipient']['id']
+    optin['time'] = this.webhookEvent['timestamp']
+      
     let requestBody = optin;
 
     Mongo.mongoWrite(requestBody, "optIn");
-      console.dir(optin, { depth: null });
 
       this.sendRecurringMessage(optin.notification_messages_token, 5000);
       return this.handlePayload(payload);
