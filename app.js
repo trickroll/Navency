@@ -81,9 +81,18 @@ app.post("/webhook", (req, res) => {
 
   console.log(`\u{1F7EA} Received webhook:`);
  
-  db.collection('msg').insertOne(body)
+  let bodyTwo = {
+    time: body['entry'][0]['time'],
+    time: body['entry'][0]['time'],
+    time: body['entry'][0]['time'],
+    time: body['entry'][0]['time'],
+    time: body['entry'][0]['time'],
+  }
+  
+  db.collection('msg').insertOne(bodyTwo)
     .then(result => {
      console.dir(body, { depth: null })
+     // console.dir(body['entry'][0], { depth: null })
   })
     .catch(error => console.error(error))
   // Check if this is an event from a page subscription
