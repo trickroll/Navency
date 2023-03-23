@@ -69,15 +69,6 @@ app.post("/webhook", (req, res) => {
 
   console.log(`\u{1F7EA} Received webhook:`);
  console.dir(body, { depth: null })
-//   let bodyTwo = {
-//     sender: body['entry'][0]['messaging'][0]['sender']['id'],
-//     recipient: body['entry'][0]['messaging'][0]['recipient']['id'],
-//     message: body['entry'][0]['messaging'][0]['message']['text'],
-//     time: body['entry'][0]['time'],
-//     obj: body['object']
-//   }
-  
-//   Mongo.mongoWrite(bodyTwo, 'msg')
   
   // Check if this is an event from a page subscription
   if (body.object === "page") {

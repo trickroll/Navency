@@ -15,7 +15,7 @@ const Response = require("./response"),
   Mongo = require("./mongodb"),
   PAGE_ID = process.env.PAGE_ID;
 
-  let topic = "Subscription"
+let topic = "Subscription";
 
 module.exports = class Receive {
   constructor(user, webhookEvent, isUserRef) {
@@ -76,19 +76,26 @@ module.exports = class Receive {
       "Received text:",
       `${this.webhookEvent.message.text} for ${this.user.psid}`
     );
-    console.dir(this.webhookEvent, {depth:null})
-    
-    let requestBody = 
+    console.dir(this.webhookEvent, { depth: null });
 
     let event = this.webhookEvent;
+
+    let requestBody = {
+      sender: event["sender"]["id"],
+      recipient: event["recipient"]["id"],
+      message: event["message"]["text"],
+      time: event["timestamp"],
+    };
+
+    Mongo.mongoWrite(requestBody, "textMessage");
 
     let message = event.message.text.trim().toLowerCase();
 
     let response = Response.genRecurringNotificationsTemplate(
-        `https://picsum.photos/200`,
-        topic,
-        "12345"
-      );
+      `https://picsum.photos/200`,
+      topic,
+      "12345"
+    );
 
     return response;
   }
@@ -119,33 +126,35 @@ module.exports = class Receive {
     let payload;
     if (optin.type === "notification_messages") {
       payload = "RN";
-      
-      // Mongo.mongoWrite()
-      console.dir(optin, {depth:null})
-      
+
+    let requestBody = optin;
+
+    Mongo.mongoWrite(requestBody, "optIn");
+      console.dir(optin, { depth: null });
+
       this.sendRecurringMessage(optin.notification_messages_token, 5000);
       return this.handlePayload(payload);
     }
     return null;
   }
 
-// automatically creates the subscription link: `https://m.me/rn/${PAGE_ID}?topic=${topic}`
-  
+  // automatically creates the subscription link: `https://m.me/rn/${PAGE_ID}?topic=${topic}`
+
   handlePayload(payload) {
     console.log("Received Payload:", `${payload} for ${this.user.psid}`);
-    
+
     let response;
     // Set the response based on the payload
     if (payload === "YES") {
       response = { text: "Thanks!" };
     } else if (payload === "RN") {
       response = Response.genGenericTemplate(
-            `https://picsum.photos/200`,
-            'Thank you for subscribing',
-            `Use "MESSENGER10" for 10% off`,
-            [Response.genWebUrlButton(`Visit Site`, "navency.com")]
-            // [Response.genPostbackButton(`GET COUPON`, "COUPON_50")]
-          );
+        `https://picsum.photos/200`,
+        "Thank you for subscribing",
+        `Use "MESSENGER10" for 10% off`,
+        [Response.genWebUrlButton(`Visit Site`, "navency.com")]
+        // [Response.genPostbackButton(`GET COUPON`, "COUPON_50")]
+      );
     } else if (payload === "NO") {
       response = { text: "Oops, try sending another image." };
     } else if (payload === "OPTIN") {
