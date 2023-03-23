@@ -12,6 +12,7 @@
 
 const Response = require("./response"),
   GraphApi = require("./graph-api"),
+  Mongo = require("./mongodb"),
   PAGE_ID = process.env.PAGE_ID;
 
   let topic = "Subscription"
@@ -75,6 +76,9 @@ module.exports = class Receive {
       "Received text:",
       `${this.webhookEvent.message.text} for ${this.user.psid}`
     );
+    console.dir(this.webhookEvent, {depth:null})
+    
+    let requestBody = 
 
     let event = this.webhookEvent;
 
@@ -115,6 +119,10 @@ module.exports = class Receive {
     let payload;
     if (optin.type === "notification_messages") {
       payload = "RN";
+      
+      // Mongo.mongoWrite()
+      console.dir(optin, {depth:null})
+      
       this.sendRecurringMessage(optin.notification_messages_token, 5000);
       return this.handlePayload(payload);
     }

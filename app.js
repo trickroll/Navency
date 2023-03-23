@@ -25,18 +25,6 @@ const request = require("request"),
   Mongo = require("./mongodb"),
   app = express();
 
-// const connectionString = process.env.DB_STRING;
-// let connectionString =
-//   "mongodb+srv://leebeensg:SbQ6tS7QJahoR7Do@cluster0.qj3dtfz.mongodb.net/?retryWrites=true&w=majority",
-//     db,
-//     dbName = 'message'
-
-// MongoClient.connect(connectionString, { useUnifiedTopology: true })
-//   .then((client) => {
-//     console.log(`Connected to ${dbName} Database`);
-//     db = client.db(dbName)
-//   })
-//   .catch((error) => console.error(error));
 
 let users = {};
 
@@ -80,24 +68,16 @@ app.post("/webhook", (req, res) => {
   let body = req.body;
 
   console.log(`\u{1F7EA} Received webhook:`);
- 
-  let bodyTwo = {
-    sender: body['entry'][0]['messaging'][0]['sender']['id'],
-    recipient: body['entry'][0]['messaging'][0]['recipient']['id'],
-    message: body['entry'][0]['messaging'][0]['message']['text'],
-    time: body['entry'][0]['time'],
-    obj: body['object']
-  }
+ console.dir(body, { depth: null })
+//   let bodyTwo = {
+//     sender: body['entry'][0]['messaging'][0]['sender']['id'],
+//     recipient: body['entry'][0]['messaging'][0]['recipient']['id'],
+//     message: body['entry'][0]['messaging'][0]['message']['text'],
+//     time: body['entry'][0]['time'],
+//     obj: body['object']
+//   }
   
-  Mongo.mongoWrite(bodyTwo, 'msg')
-  
-  // db.collection('msg').insertOne(bodyTwo)
-  //   .then(result => {
-  //    // console.dir(body, { depth: null })
-  //    console.dir('msg stored')
-  // })
-  //   .catch(error => console.error(error))
-  
+//   Mongo.mongoWrite(bodyTwo, 'msg')
   
   // Check if this is an event from a page subscription
   if (body.object === "page") {

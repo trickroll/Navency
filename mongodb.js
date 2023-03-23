@@ -23,8 +23,7 @@ module.exports = class Mongo {
     db.collection(collection)
       .insertOne(requestBody)
       .then((result) => {
-        // console.dir(body, { depth: null })
-        console.dir("MongoDB update");
+        console.dir(`Collection ${collection} update`);
       })
       .catch((error) => console.error(error));
   }
