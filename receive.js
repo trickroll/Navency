@@ -89,50 +89,6 @@ module.exports = class Receive {
     return response;
   }
 
-//   // Handles mesage events with attachments
-//   handleAttachmentMessage() {
-//     let response;
-
-//     // Get the attachment
-//     let attachment = this.webhookEvent.message.attachments[0];
-//     console.log("Received attachment:", `${attachment} for ${this.user.psid}`);
-
-//     response = {
-//       attachment: {
-//         type: "template",
-//         payload: {
-//           template_type: "generic",
-//           elements: [
-//             {
-//               title: "Is this the right picture?",
-//               subtitle: "Tap a button to answer.",
-//               image_url: "https://picsum.photos/200",
-//               buttons: [
-//                 {
-//                   type: "postback",
-//                   title: "Yes!",
-//                   payload: "yes",
-//                 },
-//                 {
-//                   type: "postback",
-//                   title: "No!",
-//                   payload: "no",
-//                 },
-//                 {
-//                   type: "postback",
-//                   title: "Opt-in",
-//                   payload: "OPTIN",
-//                 },
-//               ],
-//             },
-//           ],
-//         },
-//       },
-//     };
-
-//     return response;
-//   }
-
   // Handles postbacks events
   handlePostback() {
     let postback = this.webhookEvent.postback;
