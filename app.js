@@ -26,13 +26,14 @@ const request = require("request"),
   app = express();
 
 // const connectionString = process.env.DB_STRING;
-const connectionString = "mongodb+srv://leebeensg:SbQ6tS7QJahoR7Do@cluster0.qj3dtfz.mongodb.net/?retryWrites=true&w=majority"
+const connectionString =
+  "mongodb+srv://leebeensg:SbQ6tS7QJahoR7Do@cluster0.qj3dtfz.mongodb.net/?retryWrites=true&w=majority";
 
 MongoClient.connect(connectionString, { useUnifiedTopology: true })
-  .then(client => {
-    console.log('Connected to Database')
+  .then((client) => {
+    console.log("Connected to Database");
   })
-  .catch(error => console.error(error))
+  .catch((error) => console.error(error));
 
 let users = {};
 
