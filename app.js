@@ -22,21 +22,17 @@ const request = require("request"),
   Receive = require("./receive"),
   User = require("./user"),
   GraphApi = require("./graph-api"),
- MongoClient = require('mongodb').MongoClient,
+  MongoClient = require("mongodb").MongoClient,
   app = express();
 
-let connectionString = 'mongodb+srv://leebeensg:SbQ6tS7QJahoR7Do@cluster0.qj3dtfz.mongodb.net/?retryWrites=true&w=majority'
-
-// MongoClient.connect(connectionString, (err, client) => {
-//   if (err) return console.error(err)
-//   console.log('Connected to Database')
-// })
+// const connectionString = process.env.DB_STRING;
+const connectionString = "mongodb+srv://leebeensg:SbQ6tS7QJahoR7Do@cluster0.qj3dtfz.mongodb.net/?retryWrites=true&w=majority"
 
 MongoClient.connect(connectionString, { useUnifiedTopology: true })
-    .then(client => {
-        console.log(`Connected to Database`)
-    })
-
+  .then(client => {
+    console.log('Connected to Database')
+  })
+  .catch(error => console.error(error))
 
 let users = {};
 
@@ -73,9 +69,7 @@ app.get("/webhook", (req, res) => {
       res.sendStatus(403);
     }
   }
-
 });
-
 
 // Create the endpoint for your webhook
 app.post("/webhook", (req, res) => {
@@ -132,16 +126,15 @@ app.post("/webhook", (req, res) => {
 
         // Get the sender PSID
         let senderPsid = webhookEvent.sender.id;
-          // Get the user_ref if from Chat plugin logged in user
+        // Get the user_ref if from Chat plugin logged in user
         let user_ref = webhookEvent.sender.user_ref;
         // Check if user is guest from Chat plugin guest user
         let guestUser = isGuestUser(webhookEvent);
 
         if (senderPsid != null && senderPsid != undefined) {
-              
           setDefaultUser(senderPsid);
-          return receiveAndReturn(users[senderPsid], webhookEvent, false);    
-          
+          return receiveAndReturn(users[senderPsid], webhookEvent, false);
+
           // if (!(senderPsid in users)) {
           //   if (!guestUser) {
           //     // Make call to UserProfile API only if user is not guest
@@ -216,10 +209,7 @@ function receiveAndReturn(user, webhookEvent, isUserRef) {
   return receiveMessage.handleMessage();
 }
 
-
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
   console.log("Your app is listening on port " + listener.address().port);
 });
-
-
