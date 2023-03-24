@@ -99,7 +99,7 @@ module.exports = class Receive {
 
         let delay = 0;
         for (let response of token) {
-          this.sendRecurringMessage(response, delay * 2000, this.isUserRef);
+          this.sendRecurringMessage(response, delay * 2000);
           delay++;
         }
       }
