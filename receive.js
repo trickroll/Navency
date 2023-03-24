@@ -94,7 +94,8 @@ module.exports = class Receive {
       let token = Mongo.mongoRead('optIn', 'notification_messages_token')
       
       let delay = 0;
-      console.log(typeof token)
+      console.log(token)
+      console.log(Array.isArray(token))
       // for (let response of token) {
       //   this.sendRecurringMessage(response, delay * 2000, this.isUserRef);
       //   delay++;}
