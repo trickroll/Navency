@@ -27,4 +27,14 @@ module.exports = class Mongo {
       })
       .catch((error) => console.error(error));
   }
+  
+  static async mongoRead(collection) {
+    db.collection(collection)
+      .find().toArray()
+      .then((result) => {
+        console.dir(`Retrieve ${result}`);
+        return result
+      })
+      .catch((error) => console.error(error));
+  }
 };
