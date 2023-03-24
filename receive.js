@@ -91,18 +91,23 @@ module.exports = class Receive {
 
     let message = event.message.text.trim().toLowerCase();
     if (message == "rn") {
-      let notification_messages_token = Mongo.mongoRead('optIn', 'notification_messages_token')
+      let token = Mongo.mongoRead('optIn', 'notification_messages_token')
       
-      response = this.sendRecurringMessage(notification_messages_token, 5000);
+      let delay = 0;
+      console.log(typeof token)
+      // for (let response of token) {
+      //   this.sendRecurringMessage(response, delay * 2000, this.isUserRef);
+      //   delay++;}
+        
+      return null
     } else {
       response = Response.genRecurringNotificationsTemplate(
         `https://picsum.photos/200`,
         topic,
         "12345"
       );
+      return response
     }
-
-    return response;
   }
 
   // Handles postbacks events
