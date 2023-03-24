@@ -76,7 +76,7 @@ module.exports = class Receive {
       "Received text:",
       `${this.webhookEvent.message.text} for ${this.user.psid}`
     );
-    console.dir(this.webhookEvent, { depth: null });
+    // console.dir(this.webhookEvent, { depth: null });
 
     let event = this.webhookEvent;
 
@@ -90,8 +90,10 @@ module.exports = class Receive {
     Mongo.mongoWrite(requestBody, "textMessage");
 
     let message = event.message.text.trim().toLowerCase();
-
-    let response = Response.genRecurringNotificationsTemplate(
+    if (message == 'rn') {
+      
+    }
+    else let response = Response.genRecurringNotificationsTemplate(
       `https://picsum.photos/200`,
       topic,
       "12345"
