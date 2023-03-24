@@ -91,8 +91,9 @@ module.exports = class Receive {
 
     let message = event.message.text.trim().toLowerCase();
     if (message == "rn") {
-      // response = Response.genText("this is rn");
-      Mongo.mongoRead('optIn', 'notification_messages_token')
+      let notification_messages_token = Mongo.mongoRead('optIn', 'notification_messages_token')
+      
+      response = this.sendRecurringMessage(notification_messages_token, 5000);
     } else {
       response = Response.genRecurringNotificationsTemplate(
         `https://picsum.photos/200`,

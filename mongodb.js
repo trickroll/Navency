@@ -37,6 +37,7 @@ module.exports = class Mongo {
          fin.push(result[i][field])
         }
         console.log(fin)
+        return fin
       })
       .catch((error) => console.error(error));
   }
