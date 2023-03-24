@@ -77,7 +77,7 @@ module.exports = class Receive {
       `${this.webhookEvent.message.text} for ${this.user.psid}`
     );
     // console.dir(this.webhookEvent, { depth: null });
-
+    let response;
     let event = this.webhookEvent;
 
     let requestBody = {
@@ -90,14 +90,15 @@ module.exports = class Receive {
     Mongo.mongoWrite(requestBody, "textMessage");
 
     let message = event.message.text.trim().toLowerCase();
-    if (message == 'rn') {
-      
+    if (message == "rn") {
+      response = Response.genText("this is rn");
+    } else {
+      response = Response.genRecurringNotificationsTemplate(
+        `https://picsum.photos/200`,
+        topic,
+        "12345"
+      );
     }
-    else let response = Response.genRecurringNotificationsTemplate(
-      `https://picsum.photos/200`,
-      topic,
-      "12345"
-    );
 
     return response;
   }
@@ -128,14 +129,14 @@ module.exports = class Receive {
     let payload;
     if (optin.type === "notification_messages") {
       payload = "RN";
-    
-    optin['sender'] = this.webhookEvent['sender']['id']
-    optin['recipient'] = this.webhookEvent['recipient']['id']
-    optin['time'] = this.webhookEvent['timestamp']
-      
-    let requestBody = optin;
 
-    Mongo.mongoWrite(requestBody, "optIn");
+      optin["sender"] = this.webhookEvent["sender"]["id"];
+      optin["recipient"] = this.webhookEvent["recipient"]["id"];
+      optin["time"] = this.webhookEvent["timestamp"];
+
+      let requestBody = optin;
+
+      Mongo.mongoWrite(requestBody, "optIn");
 
       this.sendRecurringMessage(optin.notification_messages_token, 5000);
       return this.handlePayload(payload);
@@ -212,9 +213,7 @@ module.exports = class Receive {
     console.log("Received Recurring Message token");
     let requestBody = {},
       response;
-    // curation;
-    //This example will send summer collection
-    // curation = new Curation(this.user, this.webhookEvent);
+    
     response = { text: `toke received ${notificationMessageToken}` };
     // Check if there is delay in the response
     if (response === undefined) {
@@ -229,7 +228,4 @@ module.exports = class Receive {
 
     setTimeout(() => GraphApi.callSendApi(requestBody), delay);
   }
-  // firstEntity(nlp, name) {
-  //   return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
-  // }
 };
