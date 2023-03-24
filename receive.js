@@ -91,23 +91,29 @@ module.exports = class Receive {
 
     let message = event.message.text.trim().toLowerCase();
     if (message == "rn") {
-      let token = Mongo.mongoRead('optIn', 'notification_messages_token')
-      
-      let delay = 0;
-      console.log(token)
-      console.log(Array.isArray(token))
-      // for (let response of token) {
-      //   this.sendRecurringMessage(response, delay * 2000, this.isUserRef);
-      //   delay++;}
-        
-      return null
+      async function readNotification() {
+        let token = await Mongo.mongoRead(
+          "optIn",
+          "notification_messages_token"
+        );
+
+        let delay = 0;
+        for (let response of token) {
+          this.sendRecurringMessage(response, delay * 2000, this.isUserRef);
+          delay++;
+        }
+      }
+
+      readNotification();
+
+      return null;
     } else {
       response = Response.genRecurringNotificationsTemplate(
         `https://picsum.photos/200`,
         topic,
         "12345"
       );
-      return response
+      return response;
     }
   }
 
@@ -221,7 +227,7 @@ module.exports = class Receive {
     console.log("Received Recurring Message token");
     let requestBody = {},
       response;
-    
+
     response = { text: `toke received ${notificationMessageToken}` };
     // Check if there is delay in the response
     if (response === undefined) {

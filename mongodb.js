@@ -28,16 +28,33 @@ module.exports = class Mongo {
       .catch((error) => console.error(error));
   }
   
+  // static async mongoRead(collection, field) {
+  //   db.collection(collection)
+  //     .find().toArray()
+  //     .then((result) => {
+  //       let fin = []
+  //       for (let i=0; i<result.length; i++){
+  //        fin.push(result[i][field])
+  //       }
+  //       return fin
+  //     })
+  //     .catch((error) => console.error(error));
+  // }
+  
   static async mongoRead(collection, field) {
-    db.collection(collection)
-      .find().toArray()
-      .then((result) => {
-        let fin = []
-        for (let i=0; i<result.length; i++){
-         fin.push(result[i][field])
-        }
-        return fin
-      })
-      .catch((error) => console.error(error));
-  }
+  return db.collection(collection)
+    .find().toArray()
+    .then((result) => {
+      let fin = []
+      for (let i=0; i<result.length; i++){
+        fin.push(result[i][field])
+      }
+      return fin
+    })
+    .catch((error) => {
+      console.error(error);
+      throw error; // re-throw the error so that it can be caught elsewhere
+    });
+}
+
 };
