@@ -228,7 +228,6 @@ module.exports = class Receive {
         "Thank you for subscribing",
         message,
         [Response.genWebUrlButton(`Visit Site`, "navency.com")]
-        // [Response.genPostbackButton(`GET COUPON`, "COUPON_50")]
       );
     
     // Check if there is delay in the response
