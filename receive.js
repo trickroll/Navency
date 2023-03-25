@@ -220,15 +220,19 @@ module.exports = class Receive {
     // console.log(`Received Recurring Message token ${notificationMessageToken}`);
     let requestBody = {},
       response;
-
-    // response = { text: message, image_url:`https://picsum.photos/200` };
     
-    response = Response.genGenericTemplate(
-        `https://picsum.photos/200`,
-        "Thank you for subscribing",
-        message,
-        [Response.genWebUrlButton(`Visit Site`, "navency.com")]
-      );
+    // 250 character limit and image would need to be separate message...
+    response = { text: message};
+    
+    // response = Response.genGenericTemplate(
+    //     `https://picsum.photos/200`,
+    //     "Thank you for subscribing",
+    //     message,
+    //     [Response.genWebUrlButton(`Visit Site`, "navency.com")]
+    //   );
+    
+    // 250 character limit
+    // response = Response.genText(message) 
     
     // Check if there is delay in the response
     if (response === undefined) {
