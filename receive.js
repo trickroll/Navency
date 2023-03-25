@@ -216,8 +216,8 @@ module.exports = class Receive {
     setTimeout(() => GraphApi.callSendApi(requestBody), delay);
   }
 
-  sendRecurringMessage(notificationMessageToken, delay) {
-    console.log(`Received Recurring Message token ${notificationMessageToken}`);
+  sendRecurringMessage(notificationMessageToken, message, delay) {
+    // console.log(`Received Recurring Message token ${notificationMessageToken}`);
     let requestBody = {},
       response;
 
@@ -230,7 +230,7 @@ module.exports = class Receive {
       recipient: {
         notification_messages_token: notificationMessageToken,
       },
-      message: response,
+      message: message,
     };
 
     setTimeout(() => GraphApi.callSendApi(requestBody), delay);

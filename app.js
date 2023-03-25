@@ -143,7 +143,9 @@ app.post("/webhook", (req, res) => {
 app.post("/broadcast", (req, res) => {
   let receiveMessage = new Receive();
 
-  receiveMessage.sendRecurringMessage(req.body.notificationMessageToken, req.body.delay);
+  receiveMessage.sendRecurringMessage(req.body.notificationMessageToken, 
+                                      req.body.message,
+                                      req.body.delay);
 
 
   res.send(req.body);
