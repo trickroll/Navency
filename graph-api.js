@@ -20,7 +20,6 @@ module.exports = class GraphApi {
     let url = new URL(`${config.apiUrl}/me/messages`);
     url.search = new URLSearchParams({
       access_token: config.pageAccesToken,
-      developer_action: 'ENABLE_FOLLOWUP_MESSAGE'
     });
     console.warn("Request body is\n" + JSON.stringify(requestBody));
     let response = await fetch(url, {
