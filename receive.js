@@ -145,7 +145,6 @@ module.exports = class Receive {
 
       Mongo.mongoWrite(requestBody, "optIn");
 
-      this.sendRecurringMessage(optin.notification_messages_token, 5000);
       return this.handlePayload(payload);
     }
     return null;
@@ -224,13 +223,6 @@ module.exports = class Receive {
     // 250 character limit and image would need to be separate message...
     response = { text: message};
     
-    // response = Response.genGenericTemplate(
-    //     `https://picsum.photos/200`,
-    //     "Thank you for subscribing",
-    //     message,
-    //     [Response.genWebUrlButton(`Visit Site`, "navency.com")]
-    //   );
-    
     // 250 character limit
     // response = Response.genText(message) 
     
@@ -238,6 +230,7 @@ module.exports = class Receive {
     if (response === undefined) {
       return;
     }
+    
     requestBody = {
       recipient: {
         notification_messages_token: notificationMessageToken,
