@@ -141,11 +141,12 @@ app.post("/webhook", (req, res) => {
 });
 
 app.post("/broadcast", (req, res) => {
-  
-  Receive.sendRecurringMessage(req.body.notificationMessageToken, req.body.delay);
+  let receiveMessage = new Receive();
+
+  receiveMessage.sendRecurringMessage(req.body.notificationMessageToken, req.body.delay);
 
 
-  res.send('Message scheduled successfully');
+  res.send(req.body);
 
 })
 
