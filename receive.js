@@ -253,9 +253,12 @@ nextSend(requestBody, delay) {
 scheduleSend(scheduledTime){
   const [year, month, day, hour, min] = scheduledTime
   let now = new Date()
-  let dateFromScheduledTime = new Date(year, month, day, hour, min)
+  
+//   Changed to SGT or GMT+8
+  let dateFromScheduledTime = new Date(year, month, day, hour+8, min)
   console.log(`message received and to be sent at ${dateFromScheduledTime}`)
   let sendTime = dateFromScheduledTime.getTime() - now.getTime()
+  console.log(sendTime)
   return sendTime
 }
   
