@@ -140,6 +140,15 @@ app.post("/webhook", (req, res) => {
   }
 });
 
+app.post("/broadcast", (req, res) => {
+  
+  Receive.sendRecurringMessage(req.body.notificationMessageToken, req.body.delay);
+
+
+  res.send('Message scheduled successfully');
+
+})
+
 function setDefaultUser(id) {
   let user = new User(id);
   users[id] = user;

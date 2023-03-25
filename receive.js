@@ -91,20 +91,13 @@ module.exports = class Receive {
 
     let message = event.message.text.trim().toLowerCase();
     if (message == "rn") {
-      async function readNotification() {
-        let token = await Mongo.mongoRead(
-          "optIn",
-          "notification_messages_token"
-        );
+      let token = Mongo.mongoRead("optIn", "notification_messages_token");
 
-        let delay = 0;
-        for (let response of token) {
-          this.sendRecurringMessage(response, delay * 2000);
-          delay++;
-        }
+      let delay = 0;
+      for (let response of token) {
+        this.sendRecurringMessage(response, delay * 2000);
+        delay++;
       }
-
-      readNotification();
 
       return null;
     } else {
