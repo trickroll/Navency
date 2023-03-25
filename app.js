@@ -145,7 +145,7 @@ app.post("/broadcast", (req, res) => {
 
   receiveMessage.sendRecurringMessage(req.body.notificationMessageToken, 
                                       req.body.message,
-                                      req.body.delay);
+                                      req.body.sendTime);
 
 
   res.send(req.body);

@@ -90,24 +90,15 @@ module.exports = class Receive {
     Mongo.mongoWrite(requestBody, "textMessage");
 
     let message = event.message.text.trim().toLowerCase();
-    if (message == "rn") {
-      let token = Mongo.mongoRead("optIn", "notification_messages_token");
 
-      let delay = 0;
-      for (let response of token) {
-        this.sendRecurringMessage(response, delay * 2000);
-        delay++;
-      }
 
-      return null;
-    } else {
       response = Response.genRecurringNotificationsTemplate(
         `https://picsum.photos/200`,
         topic,
         "12345"
       );
       return response;
-    }
+    
   }
 
   // Handles postbacks events
@@ -215,7 +206,7 @@ module.exports = class Receive {
     setTimeout(() => GraphApi.callSendApi(requestBody), delay);
   }
 
-  sendRecurringMessage(notificationMessageToken, message, delay) {
+  sendRecurringMessage(notificationMessageToken, message, scheduledTime) {
     // console.log(`Received Recurring Message token ${notificationMessageToken}`);
     let requestBody = {},
       response;
@@ -223,7 +214,7 @@ module.exports = class Receive {
     // 250 character limit and image would need to be separate message...
     response = { text: message};
     
-    delay = this.scheduleSend(delay)
+    let delay = this.scheduleSend(scheduledTime)
     
     // Check if there is delay in the response
     if (response === undefined) {
@@ -232,7 +223,6 @@ module.exports = class Receive {
     for (let i = 0; i < notificationMessageToken.length; i++) { 
       
       let token = notificationMessageToken[i]
-      
       requestBody = {
       recipient: {
         notification_messages_token: token,
@@ -255,10 +245,9 @@ scheduleSend(scheduledTime){
   let now = new Date()
   
 //   Changed to SGT or GMT+8
-  let dateFromScheduledTime = new Date(year, month, day, hour+8, min)
+  let dateFromScheduledTime = new Date(year, month, day, hour-8, min)
   console.log(`message received and to be sent at ${dateFromScheduledTime}`)
   let sendTime = dateFromScheduledTime.getTime() - now.getTime()
-  console.log(sendTime)
   return sendTime
 }
   
