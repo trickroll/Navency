@@ -221,7 +221,16 @@ module.exports = class Receive {
     let requestBody = {},
       response;
 
-    response = { text: message };
+    // response = { text: message, image_url:`https://picsum.photos/200` };
+    
+    response = Response.genGenericTemplate(
+        `https://picsum.photos/200`,
+        "Thank you for subscribing",
+        message,
+        [Response.genWebUrlButton(`Visit Site`, "navency.com")]
+        // [Response.genPostbackButton(`GET COUPON`, "COUPON_50")]
+      );
+    
     // Check if there is delay in the response
     if (response === undefined) {
       return;
