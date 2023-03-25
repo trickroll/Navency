@@ -219,30 +219,32 @@ module.exports = class Receive {
     // console.log(`Received Recurring Message token ${notificationMessageToken}`);
     let requestBody = {},
       response;
-
+    
     // 250 character limit and image would need to be separate message...
-    response = { text: message };
-
-    // 250 character limit
-    // response = Response.genText(message)
-
+    response = { text: message};
+    
     // Check if there is delay in the response
     if (response === undefined) {
       return;
     }
-    let i = 0;
-    for (let token of notificationMessageToken) {
-      console.log(token);
-
+    for (let i = 0; i < notificationMessageToken.length; i++) { 
+      
+      let token = notificationMessageToken[i]
+      console.log(token)
+      
       requestBody = {
-        recipient: {
-          notification_messages_token: token,
-        },
-        message: response,
-      };
-
-      setTimeout(() => GraphApi.callSendApi(requestBody), i * 2000);
-      i++;
+      recipient: {
+        notification_messages_token: token,
+      },
+      message: response,
+    };
+    // Done in order to preven looping issues
+    this.nextSend(requestBody, delay)
+    
     }
   }
+
+nextSend(requestBody, delay) {
+  setTimeout(() => GraphApi.callSendApi(requestBody), delay);
+}
 };
