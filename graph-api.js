@@ -138,7 +138,7 @@ module.exports = class GraphApi {
     let url = new URL(`${config.apiUrl}/${senderIgsid}`);
     url.search = new URLSearchParams({
       access_token: config.pageAccesToken,
-      fields: "first_name, last_name, gender, locale, timezone"
+      fields: "first_name, last_name, profile_pic"
     });
     let response = await fetch(url);
     if (response.ok) {
@@ -146,9 +146,7 @@ module.exports = class GraphApi {
       return {
         firstName: userProfile.first_name,
         lastName: userProfile.last_name,
-        gender: userProfile.gender,
-        locale: userProfile.locale,
-        timezone: userProfile.timezone
+        profilePic: userProfile.profile_pic
       };
     } else {
       console.warn(

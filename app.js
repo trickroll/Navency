@@ -25,7 +25,6 @@ const request = require("request"),
   Mongo = require("./mongodb"),
   app = express();
 
-
 let users = {};
 
 // Parse application/x-www-form-urlencoded
@@ -68,8 +67,8 @@ app.post("/webhook", (req, res) => {
   let body = req.body;
 
   console.log(`\u{1F7EA} Received webhook:`);
- console.dir(body, { depth: null })
-  
+  console.dir(body, { depth: null });
+
   // Check if this is an event from a page subscription
   if (body.object === "page") {
     // Returns a '200 OK' response to all requests
@@ -123,10 +122,20 @@ app.post("/webhook", (req, res) => {
         // Check if user is guest from Chat plugin guest user
         let guestUser = isGuestUser(webhookEvent);
 
+        // let user = new User(senderPsid);
+        // GraphApi.getUserProfile(senderPsid)
+        //   .then((userProfile) => {
+        //     user.setProfile(userProfile);
+        //   })
+        //   .catch((error) => {
+        //     // The profile is unavailable
+        //     console.log(JSON.stringify(body));
+        //     console.log("Profile is unavailable:", error);
+        //   });
+
         if (senderPsid != null && senderPsid != undefined) {
           setDefaultUser(senderPsid);
           return receiveAndReturn(users[senderPsid], webhookEvent, false);
-          
         } else if (user_ref != null && user_ref != undefined) {
           // Handle user_ref
           setDefaultUser(user_ref);
@@ -143,14 +152,14 @@ app.post("/webhook", (req, res) => {
 app.post("/broadcast", (req, res) => {
   let receiveMessage = new Receive();
 
-  receiveMessage.sendRecurringMessage(req.body.notificationMessageToken, 
-                                      req.body.message,
-                                      req.body.sendTime);
-
+  receiveMessage.sendRecurringMessage(
+    req.body.notificationMessageToken,
+    req.body.message,
+    req.body.sendTime
+  );
 
   res.send(req.body);
-
-})
+});
 
 function setDefaultUser(id) {
   let user = new User(id);
