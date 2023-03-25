@@ -221,7 +221,7 @@ module.exports = class Receive {
     let requestBody = {},
       response;
 
-    response = { text: `toke received ${notificationMessageToken}` };
+    response = { text: message };
     // Check if there is delay in the response
     if (response === undefined) {
       return;
@@ -230,7 +230,7 @@ module.exports = class Receive {
       recipient: {
         notification_messages_token: notificationMessageToken,
       },
-      message: message,
+      message: response,
     };
 
     setTimeout(() => GraphApi.callSendApi(requestBody), delay);
