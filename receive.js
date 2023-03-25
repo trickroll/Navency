@@ -215,14 +215,14 @@ module.exports = class Receive {
     setTimeout(() => GraphApi.callSendApi(requestBody), delay);
   }
 
-  sendRecurringMessage(notificationMessageToken, message, delay) {
+  sendRecurringMessage(notificationMessageToken, message, sendTime) {
     // console.log(`Received Recurring Message token ${notificationMessageToken}`);
     let requestBody = {},
       response;
     
     // 250 character limit and image would need to be separate message...
     response = { text: message};
-    
+    console.log(sendTime)
     // Check if there is delay in the response
     if (response === undefined) {
       return;
@@ -239,7 +239,7 @@ module.exports = class Receive {
       message: response,
     };
     // Done in order to preven looping issues
-    this.nextSend(requestBody, delay)
+    // this.nextSend(requestBody, delay)
     
     }
   }
@@ -247,4 +247,13 @@ module.exports = class Receive {
 nextSend(requestBody, delay) {
   setTimeout(() => GraphApi.callSendApi(requestBody), delay);
 }
+  
+scheduleSend(scheduledTime){
+  let now = new Date()
+  let dateFromScheduledTime = new Date(scheduledTime)
+  
+  let sendTime = dateFromScheduledTime.getTime() - now.getTime()
+  return sendTime
+}
+  
 };
