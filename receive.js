@@ -125,8 +125,8 @@ module.exports = class Receive {
   // Handles optins events
   handleOptIn() {
     let optin = this.webhookEvent.optin;
-    // Check for the special Get Starded with referral
     let payload;
+    // Opt-in types can include stopping or resuming notifications
     if (optin.notification_messages_status === "STOP_NOTIFICATIONS") {
       Mongo.mongoUpdateToken(optin.notification_messages_token, false, "optIn");
     } else if (optin.notification_messages_status === "RESUME_NOTIFICATIONS") {
