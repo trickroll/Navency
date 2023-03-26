@@ -80,7 +80,11 @@ module.exports = class Receive {
     
     let response;
     let event = this.webhookEvent;
-
+    
+    let ans = Mongo.mongoRead('optIn', 'notification_messages_token')
+    
+    console.log(ans)
+    
     let requestBody = {
       sender: event["sender"]["id"],
       recipient: event["recipient"]["id"],
