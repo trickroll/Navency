@@ -40,7 +40,12 @@ module.exports = class Receive {
         } else if (message.attachments) {
           responses = this.handleAttachmentMessage();
         } else if (message.text) {
-          responses = this.handleTextMessage();
+          // responses = this.handleTextMessage();
+          Mongo.mongoRead("optIn", "sender")
+            .then((res) => {
+            cons
+            this.handleTextMessage(res)})
+            .then((res) => responses = res)
         }
       } else if (event.postback) {
         responses = this.handlePostback();
@@ -71,10 +76,9 @@ module.exports = class Receive {
   }
 
   // Handles messages events with text
-  handleTextMessage() {
-    Mongo.mongoRead("optIn", "sender").then((res) => {
-      let response;
-      let event = this.webhookEvent;
+  handleTextMessage(res) {
+    let response;
+    let event = this.webhookEvent;
       if (res.includes(this.user.psid)) {
         response = Response.genText("text");
       } else {
@@ -100,8 +104,7 @@ module.exports = class Receive {
         );
       }
       console.log(`inside block: ${response}`);
-      return response;
-    });
+    return response;
   }
 
   //   // Handles messages events with text
