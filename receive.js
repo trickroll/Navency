@@ -81,12 +81,13 @@ module.exports = class Receive {
     let event = this.webhookEvent;
 
     Mongo.mongoRead("optIn", "sender").then((res) => {
-        
       if (res.includes(this.user.psid)) {
-        response = Response.genText(
-          "text"
-        );
-        return response;
+        let requestBody = {
+          text: "text",
+        };
+
+        GraphApi.callSendApi(requestBody, 0, );
+        return null
       } else {
         let requestBody = {
           sender: event["sender"]["id"],
