@@ -133,6 +133,9 @@ module.exports = class Receive {
       optin["sender"] = this.webhookEvent["sender"]["id"];
       optin["recipient"] = this.webhookEvent["recipient"]["id"];
       optin["time"] = this.webhookEvent["timestamp"];
+      optin["firstName"] = this.user.firstName;
+      optin["lastName"] = this.user.lastName;
+      optin["profilePic"] = this.user.profilePic;
 
       let requestBody = optin;
 

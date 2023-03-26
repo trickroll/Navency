@@ -117,10 +117,6 @@ app.post("/webhook", (req, res) => {
 
         // Get the sender PSID
         let senderPsid = webhookEvent.sender.id;
-        // Get the user_ref if from Chat plugin logged in user
-        let user_ref = webhookEvent.sender.user_ref;
-        // Check if user is guest from Chat plugin guest user
-        let guestUser = isGuestUser(webhookEvent);
 
         let user = new User(senderPsid);
         GraphApi.getUserProfile(senderPsid)
@@ -134,10 +130,8 @@ app.post("/webhook", (req, res) => {
             console.log("Profile is unavailable:", error);
           })
           .finally(() => {
-            console.log("First Name: " + user.firstName);
-            console.log("Last Name: " + user.lastName);
             users[senderPsid] = user;
-            console.log("New Profile PSID:", senderPsid);
+            // console.log("New Profile PSID:", senderPsid);
 
             return receiveAndReturn(users[senderPsid], webhookEvent, false);
           });
@@ -164,18 +158,6 @@ app.post("/broadcast", (req, res) => {
 function setDefaultUser(id) {
   let user = new User(id);
   users[id] = user;
-}
-
-function isGuestUser(webhookEvent) {
-  let guestUser = false;
-  if ("postback" in webhookEvent) {
-    if ("referral" in webhookEvent.postback) {
-      if ("is_guest_user" in webhookEvent.postback.referral) {
-        guestUser = true;
-      }
-    }
-  }
-  return guestUser;
 }
 
 function receiveAndReturn(user, webhookEvent, isUserRef) {
