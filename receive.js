@@ -69,8 +69,8 @@ console.log(responses)
       this.sendMessage(responses, 0, this.isUserRef);
     }
   }
-
-  // Handles messages events with text
+  
+ // Handles messages events with text
   handleTextMessage() {
     console.log(
       "Received text:",
@@ -79,29 +79,6 @@ console.log(responses)
 
     let response;
     let event = this.webhookEvent;
-
-       
-//         let requestBody = {
-//           sender: event["sender"]["id"],
-//           recipient: event["recipient"]["id"],
-//           message: event["message"]["text"],
-//           time: event["timestamp"],
-//           // User info; might want to remove in later versions
-//           firstName: this.user.firstName,
-//           lastName: this.user.lastName,
-//           profilePic: this.user.profilePic,
-//         };
-
-//         Mongo.mongoWrite(requestBody, "textMessage");
-
-//         let message = event.message.text.trim().toLowerCase();
-
-//         response = Response.genRecurringNotificationsTemplate(
-//           `https://picsum.photos/200`,
-//           topic,
-//           "12345"
-//         );
-//         return response
 
     Mongo.mongoRead("optIn", "sender").then((res) => {      
       if (res.includes(this.user.psid)) {
@@ -128,12 +105,105 @@ console.log(responses)
           "12345"
         );
       }
-        // return response;
-    }).then(() => {
-     return response    
+      console.log(response)
+      return response
     })
-
+      
   }
+
+//   // Handles messages events with text
+//   async handleTextMessage() {
+//     console.log(
+//       "Received text:",
+//       `${this.webhookEvent.message.text} for ${this.user.psid}`
+//     );
+
+//     let response;
+//     let event = this.webhookEvent;
+
+       
+// //         let requestBody = {
+// //           sender: event["sender"]["id"],
+// //           recipient: event["recipient"]["id"],
+// //           message: event["message"]["text"],
+// //           time: event["timestamp"],
+// //           // User info; might want to remove in later versions
+// //           firstName: this.user.firstName,
+// //           lastName: this.user.lastName,
+// //           profilePic: this.user.profilePic,
+// //         };
+
+// //         Mongo.mongoWrite(requestBody, "textMessage");
+
+// //         let message = event.message.text.trim().toLowerCase();
+
+// //         response = Response.genRecurringNotificationsTemplate(
+// //           `https://picsum.photos/200`,
+// //           topic,
+// //           "12345"
+// //         );
+// //         return response
+
+// //     await Mongo.mongoRead("optIn", "sender").then((res) => {      
+// //       if (res.includes(this.user.psid)) {
+// //         response = Response.genText("text");
+// //       } else {
+// //         let requestBody = {
+// //           sender: event["sender"]["id"],
+// //           recipient: event["recipient"]["id"],
+// //           message: event["message"]["text"],
+// //           time: event["timestamp"],
+// //           // User info; might want to remove in later versions
+// //           firstName: this.user.firstName,
+// //           lastName: this.user.lastName,
+// //           profilePic: this.user.profilePic,
+// //         };
+
+// //         Mongo.mongoWrite(requestBody, "textMessage");
+
+// //         let message = event.message.text.trim().toLowerCase();
+
+// //         response = Response.genRecurringNotificationsTemplate(
+// //           `https://picsum.photos/200`,
+// //           topic,
+// //           "12345"
+// //         );
+// //       }
+// //         return response;
+// //     })
+// //       .then((res) => {
+// //      return res    
+// //     })
+
+//       let res = await Mongo.mongoRead("optIn", "sender")
+//       console.log(`res is: ${res}`)
+//       if (res.includes(this.user.psid)) {
+//         response = Response.genText("text");
+//       } else {
+//         let requestBody = {
+//           sender: event["sender"]["id"],
+//           recipient: event["recipient"]["id"],
+//           message: event["message"]["text"],
+//           time: event["timestamp"],
+//           // User info; might want to remove in later versions
+//           firstName: this.user.firstName,
+//           lastName: this.user.lastName,
+//           profilePic: this.user.profilePic,
+//         };
+
+//         Mongo.mongoWrite(requestBody, "textMessage");
+
+//         let message = event.message.text.trim().toLowerCase();
+
+//         response = Response.genRecurringNotificationsTemplate(
+//           `https://picsum.photos/200`,
+//           topic,
+//           "12345"
+//         );
+//       }
+//         return response;
+    
+//   }
 
   // Handles postbacks events
   handlePostback() {
