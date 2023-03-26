@@ -126,6 +126,7 @@ app.post("/webhook", (req, res) => {
         GraphApi.getUserProfile(senderPsid)
           .then((userProfile) => {
             user.setProfile(userProfile);
+          console.dir(userProfile)
           })
           .catch((error) => {
             // The profile is unavailable
