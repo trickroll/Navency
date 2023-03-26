@@ -212,7 +212,6 @@ module.exports = class Receive {
   }
 
   sendRecurringMessage(notificationMessageToken, message, scheduledTime) {
-    // console.log(`Received Recurring Message token ${notificationMessageToken}`);
     let requestBody = {},
       response;
 
