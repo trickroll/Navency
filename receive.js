@@ -76,7 +76,8 @@ module.exports = class Receive {
       "Received text:",
       `${this.webhookEvent.message.text} for ${this.user.psid}`
     );
-    // console.dir(this.webhookEvent, { depth: null });
+
+    
     let response;
     let event = this.webhookEvent;
 
@@ -85,12 +86,12 @@ module.exports = class Receive {
       recipient: event["recipient"]["id"],
       message: event["message"]["text"],
       time: event["timestamp"],
-      //       User info; might want to remove in later versions
+      // User info; might want to remove in later versions
       firstName: this.user.firstName,
       lastName: this.user.lastName,
       profilePic: this.user.profilePic,
     };
-    // console.dir(requestBody)
+
     Mongo.mongoWrite(requestBody, "textMessage");
 
     let message = event.message.text.trim().toLowerCase();
