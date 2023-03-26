@@ -43,9 +43,11 @@ module.exports = class Receive {
           // responses = this.handleTextMessage();
           Mongo.mongoRead("optIn", "sender")
             .then((res) => {
-            cons
-            this.handleTextMessage(res)})
-            .then((res) => responses = res)
+              return this.handleTextMessage(res);
+            })
+            .then((data) => {
+              responses = data;
+            });
         }
       } else if (event.postback) {
         responses = this.handlePostback();
@@ -63,7 +65,9 @@ module.exports = class Receive {
         will fix the issue shortly!`,
       };
     }
-    console.log(responses);
+    
+    console.
+    // console.log(responses);
     if (Array.isArray(responses)) {
       let delay = 0;
       for (let response of responses) {
@@ -79,31 +83,31 @@ module.exports = class Receive {
   handleTextMessage(res) {
     let response;
     let event = this.webhookEvent;
-      if (res.includes(this.user.psid)) {
-        response = Response.genText("text");
-      } else {
-        let requestBody = {
-          sender: event["sender"]["id"],
-          recipient: event["recipient"]["id"],
-          message: event["message"]["text"],
-          time: event["timestamp"],
-          // User info; might want to remove in later versions
-          firstName: this.user.firstName,
-          lastName: this.user.lastName,
-          profilePic: this.user.profilePic,
-        };
+    if (res.includes(this.user.psid)) {
+      response = Response.genText("text");
+    } else {
+      let requestBody = {
+        sender: event["sender"]["id"],
+        recipient: event["recipient"]["id"],
+        message: event["message"]["text"],
+        time: event["timestamp"],
+        // User info; might want to remove in later versions
+        firstName: this.user.firstName,
+        lastName: this.user.lastName,
+        profilePic: this.user.profilePic,
+      };
 
-        Mongo.mongoWrite(requestBody, "textMessage");
+      Mongo.mongoWrite(requestBody, "textMessage");
 
-        let message = event.message.text.trim().toLowerCase();
+      let message = event.message.text.trim().toLowerCase();
 
-        response = Response.genRecurringNotificationsTemplate(
-          `https://picsum.photos/200`,
-          topic,
-          "12345"
-        );
-      }
-      console.log(`inside block: ${response}`);
+      response = Response.genRecurringNotificationsTemplate(
+        `https://picsum.photos/200`,
+        topic,
+        "12345"
+      );
+    }
+    console.dir(response);
     return response;
   }
 
