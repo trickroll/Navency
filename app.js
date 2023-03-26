@@ -122,16 +122,16 @@ app.post("/webhook", (req, res) => {
         // Check if user is guest from Chat plugin guest user
         let guestUser = isGuestUser(webhookEvent);
 
-        // let user = new User(senderPsid);
-        // GraphApi.getUserProfile(senderPsid)
-        //   .then((userProfile) => {
-        //     user.setProfile(userProfile);
-        //   })
-        //   .catch((error) => {
-        //     // The profile is unavailable
-        //     console.log(JSON.stringify(body));
-        //     console.log("Profile is unavailable:", error);
-        //   });
+        let user = new User(senderPsid);
+        GraphApi.getUserProfile(senderPsid)
+          .then((userProfile) => {
+            user.setProfile(userProfile);
+          })
+          .catch((error) => {
+            // The profile is unavailable
+            console.log(JSON.stringify(body));
+            console.log("Profile is unavailable:", error);
+          });
 
         if (senderPsid != null && senderPsid != undefined) {
           setDefaultUser(senderPsid);
