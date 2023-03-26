@@ -40,7 +40,7 @@ module.exports = class Receive {
         } else if (message.attachments) {
           responses = this.handleAttachmentMessage();
         } else if (message.text) {
-          responses = this.handleTextMessage();
+          responses = this.handleTextMessage()
         }
       } else if (event.postback) {
         responses = this.handlePostback();
@@ -71,7 +71,7 @@ console.log(responses)
   }
   
  // Handles messages events with text
-  handleTextMessage() {
+ async handleTextMessage() {
     console.log(
       "Received text:",
       `${this.webhookEvent.message.text} for ${this.user.psid}`
@@ -80,7 +80,7 @@ console.log(responses)
     let response;
     let event = this.webhookEvent;
 
-    Mongo.mongoRead("optIn", "sender").then((res) => {      
+    await Mongo.mongoRead("optIn", "sender").then((res) => {      
       if (res.includes(this.user.psid)) {
         response = Response.genText("text");
       } else {
@@ -106,9 +106,9 @@ console.log(responses)
         );
       }
       console.log(response)
-      return response
+    
     })
-      
+    return response  
   }
 
 //   // Handles messages events with text
