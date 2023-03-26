@@ -129,8 +129,10 @@ console.log(responses)
         );
       }
         // return response;
-    });
-    console.log(response)
+    }).then(() => {
+     return response    
+    })
+
   }
 
   // Handles postbacks events
