@@ -162,8 +162,7 @@ function setDefaultUser(id) {
 
 function receiveAndReturn(user, webhookEvent, isUserRef) {
   let receiveMessage = new Receive(user, webhookEvent, isUserRef);
-  return receiveMessage.handleMessage();
-}
+  return receiveMessage.handleMessage()}
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
