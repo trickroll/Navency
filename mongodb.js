@@ -28,13 +28,14 @@ module.exports = class Mongo {
       .catch((error) => console.error(error));
   }
   
-  static async mongoUpdate(token, status, collection) {
+  static async mongoUpdateToken(token, isActive, collection) {
     db.collection(collection)
       .updateOne(
-      {"notification_messages_token":}
+      {"notification_messages_token":token},
+      {$set:{"active":isActive}}
     )
       .then((result) => {
-        console.dir(`Collection ${collection} update`);
+        console.log(`Token ${token} active is now ${isActive} in Mongo`);
       })
       .catch((error) => console.error(error));
   }
