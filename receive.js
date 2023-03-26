@@ -102,7 +102,7 @@ console.log(responses)
 //           "12345"
 //         );
 //         return response
-    }
+
     Mongo.mongoRead("optIn", "sender").then((res) => {      
       if (res.includes(this.user.psid)) {
         response = Response.genText("text");
@@ -128,8 +128,9 @@ console.log(responses)
           "12345"
         );
       }
-        return response;
+        // return response;
     });
+    console.log(response)
   }
 
   // Handles postbacks events
