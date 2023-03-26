@@ -103,11 +103,16 @@ module.exports = class Receive {
 //         );
 //         return response
     
-    
-    Mongo.mongoRead("optIn", "sender").then((res) => {
-      
-      console.log(res.includes(this.user.psid))
-      
+    async function tGenText() {
+      try{
+        response = await Response.genText("text");
+        return response
+      }
+      catch (err) {
+        
+      }
+    }
+    Mongo.mongoRead("optIn", "sender").then((res) => {      
       if (res.includes(this.user.psid)) {
         response = Response.genText("text");
       } else {
@@ -126,12 +131,13 @@ module.exports = class Receive {
 
         let message = event.message.text.trim().toLowerCase();
 
-        response = await Response.genRecurringNotificationsTemplate(
+        response = Response.genRecurringNotificationsTemplate(
           `https://picsum.photos/200`,
           topic,
           "12345"
         );
       }
+        console.log(response)
         return response;
     });
   }
