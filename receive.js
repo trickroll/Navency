@@ -102,15 +102,6 @@ console.log(responses)
 //           "12345"
 //         );
 //         return response
-    
-    async function tGenText() {
-      try{
-        response = await Response.genText("text");
-        return response
-      }
-      catch (err) {
-        
-      }
     }
     Mongo.mongoRead("optIn", "sender").then((res) => {      
       if (res.includes(this.user.psid)) {
