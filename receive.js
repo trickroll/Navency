@@ -77,35 +77,39 @@ module.exports = class Receive {
       `${this.webhookEvent.message.text} for ${this.user.psid}`
     );
 
-    
     let response;
     let event = this.webhookEvent;
-    
-    Mongo.mongoRead('optIn', 'sender').then((res) => {
-      console.log(res)
-    })
-        
-    let requestBody = {
-      sender: event["sender"]["id"],
-      recipient: event["recipient"]["id"],
-      message: event["message"]["text"],
-      time: event["timestamp"],
-      // User info; might want to remove in later versions
-      firstName: this.user.firstName,
-      lastName: this.user.lastName,
-      profilePic: this.user.profilePic,
-    };
 
-    Mongo.mongoWrite(requestBody, "textMessage");
+    Mongo.mongoRead("optIn", "sender").then((res) => {
+      // console.log(res)
+      console.log(res.includes(this.user.psid));
 
-    let message = event.message.text.trim().toLowerCase();
+      if (res.includes(this.user.psid)) {
+        return null
+      } else {
+        let requestBody = {
+          sender: event["sender"]["id"],
+          recipient: event["recipient"]["id"],
+          message: event["message"]["text"],
+          time: event["timestamp"],
+          // User info; might want to remove in later versions
+          firstName: this.user.firstName,
+          lastName: this.user.lastName,
+          profilePic: this.user.profilePic,
+        };
 
-    response = Response.genRecurringNotificationsTemplate(
-      `https://picsum.photos/200`,
-      topic,
-      "12345"
-    );
-    return response;
+        Mongo.mongoWrite(requestBody, "textMessage");
+
+        let message = event.message.text.trim().toLowerCase();
+
+        response = Response.genRecurringNotificationsTemplate(
+          `https://picsum.photos/200`,
+          topic,
+          "12345"
+        );
+        return response;
+      }
+    });
   }
 
   // Handles postbacks events
