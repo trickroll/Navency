@@ -82,7 +82,7 @@ console.log(responses)
     let response;
     let event = this.webhookEvent;
 
-    Mongo.mongoRead("optIn", "sender")
+    await Mongo.mongoRead("optIn", "sender")
       .then((res) => {
         if (res.includes(this.user.psid)) {
           response = Response.genText("text");
