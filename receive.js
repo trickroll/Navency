@@ -40,7 +40,7 @@ module.exports = class Receive {
         } else if (message.attachments) {
           responses = this.handleAttachmentMessage();
         } else if (message.text) {
-          responses = this.handleTextMessage()
+          responses = this.handleTextMessage();
         }
       } else if (event.postback) {
         responses = this.handlePostback();
@@ -58,7 +58,7 @@ module.exports = class Receive {
         will fix the issue shortly!`,
       };
     }
-console.log(responses)
+    console.log(responses);
     if (Array.isArray(responses)) {
       let delay = 0;
       for (let response of responses) {
@@ -69,18 +69,12 @@ console.log(responses)
       this.sendMessage(responses, 0, this.isUserRef);
     }
   }
-  
- // Handles messages events with text
- async handleTextMessage() {
-    console.log(
-      "Received text:",
-      `${this.webhookEvent.message.text} for ${this.user.psid}`
-    );
 
-    let response;
-    let event = this.webhookEvent;
-
-    await Mongo.mongoRead("optIn", "sender").then((res) => {      
+  // Handles messages events with text
+  handleTextMessage() {
+    Mongo.mongoRead("optIn", "sender").then((res) => {
+      let response;
+      let event = this.webhookEvent;
       if (res.includes(this.user.psid)) {
         response = Response.genText("text");
       } else {
@@ -105,105 +99,103 @@ console.log(responses)
           "12345"
         );
       }
-      console.log(response)
-    
-    })
-    return response  
+      console.log(`inside block: ${response}`);
+      return response;
+    });
   }
 
-//   // Handles messages events with text
-//   async handleTextMessage() {
-//     console.log(
-//       "Received text:",
-//       `${this.webhookEvent.message.text} for ${this.user.psid}`
-//     );
+  //   // Handles messages events with text
+  //   async handleTextMessage() {
+  //     console.log(
+  //       "Received text:",
+  //       `${this.webhookEvent.message.text} for ${this.user.psid}`
+  //     );
 
-//     let response;
-//     let event = this.webhookEvent;
+  //     let response;
+  //     let event = this.webhookEvent;
 
-       
-// //         let requestBody = {
-// //           sender: event["sender"]["id"],
-// //           recipient: event["recipient"]["id"],
-// //           message: event["message"]["text"],
-// //           time: event["timestamp"],
-// //           // User info; might want to remove in later versions
-// //           firstName: this.user.firstName,
-// //           lastName: this.user.lastName,
-// //           profilePic: this.user.profilePic,
-// //         };
+  // //         let requestBody = {
+  // //           sender: event["sender"]["id"],
+  // //           recipient: event["recipient"]["id"],
+  // //           message: event["message"]["text"],
+  // //           time: event["timestamp"],
+  // //           // User info; might want to remove in later versions
+  // //           firstName: this.user.firstName,
+  // //           lastName: this.user.lastName,
+  // //           profilePic: this.user.profilePic,
+  // //         };
 
-// //         Mongo.mongoWrite(requestBody, "textMessage");
+  // //         Mongo.mongoWrite(requestBody, "textMessage");
 
-// //         let message = event.message.text.trim().toLowerCase();
+  // //         let message = event.message.text.trim().toLowerCase();
 
-// //         response = Response.genRecurringNotificationsTemplate(
-// //           `https://picsum.photos/200`,
-// //           topic,
-// //           "12345"
-// //         );
-// //         return response
+  // //         response = Response.genRecurringNotificationsTemplate(
+  // //           `https://picsum.photos/200`,
+  // //           topic,
+  // //           "12345"
+  // //         );
+  // //         return response
 
-// //     await Mongo.mongoRead("optIn", "sender").then((res) => {      
-// //       if (res.includes(this.user.psid)) {
-// //         response = Response.genText("text");
-// //       } else {
-// //         let requestBody = {
-// //           sender: event["sender"]["id"],
-// //           recipient: event["recipient"]["id"],
-// //           message: event["message"]["text"],
-// //           time: event["timestamp"],
-// //           // User info; might want to remove in later versions
-// //           firstName: this.user.firstName,
-// //           lastName: this.user.lastName,
-// //           profilePic: this.user.profilePic,
-// //         };
+  // //     await Mongo.mongoRead("optIn", "sender").then((res) => {
+  // //       if (res.includes(this.user.psid)) {
+  // //         response = Response.genText("text");
+  // //       } else {
+  // //         let requestBody = {
+  // //           sender: event["sender"]["id"],
+  // //           recipient: event["recipient"]["id"],
+  // //           message: event["message"]["text"],
+  // //           time: event["timestamp"],
+  // //           // User info; might want to remove in later versions
+  // //           firstName: this.user.firstName,
+  // //           lastName: this.user.lastName,
+  // //           profilePic: this.user.profilePic,
+  // //         };
 
-// //         Mongo.mongoWrite(requestBody, "textMessage");
+  // //         Mongo.mongoWrite(requestBody, "textMessage");
 
-// //         let message = event.message.text.trim().toLowerCase();
+  // //         let message = event.message.text.trim().toLowerCase();
 
-// //         response = Response.genRecurringNotificationsTemplate(
-// //           `https://picsum.photos/200`,
-// //           topic,
-// //           "12345"
-// //         );
-// //       }
-// //         return response;
-// //     })
-// //       .then((res) => {
-// //      return res    
-// //     })
+  // //         response = Response.genRecurringNotificationsTemplate(
+  // //           `https://picsum.photos/200`,
+  // //           topic,
+  // //           "12345"
+  // //         );
+  // //       }
+  // //         return response;
+  // //     })
+  // //       .then((res) => {
+  // //      return res
+  // //     })
 
-//       let res = await Mongo.mongoRead("optIn", "sender")
-//       console.log(`res is: ${res}`)
-//       if (res.includes(this.user.psid)) {
-//         response = Response.genText("text");
-//       } else {
-//         let requestBody = {
-//           sender: event["sender"]["id"],
-//           recipient: event["recipient"]["id"],
-//           message: event["message"]["text"],
-//           time: event["timestamp"],
-//           // User info; might want to remove in later versions
-//           firstName: this.user.firstName,
-//           lastName: this.user.lastName,
-//           profilePic: this.user.profilePic,
-//         };
+  //       let res = await Mongo.mongoRead("optIn", "sender")
+  //       console.log(`res is: ${res}`)
+  //       if (res.includes(this.user.psid)) {
+  //         response = Response.genText("text");
+  //       } else {
+  //         let requestBody = {
+  //           sender: event["sender"]["id"],
+  //           recipient: event["recipient"]["id"],
+  //           message: event["message"]["text"],
+  //           time: event["timestamp"],
+  //           // User info; might want to remove in later versions
+  //           firstName: this.user.firstName,
+  //           lastName: this.user.lastName,
+  //           profilePic: this.user.profilePic,
+  //         };
 
-//         Mongo.mongoWrite(requestBody, "textMessage");
+  //         Mongo.mongoWrite(requestBody, "textMessage");
 
-//         let message = event.message.text.trim().toLowerCase();
+  //         let message = event.message.text.trim().toLowerCase();
 
-//         response = Response.genRecurringNotificationsTemplate(
-//           `https://picsum.photos/200`,
-//           topic,
-//           "12345"
-//         );
-//       }
-//         return response;
-    
-//   }
+  //         response = Response.genRecurringNotificationsTemplate(
+  //           `https://picsum.photos/200`,
+  //           topic,
+  //           "12345"
+  //         );
+  //       }
+  //         return response;
+
+  //   }
 
   // Handles postbacks events
   handlePostback() {
