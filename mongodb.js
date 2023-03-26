@@ -54,7 +54,7 @@ module.exports = class Mongo {
   // }
   
   static async mongoRead(collection, field) {
-  return db.collection(collection)
+  return await db.collection(collection)
     .find().toArray()
     .then((result) => {
       let fin = []
