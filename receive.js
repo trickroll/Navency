@@ -127,7 +127,9 @@ module.exports = class Receive {
     let optin = this.webhookEvent.optin;
     // Check for the special Get Starded with referral
     let payload;
-    if (optin.type === "notification_messages") {
+    if (optin.notification_messages_status === "STOP_NOTIFICATIONS") {
+       
+    } else if (optin.type === "notification_messages") {
       payload = "RN";
 
       optin["sender"] = this.webhookEvent["sender"]["id"];
@@ -136,6 +138,7 @@ module.exports = class Receive {
       optin["firstName"] = this.user.firstName;
       optin["lastName"] = this.user.lastName;
       optin["profilePic"] = this.user.profilePic;
+      optin["active"] = true
 
       let requestBody = optin;
 

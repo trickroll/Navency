@@ -28,6 +28,17 @@ module.exports = class Mongo {
       .catch((error) => console.error(error));
   }
   
+  static async mongoUpdate(token, status, collection) {
+    db.collection(collection)
+      .updateOne(
+      {"notification_messages_token":}
+    )
+      .then((result) => {
+        console.dir(`Collection ${collection} update`);
+      })
+      .catch((error) => console.error(error));
+  }
+  
   // static async mongoRead(collection, field) {
   //   db.collection(collection)
   //     .find().toArray()
