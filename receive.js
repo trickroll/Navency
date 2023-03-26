@@ -66,7 +66,7 @@ module.exports = class Receive {
         delay++;
       }
     } else {
-      this.sendMessage(responses, this.isUserRef);
+      this.sendMessage(responses, 0, this.isUserRef);
     }
   }
 
@@ -82,12 +82,8 @@ module.exports = class Receive {
 
     Mongo.mongoRead("optIn", "sender").then((res) => {
       if (res.includes(this.user.psid)) {
-        let requestBody = {
-          text: "text",
-        };
-
-        GraphApi.callSendApi(requestBody, 0, );
-        return null
+        response = Response.genText("text");
+        console.log("still true");
       } else {
         let requestBody = {
           sender: event["sender"]["id"],
@@ -109,9 +105,10 @@ module.exports = class Receive {
           topic,
           "12345"
         );
-        return response;
+        return response
       }
     });
+    return response;
   }
 
   // Handles postbacks events
@@ -217,6 +214,7 @@ module.exports = class Receive {
         message: response,
       };
     } else {
+      console.log("send msg called");
       requestBody = {
         recipient: {
           id: this.user.psid,
