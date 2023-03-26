@@ -81,8 +81,6 @@ module.exports = class Receive {
     let event = this.webhookEvent;
 
     Mongo.mongoRead("optIn", "sender").then((res) => {
-      // console.log(res)
-      console.log(res.includes(this.user.psid));
 
       if (res.includes(this.user.psid)) {
         return null
