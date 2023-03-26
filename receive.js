@@ -85,20 +85,22 @@ module.exports = class Receive {
       recipient: event["recipient"]["id"],
       message: event["message"]["text"],
       time: event["timestamp"],
+//       User info; might want to remove in later versions
+      firstName: this.user.firstName,
+      lastName: this.user.lastName,
+      profilePic: this.user.profilePic,
     };
-
+    console.dir(requestBody)
     Mongo.mongoWrite(requestBody, "textMessage");
 
     let message = event.message.text.trim().toLowerCase();
 
-
-      response = Response.genRecurringNotificationsTemplate(
-        `https://picsum.photos/200`,
-        topic,
-        "12345"
-      );
-      return response;
-    
+    response = Response.genRecurringNotificationsTemplate(
+      `https://picsum.photos/200`,
+      topic,
+      "12345"
+    );
+    return response;
   }
 
   // Handles postbacks events
@@ -210,45 +212,42 @@ module.exports = class Receive {
     // console.log(`Received Recurring Message token ${notificationMessageToken}`);
     let requestBody = {},
       response;
-    
+
     // 250 character limit and image would need to be separate message...
-    response = { text: message};
-    
-    let delay = this.scheduleSend(scheduledTime)
-    
+    response = { text: message };
+
+    let delay = this.scheduleSend(scheduledTime);
+
     // Check if there is delay in the response
     if (response === undefined) {
       return;
     }
-    for (let i = 0; i < notificationMessageToken.length; i++) { 
-      
-      let token = notificationMessageToken[i]
+    for (let i = 0; i < notificationMessageToken.length; i++) {
+      let token = notificationMessageToken[i];
       requestBody = {
-      recipient: {
-        notification_messages_token: token,
-      },
-      message: response,
-    };
-      
-    // Done in order to prevent looping issues
-    this.nextSend(requestBody, delay)
-    
+        recipient: {
+          notification_messages_token: token,
+        },
+        message: response,
+      };
+
+      // Done in order to prevent looping issues
+      this.nextSend(requestBody, delay);
     }
   }
 
-nextSend(requestBody, delay) {
-  setTimeout(() => GraphApi.callSendApi(requestBody), delay);
-}
-  
-scheduleSend(scheduledTime){
-  const [year, month, day, hour, min] = scheduledTime
-  let now = new Date()
-  
-//   Changed to SGT or GMT+8
-  let dateFromScheduledTime = new Date(year, month, day, hour-8, min)
-  console.log(`message received and to be sent at ${dateFromScheduledTime}`)
-  let sendTime = dateFromScheduledTime.getTime() - now.getTime()
-  return sendTime
-}
-  
+  nextSend(requestBody, delay) {
+    setTimeout(() => GraphApi.callSendApi(requestBody), delay);
+  }
+
+  scheduleSend(scheduledTime) {
+    const [year, month, day, hour, min] = scheduledTime;
+    let now = new Date();
+
+    //   Changed to SGT or GMT+8
+    let dateFromScheduledTime = new Date(year, month, day, hour - 8, min);
+    console.log(`message received and to be sent at ${dateFromScheduledTime}`);
+    let sendTime = dateFromScheduledTime.getTime() - now.getTime();
+    return sendTime;
+  }
 };

@@ -15,6 +15,7 @@ module.exports = class User {
     this.psid = psid;
     this.firstName = "";
     this.lastName = "";
+    this.profilePic=""
     this.locale = "en_US";
     this.timezone = "";
     this.gender = "neutral";
@@ -22,6 +23,7 @@ module.exports = class User {
   setProfile(profile) {
     this.firstName = profile.firstName || "";
     this.lastName = profile.lastName || "";
+    this.profilePic = profile.profilePic || "";
     this.locale = profile.locale || "";
     this.timezone = profile.timezone || "";
     this.gender = profile.gender || "";
