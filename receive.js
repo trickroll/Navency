@@ -90,7 +90,7 @@ module.exports = class Receive {
       lastName: this.user.lastName,
       profilePic: this.user.profilePic,
     };
-    console.dir(requestBody)
+    // console.dir(requestBody)
     Mongo.mongoWrite(requestBody, "textMessage");
 
     let message = event.message.text.trim().toLowerCase();

@@ -126,22 +126,21 @@ app.post("/webhook", (req, res) => {
         GraphApi.getUserProfile(senderPsid)
           .then((userProfile) => {
             user.setProfile(userProfile);
-          // console.dir(userProfile)
+            // console.dir(userProfile)
           })
           .catch((error) => {
             // The profile is unavailable
             console.log(JSON.stringify(body));
             console.log("Profile is unavailable:", error);
-          });
+          })
+          .finally(() => {
+            console.log("First Name: " + user.firstName);
+            console.log("Last Name: " + user.lastName);
+            users[senderPsid] = user;
+            console.log("New Profile PSID:", senderPsid);
 
-        if (senderPsid != null && senderPsid != undefined) {
-          setDefaultUser(senderPsid);
-          return receiveAndReturn(users[senderPsid], webhookEvent, false);
-        } else if (user_ref != null && user_ref != undefined) {
-          // Handle user_ref
-          setDefaultUser(user_ref);
-          return receiveAndReturn(users[user_ref], webhookEvent, true);
-        }
+            return receiveAndReturn(users[senderPsid], webhookEvent, false);
+          });
       });
     });
   } else {
