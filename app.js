@@ -107,7 +107,14 @@ app.post("/webhook", (req, res) => {
           return;
         } else if ("delivery" in webhookEvent) {
           console.log("Got a delivery event");
-
+          
+          let requestBody = {
+            sender: webhookEvent["sender"]["id"],
+            recipient: webhookEvent["recipient"]["id"],
+            watermark: webhookEvent["delivery"]["watermark"],
+            event: "deliveries"
+          }
+          Mongo.mongoWrite(requestBody, "messageDeliveries");
           return;
         } else if (webhookEvent.message && webhookEvent.message.is_echo) {
           console.log(
