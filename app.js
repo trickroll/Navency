@@ -107,7 +107,7 @@ app.post("/webhook", (req, res) => {
           return;
         } else if ("delivery" in webhookEvent) {
           console.log("Got a delivery event");
-          res.sendStatus(200)
+          res.status(200);
           return;
         } else if (webhookEvent.message && webhookEvent.message.is_echo) {
           console.log(
