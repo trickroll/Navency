@@ -53,8 +53,8 @@ module.exports = class Mongo {
   //     .catch((error) => console.error(error));
   // }
   
-  static async mongoRead(collection, field) {
-  return await db.collection(collection)
+  static mongoRead(collection, field) {
+  return db.collection(collection)
     .find().toArray()
     .then((result) => {
       let fin = []
