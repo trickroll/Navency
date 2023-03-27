@@ -26,7 +26,7 @@ module.exports = class Receive {
 
   // Check if the event is a message or postback and
   // call the appropriate handler function
-  handleMessage() {
+ async handleMessage() {
     let event = this.webhookEvent;
 
     let responses;
@@ -40,7 +40,7 @@ module.exports = class Receive {
         } else if (message.attachments) {
           responses = this.handleAttachmentMessage();
         } else if (message.text) {
-          responses = this.handleTextMessage();
+          responses = await this.handleTextMessage();
         }
       } else if (event.postback) {
         responses = this.handlePostback();
@@ -108,6 +108,7 @@ handleTextMessage() {
             "12345"
           );
         }
+      console.log(response)
         return response;
       });
   }
