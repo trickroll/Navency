@@ -26,7 +26,7 @@ module.exports = class Receive {
 
   // Check if the event is a message or postback and
   // call the appropriate handler function
-  async handleMessage() {
+  handleMessage() {
     let event = this.webhookEvent;
 
     let responses;
@@ -40,7 +40,7 @@ module.exports = class Receive {
         } else if (message.attachments) {
           responses = this.handleAttachmentMessage();
         } else if (message.text) {
-          responses = await this.handleTextMessage();
+          responses = this.handleTextMessage();
         }
       } else if (event.postback) {
         responses = this.handlePostback();
@@ -73,7 +73,7 @@ console.log(responses)
 
 
   // Handles messages events with text
- async handleTextMessage() {
+handleTextMessage() {
     console.log(
       "Received text:",
       `${this.webhookEvent.message.text} for ${this.user.psid}`
@@ -82,7 +82,7 @@ console.log(responses)
     let response;
     let event = this.webhookEvent;
 
-    await Mongo.mongoRead("optIn", "sender")
+    Mongo.mongoRead("optIn", "sender")
       .then((res) => {
         if (res.includes(this.user.psid)) {
           response = Response.genText("text");
