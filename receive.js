@@ -58,7 +58,7 @@ module.exports = class Receive {
         will fix the issue shortly!`,
       };
     }
-console.log(responses)
+// console.log(responses)
     if (Array.isArray(responses)) {
       let delay = 0;
       for (let response of responses) {
