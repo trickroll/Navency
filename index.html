@@ -2,97 +2,32 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>My Digital Marketing Web App</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="app.js" type="module"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>My Website</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="icon" href="./favicon.ico" type="image/x-icon" />
   </head>
   <body>
-    <header>
-      <nav>
-        <ul>
-          <li><a href="#">Dashboard</a></li>
-          <li><a href="#">Campaigns</a></li>
-          <li><a href="#">Contacts</a></li>
-          <li><a href="#">Settings</a></li>
-        </ul>
-      </nav>
-    </header>
-
+    <script>
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: "222155813674547",
+          autoLogAppEvents: true,
+          xfbml: true,
+          version: "v16.0",
+        });
+      };
+    </script>
+    <script
+      async
+      defer
+      crossorigin="anonymous"
+      src="https://connect.facebook.net/en_US/sdk.js"
+    ></script>
     <main>
-      <h1>Welcome to My Digital Marketing Web App</h1>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada
-        quam nec nisi suscipit, a aliquet nunc dapibus. Nullam rhoncus mauris in
-        lacus tincidunt dapibus. Suspendisse potenti. In vestibulum ultrices
-        leo, vel vestibulum tortor pretium et.
-      </p>
-      <form>
-      <label for="title">Title:</label>
-      <input type="text" id="title" name="title">
-      <br>
-      <label for="message">Message:</label>
-      <textarea id="message" name="message"></textarea>
-      <br>
-      <input type
-      <section>
-        <h2>Recent Campaigns</h2>
-        <ul>
-          <li>
-            <h3>Campaign 1</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-              malesuada quam nec nisi suscipit, a aliquet nunc dapibus. Nullam
-              rhoncus mauris in lacus tincidunt dapibus. Suspendisse potenti. In
-              vestibulum ultrices leo, vel vestibulum tortor pretium et.
-            </p>
-            <a href="#">View Campaign</a>
-          </li>
-          <li>
-            <h3>Campaign 2</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-              malesuada quam nec nisi suscipit, a aliquet nunc dapibus. Nullam
-              rhoncus mauris in lacus tincidunt dapibus. Suspendisse potenti. In
-              vestibulum ultrices leo, vel vestibulum tortor pretium et.
-            </p>
-            <a href="#">View Campaign</a>
-          </li>
-          <li>
-            <h3>Campaign 3</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-              malesuada quam nec nisi suscipit, a aliquet nunc dapibus. Nullam
-              rhoncus mauris in lacus tincidunt dapibus. Suspendisse potenti. In
-              vestibulum ultrices leo, vel vestibulum tortor pretium et.
-            </p>
-            <a href="#">View Campaign</a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Recent Contacts</h2>
-        <ul>
-          <li>
-            <h3>Contact 1</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-              malesuada quam nec nisi suscipit, a aliquet nunc dapibus. Nullam
-              rhoncus mauris in lacus tincidunt dapibus. Suspendisse potenti. In
-              vestibulum ultrices leo, vel vestibulum tortor pretium et.
-            </p>
-            <a href="#">View Contact</a>
-          </li>
-          <li>
-            <h3>Contact 2</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-              malesuada quam nec nisi suscipit, a aliquet nunc dapibus. Nullam
-              rhoncus mauris in lacus t
-            </p>
-          </li>
-        </ul>
-      </section>
+      <h1>Welcome to My Website</h1>
     </main>
+    <script src="index.js"></script>
   </body>
 </html>
