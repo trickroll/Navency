@@ -27,19 +27,19 @@ module.exports = class Mongo {
       })
       .catch((error) => console.error(error));
   }
-  
+
   static async mongoUpdateToken(token, isActive, collection) {
     db.collection(collection)
       .updateOne(
-      {"notification_messages_token":token},
-      {$set:{"active":isActive}}
-    )
+        { notification_messages_token: token },
+        { $set: { active: isActive } }
+      )
       .then((result) => {
         console.log(`Token ${token} active is now ${isActive} in Mongo`);
       })
       .catch((error) => console.error(error));
   }
-  
+
   // static async mongoRead(collection, field) {
   //   db.collection(collection)
   //     .find().toArray()
@@ -52,21 +52,40 @@ module.exports = class Mongo {
   //     })
   //     .catch((error) => console.error(error));
   // }
-  
-  static mongoRead(collection, field) {
-  return db.collection(collection)
-    .find().toArray()
-    .then((result) => {
-      let fin = []
-      for (let i=0; i<result.length; i++){
-        fin.push(result[i][field])
-      }
-      return fin
-    })
-    .catch((error) => {
-      console.error(error);
-      throw error; // re-throw the error so that it can be caught elsewhere
-    });
-}
 
+  static async mongoRead(collection, field) {
+    return db
+      .collection(collection)
+      .find()
+      .toArray()
+      .then((result) => {
+        let fin = [];
+        for (let i = 0; i < result.length; i++) {
+          fin.push(result[i][field]);
+        }
+        return fin;
+      })
+      .catch((error) => {
+        console.error(error);
+        throw error; // re-throw the error so that it can be caught elsewhere
+      });
+  }
+
+  static async mongoRead(collection, field) {
+    return db
+      .collection(collection)
+      .find()
+      .toArray()
+      .then((result) => {
+        let fin = [];
+        for (let i = 0; i < result.length; i++) {
+          fin.push(result[i][field]);
+        }
+        return fin;
+      })
+      .catch((error) => {
+        console.error(error);
+        throw error; // re-throw the error so that it can be caught elsewhere
+      });
+  }
 };
