@@ -71,22 +71,4 @@ module.exports = class Mongo {
       });
   }
 
-  static async mongoSaveAlready(collection, sender, recipient, watermark) {
-    return db
-      .collection(collection)
-      .find({sender: sender, recipient:recipient})
-      .toArray()
-      .then((result) => {
-        for (let i = 0; i < result.length; i++) {
-          if (Math.abs(result[i]["watermark"] - watermark) < 60000 ) {
-            return true
-          }
-        }
-        return false;
-      })
-      .catch((error) => {
-        console.error(error);
-        throw error; // re-throw the error so that it can be caught elsewhere
-      });
-  }
 };

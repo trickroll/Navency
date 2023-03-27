@@ -104,28 +104,27 @@ app.post("/webhook", (req, res) => {
         // Discard uninteresting events
         if ("read" in webhookEvent) {
           console.log("Got a read event");
-          
+
           let requestBody = {
             sender: webhookEvent["sender"]["id"],
             recipient: webhookEvent["recipient"]["id"],
             watermark: webhookEvent["read"]["watermark"],
-            event: "read"
-          }
+            event: "read",
+          };
           Mongo.mongoWrite(requestBody, "messageReads");
-          
+
           return;
         } else if ("delivery" in webhookEvent) {
           console.log("Got a delivery event");
-          
-          let alrdySave = await Mongo.mongoSaveAlready("deliveries", webhookEvent["sender"]["id"], webhookEvent["recipient"]["id"], webhookEvent["delivery"]["watermark"])
-           console.log(alrdySave)     
+
           let requestBody = {
             sender: webhookEvent["sender"]["id"],
             recipient: webhookEvent["recipient"]["id"],
             watermark: webhookEvent["delivery"]["watermark"],
-            event: "deliveries"
-          }
-          // Mongo.mongoWrite(requestBody, "messageDeliveries");
+            event: "deliveries",
+          };
+          Mongo.mongoWrite(requestBody, "messageDeliveries");
+
           return;
         } else if (webhookEvent.message && webhookEvent.message.is_echo) {
           console.log(
@@ -181,7 +180,8 @@ function setDefaultUser(id) {
 
 function receiveAndReturn(user, webhookEvent, isUserRef) {
   let receiveMessage = new Receive(user, webhookEvent, isUserRef);
-  return receiveMessage.handleMessage()}
+  return receiveMessage.handleMessage();
+}
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
