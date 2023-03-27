@@ -104,6 +104,15 @@ app.post("/webhook", (req, res) => {
         // Discard uninteresting events
         if ("read" in webhookEvent) {
           console.log("Got a read event");
+          
+          let requestBody = {
+            sender: webhookEvent["sender"]["id"],
+            recipient: webhookEvent["recipient"]["id"],
+            watermark: webhookEvent["read"]["watermark"],
+            event: "read"
+          }
+          Mongo.mongoWrite(requestBody, "messageReads");
+          
           return;
         } else if ("delivery" in webhookEvent) {
           console.log("Got a delivery event");
