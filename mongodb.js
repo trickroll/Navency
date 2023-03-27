@@ -71,17 +71,18 @@ module.exports = class Mongo {
       });
   }
 
-  static async mongoRead(collection, field) {
+  static async mongoSaveAlready(collection, sender, recipient, watermark) {
     return db
       .collection(collection)
-      .find()
+      .find({sender: sender, recipient:recipient})
       .toArray()
       .then((result) => {
-        let fin = [];
         for (let i = 0; i < result.length; i++) {
-          fin.push(result[i][field]);
+          if (Math.abs(result[i]["watermark"] - watermark) < 60000 ) {
+            return true
+          }
         }
-        return fin;
+        return false;
       })
       .catch((error) => {
         console.error(error);
