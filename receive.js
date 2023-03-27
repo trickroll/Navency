@@ -82,35 +82,35 @@ handleTextMessage() {
     let response;
     let event = this.webhookEvent;
 
-//     Mongo.mongoRead("optIn", "sender")
-//       .then((res) => {
-//         if (res.includes(this.user.psid)) {
-//           response = Response.genText("text");
-//         } else {
-//           let requestBody = {
-//             sender: event["sender"]["id"],
-//             recipient: event["recipient"]["id"],
-//             message: event["message"]["text"],
-//             time: event["timestamp"],
-//             // User info; might want to remove in later versions
-//             firstName: this.user.firstName,
-//             lastName: this.user.lastName,
-//             profilePic: this.user.profilePic,
-//           };
+    Mongo.mongoRead("optIn", "sender")
+      .then((res) => {
+        if (res.includes(this.user.psid)) {
+          response = Response.genText("text");
+        } else {
+          let requestBody = {
+            sender: event["sender"]["id"],
+            recipient: event["recipient"]["id"],
+            message: event["message"]["text"],
+            time: event["timestamp"],
+            // User info; might want to remove in later versions
+            firstName: this.user.firstName,
+            lastName: this.user.lastName,
+            profilePic: this.user.profilePic,
+          };
 
-//           Mongo.mongoWrite(requestBody, "textMessage");
+          Mongo.mongoWrite(requestBody, "textMessage");
 
-//           let message = event.message.text.trim().toLowerCase();
+          let message = event.message.text.trim().toLowerCase();
 
-//           response = Response.genRecurringNotificationsTemplate(
-//             `https://picsum.photos/200`,
-//             topic,
-//             "12345"
-//           );
-//         }
-//         return response;
-//       });
-  // }
+          response = Response.genRecurringNotificationsTemplate(
+            `https://picsum.photos/200`,
+            topic,
+            "12345"
+          );
+        }
+        return response;
+      });
+  }
 
 //             let requestBody = {
 //               sender: event["sender"]["id"],
@@ -133,9 +133,9 @@ handleTextMessage() {
 //               "12345"
 //             );
   
-  response = Response.genText("text");
-            return response
-}
+//   response = Response.genText("text");
+//             return response
+// }
 
   //   // Handles messages events with text
   //   handleTextMessage(res) {
