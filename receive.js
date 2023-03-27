@@ -58,7 +58,7 @@ module.exports = class Receive {
         will fix the issue shortly!`,
       };
     }
-console.log(responses)
+// console.log(responses)
     if (Array.isArray(responses)) {
       let delay = 0;
       for (let response of responses) {
@@ -82,7 +82,7 @@ handleTextMessage() {
     let response;
     let event = this.webhookEvent;
 
-    Mongo.mongoRead("optIn", "sender")
+    return Mongo.mongoRead("optIn", "sender")
       .then((res) => {
         if (res.includes(this.user.psid)) {
           response = Response.genText("text");
@@ -108,7 +108,7 @@ handleTextMessage() {
             "12345"
           );
         }
-      console.log(response)
+      // console.log(response)
         return response;
       });
   }
