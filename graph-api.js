@@ -58,6 +58,28 @@ module.exports = class GraphApi {
     }
   }
 
+   static async getPage(userID, userAccess) {
+    // Send the HTTP request to the Messenger Profile API
+
+    console.log(`Getting Pages for user ${userID}`);
+    let url = new URL(`https://graph.facebook.com/${userID}/accounts`);
+    url.search = new URLSearchParams({
+      access_token: userAccess,
+    });
+    let response = await fetch(url, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      // body: JSON.stringify(requestBody),
+    });
+    if (response.ok) {
+      console.log(`getPage activated.`);
+    } else {
+      console.warn(
+        `Unable to getPage: ${response.statusText}`,
+        await response.json()
+      );
+    }
+  }
   static async callSubscriptionsAPI(customFields) {
     // Send the HTTP request to the Subscriptions Edge to configure your webhook
     // You can use the Graph API's /{app-id}/subscriptions edge to configure and
