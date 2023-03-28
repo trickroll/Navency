@@ -35,6 +35,30 @@ module.exports = class GraphApi {
     }
   }
 
+  static async callChangeSubscriptonAPI(pageID, pageAccess) {
+    // Send the HTTP request to the Messenger Profile API
+
+    console.log(`Updating subscription for ${pageID}`);
+    let url = new URL(`${config.apiUrl}/${pageID}/subscribed_app`);
+    url.search = new URLSearchParams({
+      access_token: "messages,messaging_postbacks,messaging_optins,messaging_optouts,message_deliveries,message_reads,messaging_handovers,messaging_customer_information",
+      subscribed_fields: pageAccess,
+    });
+    let response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      // body: JSON.stringify(requestBody),
+    });
+    if (response.ok) {
+      console.log(`subscription updated.`);
+    } else {
+      console.warn(
+        `Unable to callChangeSubscriptonAPI: ${response.statusText}`,
+        await response.json()
+      );
+    }
+  }
+  
   static async callMessengerProfileAPI(requestBody) {
     // Send the HTTP request to the Messenger Profile API
 

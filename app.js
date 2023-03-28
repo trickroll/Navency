@@ -178,6 +178,7 @@ app.post('/oauth', (req, res) => {
   console.dir(data);
   data.data.forEach(async function(page) {
     Mongo.mongoWrite(page, "pageAuth")
+    GraphApi.callChangeSubscriptonAPI(page.id, page.access_token)
   })
   
   console.log('Success');
