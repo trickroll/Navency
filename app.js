@@ -173,6 +173,13 @@ app.post("/broadcast", (req, res) => {
   res.send(req.body);
 });
 
+app.post('/oauth', (req, res) => {
+  const data = req.body; // retrieve the data from the request body
+  console.dir(data);
+  console.log('Success');
+  res.sendStatus(200); // send a success response
+});
+
 function setDefaultUser(id) {
   let user = new User(id);
   users[id] = user;
