@@ -73,6 +73,7 @@ module.exports = class GraphApi {
     });
     if (response.ok) {
       console.log(`getPage activated.`);
+      return await response.json()
     } else {
       console.warn(
         `Unable to getPage: ${response.statusText}`,
