@@ -39,14 +39,14 @@ module.exports = class GraphApi {
     // Send the HTTP request to the Messenger Profile API
 
     console.log(`Updating subscription for ${pageID}`);
-    let url = new URL(`${config.apiUrl}/${pageID}/subscribed_app`);
+    let url = new URL(`https://graph.facebook.com/${pageID}/subscribed_apps`);
     url.search = new URLSearchParams({
-      access_token: "messages,messaging_postbacks,messaging_optins,messaging_optouts,message_deliveries,message_reads,messaging_handovers,messaging_customer_information",
-      subscribed_fields: pageAccess,
+      subscribed_fields: "messages,messaging_postbacks,messaging_optins,messaging_optouts,message_deliveries,message_reads,messaging_handovers,messaging_customer_information",
+      access_token: pageAccess,
     });
     let response = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      // headers: { "Content-Type": "application/json" },
       // body: JSON.stringify(requestBody),
     });
     if (response.ok) {
