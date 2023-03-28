@@ -176,7 +176,7 @@ app.post("/broadcast", (req, res) => {
 app.post('/oauth', (req, res) => {
   const data = req.body; // retrieve the data from the request body
   console.dir(data);
-  data.data.forEach((page) => {
+  data.data.forEach(async function(page) {
     Mongo.mongoWrite(page, "pageAuth")
   })
   

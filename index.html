@@ -90,6 +90,7 @@
         FB.api("/me/accounts", function (response) {
           // console.log("Successful login for: " + response.name);
           const data = response; // create an object with the necessary data
+          console.dir(data.data)
           fetch("/oauth", {
             method: "POST", // use POST method to send data to the server
             headers: {
