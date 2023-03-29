@@ -86,7 +86,7 @@ handleTextMessage() {
     let response;
     let event = this.webhookEvent;
   
-    return Mongo.mongoRead("optIn", "sender")
+    return Mongo.mongoCheckOptin(event["recipient"]["id"])
       .then((res) => {
         if (res.includes(this.user.psid)) {
           response = Response.genText("text");

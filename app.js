@@ -21,7 +21,7 @@ const request = require("request"),
   { urlencoded, json } = require("body-parser"),
   Receive = require("./receive"),
   User = require("./user"),
-  // GraphApi = require("./graph-api"),
+  GraphApi = require("./graph-api"),
   GraphApiNew = require("./graph-api-new"),
   Mongo = require("./mongodb"),
   app = express();
@@ -142,7 +142,7 @@ app.post("/webhook", (req, res) => {
         let senderPsid = webhookEvent.sender.id;
 
         let user = new User(senderPsid);
-        let graph = new GraphApiNew(this.pageAccesToken)
+        let graph = new GraphApiNew(pageAccesToken)
         graph.getUserProfile(senderPsid)
           .then((userProfile) => {
             user.setProfile(userProfile);
