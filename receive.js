@@ -85,7 +85,7 @@ handleTextMessage() {
 
     let response;
     let event = this.webhookEvent;
-  
+ 
     return Mongo.mongoCheckOptin(event["recipient"]["id"])
       .then((res) => {
         if (res.includes(this.user.psid)) {
@@ -172,18 +172,8 @@ handleTextMessage() {
 
     let response;
     // Set the response based on the payload
-    if (payload === "YES") {
-      response = { text: "Thanks!" };
-    } else if (payload === "RN") {
-      response = Response.genGenericTemplate(
-        `https://picsum.photos/200`,
-        "Thank you for subscribing",
-        `Use "MESSENGER10" for 10% off`,
-        [Response.genWebUrlButton(`Visit Site`, "navency.com")]
-        // [Response.genPostbackButton(`GET COUPON`, "COUPON_50")]
-      );
-    } else if (payload === "NO") {
-      response = { text: "Oops, try sending another image." };
+    if (payload === "RN") {
+      response = Response.genText("Thank you! Subscription confirmed")
     } else if (payload === "OPTIN") {
       response = Response.genRecurringNotificationsTemplate(
         `https://picsum.photos/200`,

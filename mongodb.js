@@ -75,14 +75,13 @@ module.exports = class Mongo {
   static async mongoCheckOptin(pageID) {
     return db
       .collection("optIn")
-      .find({id:pageID})
+      .find({recipient:pageID})
       .toArray()
       .then((result) => {
         let fin = [];
         for (let i = 0; i < result.length; i++) {
           fin.push(result[i]["sender"]);
         }
-      console.log(fin)
         return fin;
       })
       .catch((error) => {
