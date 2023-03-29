@@ -170,20 +170,19 @@ app.post("/webhook", (req, res) => {
 app.post("/broadcast", (req, res) => {
   let receiveMessage = new Receive();
 
-  // let pageAccesToken = Mongo.mongoGetPageAuth(webhookEvent["recipient"]["id"]).then((res) => {return res})
-  console.dir(req.body.notificationMessageToken)
-  getPageAccessFromNotif(req.body.notificationMessageToken)
+  getPageAccessFromNotif(req.body.notificationMessageToken[0])
   
   async function getPageAccessFromNotif(notificationMessageToken) {
 //     read optin > return recipient > read pageAuth > return access
-    let recipient = await Mongo.mongoGetRecipient(notificationMessageToken)[0]
-    console.log(recipient)
-    let pageAccesToken = await Mongo.mongoGetRecipient(recipient)[0]
-    console.log(pageAccesToken)
+    let recipient = await Mongo.mongoGetRecipient(notificationMessageToken)
+    console.log(`first function ${recipient}`)
+    let pageAccesTokenStep = await Mongo.mongoGetAccess(recipient)
+    console.log(`2nd function ${pageAccesToken}`)
+    return pageAccesTokenStep
   }
   
   
-  
+  // console.log(pageAccesToken)
 //   receiveMessage.sendRecurringMessage(
 //     req.body.notificationMessageToken,
 //     req.body.message,

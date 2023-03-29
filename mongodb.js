@@ -97,10 +97,7 @@ module.exports = class Mongo {
       .toArray()
       .then((result) => {
       console.dir(result)
-        let fin = [];
-        for (let i = 0; i < result.length; i++) {
-          fin.push(result[i]["recipient"]);
-        }
+        let fin = result[0]["recipient"]
       console.log(`notification: ${fin}`)
         return fin;
       })
@@ -116,10 +113,7 @@ module.exports = class Mongo {
       .find({id:recipient})
       .toArray()
       .then((result) => {
-        let fin = [];
-        for (let i = 0; i < result.length; i++) {
-          fin.push(result[i]["access_token"]);
-        }
+        let fin = result[0]["access_token"];
         return fin;
       })
       .catch((error) => {
