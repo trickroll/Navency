@@ -205,4 +205,27 @@ module.exports = class GraphApiNew {
       return null;
     }
   }
+  
+    async getUserProfile(senderIgsid) {
+    let url = new URL(`${config.apiUrl}/${senderIgsid}`);
+    url.search = new URLSearchParams({
+      access_token: this.pageAccesToken,
+      fields: "first_name, last_name, profile_pic"
+    });
+    let response = await fetch(url);
+    if (response.ok) {
+      let userProfile = await response.json();
+      return {
+        firstName: userProfile.first_name,
+        lastName: userProfile.last_name,
+        profilePic: userProfile.profile_pic
+      };
+    } else {
+      console.warn(
+        `Could not load profile for ${senderIgsid}: ${response.statusText}`,
+        await response.json()
+      );
+      return null;
+    }
+  }
 };

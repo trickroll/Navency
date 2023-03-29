@@ -21,7 +21,8 @@ const request = require("request"),
   { urlencoded, json } = require("body-parser"),
   Receive = require("./receive"),
   User = require("./user"),
-  GraphApi = require("./graph-api"),
+  // GraphApi = require("./graph-api"),
+  GraphApiNew = require("./graph-api-new"),
   Mongo = require("./mongodb"),
   app = express();
 
@@ -133,11 +134,16 @@ app.post("/webhook", (req, res) => {
           return;
         }
 
+//         Get access token
+        
+        let pageAccesToken = await Mongo.mongoGetPageAuth(webhookEvent["recipient"]["id"])
+        
         // Get the sender PSID
         let senderPsid = webhookEvent.sender.id;
 
         let user = new User(senderPsid);
-        GraphApi.getUserProfile(senderPsid)
+        let graph = new GraphApiNew(this.pageAccesToken)
+        graph.getUserProfile(senderPsid)
           .then((userProfile) => {
             user.setProfile(userProfile);
             // console.dir(userProfile)
@@ -151,7 +157,7 @@ app.post("/webhook", (req, res) => {
             users[senderPsid] = user;
             // console.log("New Profile PSID:", senderPsid);
 
-            return receiveAndReturn(users[senderPsid], webhookEvent, false);
+            return receiveAndReturn(users[senderPsid], webhookEvent, false, pageAccesToken);
           });
       });
     });
@@ -190,8 +196,8 @@ function setDefaultUser(id) {
   users[id] = user;
 }
 
-function receiveAndReturn(user, webhookEvent, isUserRef) {
-  let receiveMessage = new Receive(webhookEvent, isUserRef);
+function receiveAndReturn(user, webhookEvent, isUserRef, pageAccesToken) {
+  let receiveMessage = new Receive(user, webhookEvent, isUserRef, pageAccesToken);
   return receiveMessage.handleMessage();
 }
 
