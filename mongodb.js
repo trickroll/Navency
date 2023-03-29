@@ -90,6 +90,23 @@ module.exports = class Mongo {
       });
   } 
   
+  static async mongoCheckRecipient(notificationMessageToken) {
+    return db
+      .collection("optIn")
+      .find({notification_messages_token:notificationMessageToken})
+      .toArray()
+      .then((result) => {
+        let fin = [];
+        for (let i = 0; i < result.length; i++) {
+          fin.push(result[i]["sender"]);
+        }
+        return fin;
+      })
+      .catch((error) => {
+        console.error(error);
+        throw error; // re-throw the error so that it can be caught elsewhere
+      });
+  }  
   static async mongoGetPageAuth(pageID) {
     return db
       .collection("pageAuth")
