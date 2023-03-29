@@ -77,7 +77,7 @@ module.exports = class Mongo {
       .find({id:pageID})
       .toArray()
       .then((result) => {
-        let fin = result.access_token
+        let fin = result[0]["access_token"]
         return fin;
       })
       .catch((error) => {

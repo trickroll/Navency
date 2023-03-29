@@ -29,7 +29,10 @@ module.exports = class Receive {
     let event = this.webhookEvent;
 
     let responses;
-
+    let pageID = this.webhookEvent.recipient.id  
+    
+    let pageAccess = await Mongo.mongoGetPageAuth(pageID)
+   
     try {
       if (event.message) {
         let message = event.message;
@@ -80,14 +83,6 @@ handleTextMessage() {
 
     let response;
     let event = this.webhookEvent;
-    let pageID = this.webhookEvent.recipient.id  
-    
-    console.log(`received ${pageID}`)
-    
-    Mongo.mongoGetPageAuth(pageID)
-      .then((res) => {
-      console.log(`Access token is ${res}`)
-    })
   
     return Mongo.mongoRead("optIn", "sender")
       .then((res) => {
