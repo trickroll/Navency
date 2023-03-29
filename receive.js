@@ -13,8 +13,7 @@
 const Response = require("./response"),
   // GraphApi = require("./graph-api"),
   GraphApiNew = require("./graph-api-new"),
-  Mongo = require("./mongodb")
-
+  Mongo = require("./mongodb");
 
 module.exports = class Receive {
   constructor(user, webhookEvent, isUserRef, pageAccesToken) {
@@ -25,15 +24,14 @@ module.exports = class Receive {
   }
   // Check if the event is a message or postback and
   // call the appropriate handler function
- async handleMessage() {
+  async handleMessage() {
     let event = this.webhookEvent;
 
     let responses;
-    let pageID = this.webhookEvent.recipient.id  
-    
+    let pageID = this.webhookEvent.recipient.id;
+
     // this.pageAccesToken = await Mongo.mongoGetPageAuth(pageID)
 
-   
     try {
       if (event.message) {
         let message = event.message;
@@ -73,10 +71,8 @@ module.exports = class Receive {
     }
   }
 
-
-
   // Handles messages events with text
-handleTextMessage() {
+  handleTextMessage() {
     console.log(
       "Received text:",
       `${this.webhookEvent.message.text} for ${this.user.psid}`
@@ -84,36 +80,35 @@ handleTextMessage() {
 
     let response;
     let event = this.webhookEvent;
- 
-    return Mongo.mongoCheckOptin(event["recipient"]["id"])
-      .then((res) => {
-        if (res.includes(this.user.psid)) {
-          response = Response.genText("text");
-        } else {
-          let requestBody = {
-            sender: event["sender"]["id"],
-            recipient: event["recipient"]["id"],
-            message: event["message"]["text"],
-            time: event["timestamp"],
-            // User info; might want to remove in later versions
-            firstName: this.user.firstName,
-            lastName: this.user.lastName,
-            profilePic: this.user.profilePic,
-          };
 
-          Mongo.mongoWrite(requestBody, "textMessage");
+    return Mongo.mongoCheckOptin(event["recipient"]["id"]).then((res) => {
+      if (res.includes(this.user.psid)) {
+        response = Response.genText("text");
+      } else {
+        let requestBody = {
+          sender: event["sender"]["id"],
+          recipient: event["recipient"]["id"],
+          message: event["message"]["text"],
+          time: event["timestamp"],
+          // User info; might want to remove in later versions
+          firstName: this.user.firstName,
+          lastName: this.user.lastName,
+          profilePic: this.user.profilePic,
+        };
 
-          let message = event.message.text.trim().toLowerCase();
+        Mongo.mongoWrite(requestBody, "textMessage");
 
-          response = Response.genRecurringNotificationsTemplate(
-            `https://picsum.photos/200`,
-            "Subscribe for Updates",
-            event["recipient"]["id"]
-          );
-        }
+        let message = event.message.text.trim().toLowerCase();
+
+        response = Response.genRecurringNotificationsTemplate(
+          `https://picsum.photos/200`,
+          "Subscribe for Updates",
+          event["recipient"]["id"]
+        );
+      }
       // console.log(response)
-        return response;
-      });
+      return response;
+    });
   }
 
   // Handles postbacks events
@@ -172,7 +167,7 @@ handleTextMessage() {
     let response;
     // Set the response based on the payload
     if (payload === "RN") {
-      response = Response.genText("Thank you! Subscription confirmed")
+      response = Response.genText("Thank you! Subscription confirmed");
     } else if (payload === "OPTIN") {
       response = Response.genRecurringNotificationsTemplate(
         `https://picsum.photos/200`,
@@ -218,14 +213,14 @@ handleTextMessage() {
       };
     }
 
-    let graph = new GraphApiNew(this.pageAccesToken)
+    let graph = new GraphApiNew(this.pageAccesToken);
     setTimeout(() => graph.callSendApiInstance(requestBody), delay);
   }
 
   sendRecurringMessage(notificationMessageToken, message, scheduledTime) {
     let requestBody = {},
       response;
-
+    console.log(`in sendRecurringMessage ${this.pageAccesToken}`);
     // 250 character limit and image would need to be separate message...
     response = { text: message };
 
@@ -250,8 +245,8 @@ handleTextMessage() {
   }
 
   nextSend(requestBody, delay) {
-
-    let graph = new GraphApiNew(this.pageAccesToken)
+    console.log(`in nextSend ${this.pageAccesToken}`);
+    let graph = new GraphApiNew(this.pageAccesToken);
     setTimeout(() => graph.callSendApiInstance(requestBody), delay);
   }
 
