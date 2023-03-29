@@ -187,7 +187,7 @@ app.post("/broadcast", (req, res) => {
     console.log(`first function ${recipient}`);
     let pageAccesToken = await Mongo.mongoGetAccess(recipient);
     console.log(`2nd function ${pageAccesToken}`);
-    receiveMessage = new Receive(pageAccesToken = pageAccesToken);
+    receiveMessage = new Receive('','','', pageAccesToken);
     receiveMessage.sendRecurringMessage(
       req.body.notificationMessageToken,
       req.body.message,
