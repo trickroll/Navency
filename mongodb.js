@@ -40,6 +40,19 @@ module.exports = class Mongo {
       .catch((error) => console.error(error));
   }
 
+  static async mongoUpdatePageAuth(pageID, pageAccessToken) {
+    db.collection("pageAuth")
+      .updateOne(
+        { id: pageID },
+        { $set: { access_token: pageAccessToken } },
+        {upsert: true}
+      )
+      .then((result) => {
+        console.log(`PageID in Mongo`);
+      })
+      .catch((error) => console.error(error));
+  }
+  
   // static async mongoRead(collection, field) {
   //   db.collection(collection)
   //     .find().toArray()
