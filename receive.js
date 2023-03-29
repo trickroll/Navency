@@ -13,15 +13,16 @@
 const Response = require("./response"),
   // GraphApi = require("./graph-api"),
   GraphApiNew = require("./graph-api-new"),
+        User = require("./user"),
   Mongo = require("./mongodb")
 
 let topic = "Subscription";
 
 module.exports = class Receive {
   constructor(user, webhookEvent, isUserRef) {
-    this.user = user;
     this.webhookEvent = webhookEvent;
     this.isUserRef = isUserRef;
+    this.user;
     this.pageAccesToken;
   }
   // Check if the event is a message or postback and
@@ -34,6 +35,27 @@ module.exports = class Receive {
     
     this.pageAccesToken = await Mongo.mongoGetPageAuth(pageID)
 
+        // Get the sender PSID
+        let senderPsid = event.sender.id;
+
+        this.user = new User(senderPsid);
+        GraphApiNew.getUserProfile(senderPsid)
+          .then((userProfile) => {
+            this.user.setProfile(userProfile);
+          })
+          .catch((error) => {
+            // The profile is unavailable
+            console.log(JSON.stringify(body));
+            console.log("Profile is unavailable:", error);
+          })
+          .finally(() => {
+            users[senderPsid] = user;
+            // console.log("New Profile PSID:", senderPsid);
+
+            return receiveAndReturn(users[senderPsid], webhookEvent, false);
+          });   
+   
+   
     try {
       if (event.message) {
         let message = event.message;

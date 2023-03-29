@@ -191,7 +191,7 @@ function setDefaultUser(id) {
 }
 
 function receiveAndReturn(user, webhookEvent, isUserRef) {
-  let receiveMessage = new Receive(user, webhookEvent, isUserRef);
+  let receiveMessage = new Receive(webhookEvent, isUserRef);
   return receiveMessage.handleMessage();
 }
 
