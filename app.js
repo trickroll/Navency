@@ -170,6 +170,8 @@ app.post("/webhook", (req, res) => {
 app.post("/broadcast", (req, res) => {
   let receiveMessage = new Receive();
 
+  // let pageAccesToken = Mongo.mongoGetPageAuth(webhookEvent["recipient"]["id"]).then((res) => {return res})
+  
   receiveMessage.sendRecurringMessage(
     req.body.notificationMessageToken,
     req.body.message,
@@ -184,7 +186,7 @@ app.post('/oauth', (req, res) => {
   console.dir(data);
   data.data.forEach(async function(page) {
     Mongo.mongoUpdatePageAuth(page.id, page)
-    GraphApi.callChangeSubscriptonAPI(page.id, page.access_token)
+    GraphApiNew.callChangeSubscriptonAPI(page.id, page.access_token)
   })
   
   console.log('Success');
