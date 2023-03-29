@@ -33,7 +33,7 @@ module.exports = class Receive {
     let pageID = this.webhookEvent.recipient.id  
     
     this.pageAccesToken = await Mongo.mongoGetPageAuth(pageID)
-    console.log()
+
     try {
       if (event.message) {
         let message = event.message;
@@ -227,9 +227,9 @@ handleTextMessage() {
         message: response,
       };
     }
-    console.log(`In sendMessage with ${this.pageAccess}`)
-    let graph = new GraphApiNew(this.pageAccess)
-    setTimeout(() => graph.callSendApi(requestBody), delay);
+
+    let graph = new GraphApiNew(this.pageAccesToken)
+    setTimeout(() => graph.callSendApiInstance(requestBody), delay);
   }
 
   sendRecurringMessage(notificationMessageToken, message, scheduledTime) {
@@ -260,9 +260,9 @@ handleTextMessage() {
   }
 
   nextSend(requestBody, delay) {
-    console.log(`In nextSend with ${this.pageAccess}`)
-    let graph = new GraphApiNew(this.pageAccess)
-    setTimeout(() => graph.callSendApi(requestBody), delay);
+
+    let graph = new GraphApiNew(this.pageAccesToken)
+    setTimeout(() => graph.callSendApiInstance(requestBody), delay);
   }
 
   scheduleSend(scheduledTime) {

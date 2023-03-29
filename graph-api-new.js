@@ -42,6 +42,24 @@ module.exports = class GraphApiNew {
     }
   }
 
+  async callSendApiInstance(requestBody) {
+    let url = new URL(`${config.apiUrl}/me/messages`);
+    url.search = new URLSearchParams({
+      access_token: this.pageAccesToken,
+    });
+    console.warn("Request body is\n" + JSON.stringify(requestBody));
+    let response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(requestBody),
+    });
+    if (!response.ok) {
+      console.warn(
+        `Unable to call Send API: ${response.statusText}`,
+        await response.json()
+      );
+    }
+  }
   static async callChangeSubscriptonAPI(pageID, pageAccess) {
     // Send the HTTP request to the Messenger Profile API
 
