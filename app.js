@@ -184,9 +184,7 @@ app.post("/broadcast", (req, res) => {
   async function getPageAccessFromNotif(notificationMessageToken) {
     //     read optin > return recipient > read pageAuth > return access
     let recipient = await Mongo.mongoGetRecipient(notificationMessageToken);
-    console.log(`first function ${recipient}`);
     let pageAccesToken = await Mongo.mongoGetAccess(recipient);
-    console.log(`2nd function ${pageAccesToken}`);
     receiveMessage = new Receive('','','', pageAccesToken);
     receiveMessage.sendRecurringMessage(
       req.body.notificationMessageToken,

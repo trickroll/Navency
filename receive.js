@@ -220,7 +220,6 @@ module.exports = class Receive {
   sendRecurringMessage(notificationMessageToken, message, scheduledTime) {
     let requestBody = {},
       response;
-    console.log(`in sendRecurringMessage ${this.pageAccesToken}`);
     // 250 character limit and image would need to be separate message...
     response = { text: message };
 
@@ -245,7 +244,6 @@ module.exports = class Receive {
   }
 
   nextSend(requestBody, delay) {
-    console.log(`in nextSend ${this.pageAccesToken}`);
     let graph = new GraphApiNew(this.pageAccesToken);
     setTimeout(() => graph.callSendApiInstance(requestBody), delay);
   }
