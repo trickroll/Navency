@@ -12,8 +12,7 @@
 
 const Response = require("./response"),
   GraphApi = require("./graph-api"),
-  Mongo = require("./mongodb"),
-  PAGE_ID = process.env.PAGE_ID;
+  Mongo = require("./mongodb")
 
 let topic = "Subscription";
 
