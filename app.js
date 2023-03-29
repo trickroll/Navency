@@ -171,17 +171,24 @@ app.post("/broadcast", (req, res) => {
   let receiveMessage = new Receive();
 
   // let pageAccesToken = Mongo.mongoGetPageAuth(webhookEvent["recipient"]["id"]).then((res) => {return res})
+  console.dir(req.body.notificationMessageToken)
+  getPageAccessFromNotif(req.body.notificationMessageToken)
   
   async function getPageAccessFromNotif(notificationMessageToken) {
 //     read optin > return recipient > read pageAuth > return access
-    
+    let recipient = await Mongo.mongoGetRecipient(notificationMessageToken)[0]
+    console.log(recipient)
+    let pageAccesToken = await Mongo.mongoGetRecipient(recipient)[0]
+    console.log(pageAccesToken)
   }
   
-  receiveMessage.sendRecurringMessage(
-    req.body.notificationMessageToken,
-    req.body.message,
-    req.body.sendTime
-  );
+  
+  
+//   receiveMessage.sendRecurringMessage(
+//     req.body.notificationMessageToken,
+//     req.body.message,
+//     req.body.sendTime
+//   );
 
   res.send(req.body);
 });

@@ -90,15 +90,35 @@ module.exports = class Mongo {
       });
   } 
   
-  static async mongoCheckRecipient(notificationMessageToken) {
+  static async mongoGetRecipient(notificationMessageToken) {
     return db
       .collection("optIn")
       .find({notification_messages_token:notificationMessageToken})
       .toArray()
       .then((result) => {
+      console.dir(result)
         let fin = [];
         for (let i = 0; i < result.length; i++) {
-          fin.push(result[i]["sender"]);
+          fin.push(result[i]["recipient"]);
+        }
+      console.log(`notification: ${fin}`)
+        return fin;
+      })
+      .catch((error) => {
+        console.error(error);
+        throw error; // re-throw the error so that it can be caught elsewhere
+      });
+  }  
+  
+  static async mongoGetAccess(recipient) {
+    return db
+      .collection("pageAuth")
+      .find({id:recipient})
+      .toArray()
+      .then((result) => {
+        let fin = [];
+        for (let i = 0; i < result.length; i++) {
+          fin.push(result[i]["access_token"]);
         }
         return fin;
       })
@@ -107,6 +127,7 @@ module.exports = class Mongo {
         throw error; // re-throw the error so that it can be caught elsewhere
       });
   }  
+  
   static async mongoGetPageAuth(pageID) {
     return db
       .collection("pageAuth")
