@@ -1,8 +1,7 @@
 "use strict";
 
 // Imports dependencies
-const config = require("./config"),
-  fetch = require("node-fetch"),
+const fetch = require("node-fetch"),
   MongoClient = require("mongodb").MongoClient,
   { URL, URLSearchParams } = require("url");
 
