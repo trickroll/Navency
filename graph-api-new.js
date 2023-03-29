@@ -17,8 +17,8 @@ const config = require("./config"),
 
 module.exports = class GraphApiNew {
 
-    constructor(pageID, pageAccesToken) {
-    this.pageID = pageID;
+    constructor(pageAccesToken) {
+    // this.pageID = pageID;
     this.pageAccesToken = pageAccesToken;
   }
 

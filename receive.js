@@ -11,7 +11,8 @@
 "use strict";
 
 const Response = require("./response"),
-  GraphApi = require("./graph-api"),
+  // GraphApi = require("./graph-api"),
+  GraphApiNew = require("./graph-api-new"),
   Mongo = require("./mongodb")
 
 let topic = "Subscription";
@@ -21,8 +22,8 @@ module.exports = class Receive {
     this.user = user;
     this.webhookEvent = webhookEvent;
     this.isUserRef = isUserRef;
+    this.pageAccesToken;
   }
-
   // Check if the event is a message or postback and
   // call the appropriate handler function
  async handleMessage() {
@@ -31,8 +32,8 @@ module.exports = class Receive {
     let responses;
     let pageID = this.webhookEvent.recipient.id  
     
-    let pageAccess = await Mongo.mongoGetPageAuth(pageID)
-   
+    this.pageAccesToken = await Mongo.mongoGetPageAuth(pageID)
+    console.log()
     try {
       if (event.message) {
         let message = event.message;
@@ -60,7 +61,7 @@ module.exports = class Receive {
         will fix the issue shortly!`,
       };
     }
-// console.log(responses)
+
     if (Array.isArray(responses)) {
       let delay = 0;
       for (let response of responses) {
@@ -226,7 +227,9 @@ handleTextMessage() {
         message: response,
       };
     }
-    setTimeout(() => GraphApi.callSendApi(requestBody), delay);
+    console.log(`In sendMessage with ${this.pageAccess}`)
+    let graph = new GraphApiNew(this.pageAccess)
+    setTimeout(() => graph.callSendApi(requestBody), delay);
   }
 
   sendRecurringMessage(notificationMessageToken, message, scheduledTime) {
@@ -257,7 +260,9 @@ handleTextMessage() {
   }
 
   nextSend(requestBody, delay) {
-    setTimeout(() => GraphApi.callSendApi(requestBody), delay);
+    console.log(`In nextSend with ${this.pageAccess}`)
+    let graph = new GraphApiNew(this.pageAccess)
+    setTimeout(() => graph.callSendApi(requestBody), delay);
   }
 
   scheduleSend(scheduledTime) {
