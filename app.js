@@ -182,7 +182,6 @@ app.post("/broadcast", (req, res) => {
   });
 
   async function getPageAccessFromNotif(notificationMessageToken) {
-    //     read optin > return recipient > read pageAuth > return access
     let recipient = await Mongo.mongoGetRecipient(notificationMessageToken);
     let pageAccesToken = await Mongo.mongoGetAccess(recipient);
     receiveMessage = new Receive('','','', pageAccesToken);
