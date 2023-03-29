@@ -52,18 +52,6 @@ module.exports = class Mongo {
       .catch((error) => console.error(error));
   }
   
-  // static async mongoRead(collection, field) {
-  //   db.collection(collection)
-  //     .find().toArray()
-  //     .then((result) => {
-  //       let fin = []
-  //       for (let i=0; i<result.length; i++){
-  //        fin.push(result[i][field])
-  //       }
-  //       return fin
-  //     })
-  //     .catch((error) => console.error(error));
-  // }
 
   static async mongoRead(collection, field) {
     return db
@@ -83,4 +71,19 @@ module.exports = class Mongo {
       });
   }
 
+  static async mongoGetPageAuth(pageID) {
+    return db
+      .collection("pageAuth")
+      .find({id:pageID})
+      .toArray()
+      .then((result) => {
+        let fin = result.access_token
+        return fin;
+      })
+      .catch((error) => {
+        console.error(error);
+        throw error; // re-throw the error so that it can be caught elsewhere
+      });
+  }
+  
 };

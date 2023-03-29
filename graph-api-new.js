@@ -15,11 +15,18 @@ const config = require("./config"),
   fetch = require("node-fetch"),
   { URL, URLSearchParams } = require("url");
 
-module.exports = class GraphApi {
+module.exports = class GraphApiNew {
+
+    constructor(pageID, pageAccesToken) {
+    this.pageID = pageID;
+    this.pageAccesToken = pageAccesToken;
+  }
+
+
   static async callSendApi(requestBody) {
     let url = new URL(`${config.apiUrl}/me/messages`);
     url.search = new URLSearchParams({
-      access_token: config.pageAccesToken,
+      access_token: this.pageAccesToken,
     });
     console.warn("Request body is\n" + JSON.stringify(requestBody));
     let response = await fetch(url, {
@@ -65,7 +72,7 @@ module.exports = class GraphApi {
     console.log(`Setting Messenger Profile for app ${config.appId}`);
     let url = new URL(`${config.apiUrl}/me/messenger_profile`);
     url.search = new URLSearchParams({
-      access_token: config.pageAccesToken,
+      access_token: this.pageAccesToken,
     });
     let response = await fetch(url, {
       method: "POST",
@@ -143,7 +150,7 @@ module.exports = class GraphApi {
 
     let url = new URL(`${config.apiUrl}/${config.pageId}/subscribed_apps`);
     url.search = new URLSearchParams({
-      access_token: config.pageAccesToken,
+      access_token: this.pageAccesToken,
       subscribed_fields: fields,
     });
     let response = await fetch(url, {
@@ -161,7 +168,7 @@ module.exports = class GraphApi {
   static async getUserProfile(senderIgsid) {
     let url = new URL(`${config.apiUrl}/${senderIgsid}`);
     url.search = new URLSearchParams({
-      access_token: config.pageAccesToken,
+      access_token: this.pageAccesToken,
       fields: "first_name, last_name, profile_pic"
     });
     let response = await fetch(url);
