@@ -134,16 +134,19 @@ app.post("/webhook", (req, res) => {
           return;
         }
 
-//         Get access token
-        
-        let pageAccesToken = await Mongo.mongoGetPageAuth(webhookEvent["recipient"]["id"])
-        
+        //         Get access token
+
+        let pageAccesToken = await Mongo.mongoGetPageAuth(
+          webhookEvent["recipient"]["id"]
+        );
+
         // Get the sender PSID
         let senderPsid = webhookEvent.sender.id;
 
         let user = new User(senderPsid);
-        let graph = new GraphApiNew(pageAccesToken)
-        graph.getUserProfile(senderPsid)
+        let graph = new GraphApiNew(pageAccesToken);
+        graph
+          .getUserProfile(senderPsid)
           .then((userProfile) => {
             user.setProfile(userProfile);
             // console.dir(userProfile)
@@ -157,7 +160,12 @@ app.post("/webhook", (req, res) => {
             users[senderPsid] = user;
             // console.log("New Profile PSID:", senderPsid);
 
-            return receiveAndReturn(users[senderPsid], webhookEvent, false, pageAccesToken);
+            return receiveAndReturn(
+              users[senderPsid],
+              webhookEvent,
+              false,
+              pageAccesToken
+            );
           });
       });
     });
@@ -168,39 +176,41 @@ app.post("/webhook", (req, res) => {
 });
 
 app.post("/broadcast", (req, res) => {
-  let receiveMessage = new Receive();
+  let receiveMessage;
+  let pageAccesToken;
+  req.body.notificationMessageToken.forEach((token) => {
 
-  getPageAccessFromNotif(req.body.notificationMessageToken[0])
-  
+    pageAccesToken = getPageAccessFromNotif(token);
+
+    receiveMessage = new Receive((pageAccesToken = pageAccesToken));
+    receiveMessage.sendRecurringMessage(
+      req.body.notificationMessageToken,
+      req.body.message,
+      req.body.sendTime
+    );
+  });
+
   async function getPageAccessFromNotif(notificationMessageToken) {
-//     read optin > return recipient > read pageAuth > return access
-    let recipient = await Mongo.mongoGetRecipient(notificationMessageToken)
-    console.log(`first function ${recipient}`)
-    let pageAccesTokenStep = await Mongo.mongoGetAccess(recipient)
-    console.log(`2nd function ${pageAccesToken}`)
-    return pageAccesTokenStep
+    //     read optin > return recipient > read pageAuth > return access
+    let recipient = await Mongo.mongoGetRecipient(notificationMessageToken);
+    console.log(`first function ${recipient}`);
+    let pageAccesTokenStep = await Mongo.mongoGetAccess(recipient);
+    console.log(`2nd function ${pageAccesTokenStep}`);
+    return pageAccesTokenStep;
   }
-  
-  
-  // console.log(pageAccesToken)
-//   receiveMessage.sendRecurringMessage(
-//     req.body.notificationMessageToken,
-//     req.body.message,
-//     req.body.sendTime
-//   );
 
   res.send(req.body);
 });
 
-app.post('/oauth', (req, res) => {
+app.post("/oauth", (req, res) => {
   const data = req.body; // retrieve the data from the request body
   console.dir(data);
-  data.data.forEach(async function(page) {
-    Mongo.mongoUpdatePageAuth(page.id, page)
-    GraphApiNew.callChangeSubscriptonAPI(page.id, page.access_token)
-  })
-  
-  console.log('Success');
+  data.data.forEach(async function (page) {
+    Mongo.mongoUpdatePageAuth(page.id, page);
+    GraphApiNew.callChangeSubscriptonAPI(page.id, page.access_token);
+  });
+
+  console.log("Success");
   res.sendStatus(200); // send a success response
 });
 
@@ -210,7 +220,12 @@ function setDefaultUser(id) {
 }
 
 function receiveAndReturn(user, webhookEvent, isUserRef, pageAccesToken) {
-  let receiveMessage = new Receive(user, webhookEvent, isUserRef, pageAccesToken);
+  let receiveMessage = new Receive(
+    user,
+    webhookEvent,
+    isUserRef,
+    pageAccesToken
+  );
   return receiveMessage.handleMessage();
 }
 

@@ -96,9 +96,7 @@ module.exports = class Mongo {
       .find({notification_messages_token:notificationMessageToken})
       .toArray()
       .then((result) => {
-      console.dir(result)
         let fin = result[0]["recipient"]
-      console.log(`notification: ${fin}`)
         return fin;
       })
       .catch((error) => {
