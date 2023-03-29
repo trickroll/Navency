@@ -15,7 +15,6 @@ const Response = require("./response"),
   GraphApiNew = require("./graph-api-new"),
   Mongo = require("./mongodb")
 
-let topic = "Subscription";
 
 module.exports = class Receive {
   constructor(user, webhookEvent, isUserRef, pageAccesToken) {
@@ -108,8 +107,8 @@ handleTextMessage() {
 
           response = Response.genRecurringNotificationsTemplate(
             `https://picsum.photos/200`,
-            topic,
-            "12345"
+            "Subscribe for Updates",
+            event["recipient"]["id"]
           );
         }
       // console.log(response)
@@ -177,7 +176,7 @@ handleTextMessage() {
     } else if (payload === "OPTIN") {
       response = Response.genRecurringNotificationsTemplate(
         `https://picsum.photos/200`,
-        topic,
+        "topic",
         "12345"
       );
     } else {
