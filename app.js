@@ -198,14 +198,26 @@ app.post("/broadcast", (req, res) => {
 app.post("/oauth", (req, res) => {
   const data = req.body; // retrieve the data from the request body
   console.dir(data);
-  data.data.forEach(async function (page) {
-    Mongo.mongoUpdatePageAuth(page.id, page);
-    GraphApiNew.callChangeSubscriptonAPI(page.id, page.access_token);
-  });
+  // data.data.forEach(async function (page) {
+  //   Mongo.mongoUpdatePageAuth(page.id, page);
+  //   GraphApiNew.callChangeSubscriptonAPI(page.id, page.access_token);
+  // });
 
   console.log("Success");
   res.sendStatus(200); // send a success response
 });
+
+// app.post("/oauth", (req, res) => {
+//   const data = req.body; // retrieve the data from the request body
+//   console.dir(data);
+//   data.data.forEach(async function (page) {
+//     Mongo.mongoUpdatePageAuth(page.id, page);
+//     GraphApiNew.callChangeSubscriptonAPI(page.id, page.access_token);
+//   });
+
+//   console.log("Success");
+//   res.sendStatus(200); // send a success response
+// });
 
 function setDefaultUser(id) {
   let user = new User(id);

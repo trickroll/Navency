@@ -84,6 +84,30 @@ module.exports = class GraphApiNew {
     }
   }
   
+  static async changeUserLongTerm(userAccess) {
+    // Send the HTTP request to the Messenger Profile API
+
+    console.log(`changing user`);
+    let url = new URL(`https://graph.facebook.com/v16.0/oauth/access_token`);
+    url.search = new URLSearchParams({
+      subscribed_fields: "messages,messaging_postbacks,messaging_optins,messaging_optouts,message_deliveries,message_reads,messaging_handovers,messaging_customer_information",
+      access_token: pageAccess,
+    });
+    let response = await fetch(url, {
+      method: "POST",
+      // headers: { "Content-Type": "application/json" },
+      // body: JSON.stringify(requestBody),
+    });
+    if (response.ok) {
+      console.log(`subscription updated.`);
+    } else {
+      console.warn(
+        `Unable to callChangeSubscriptonAPI: ${response.statusText}`,
+        await response.json()
+      );
+    }
+  }
+  
   static async callMessengerProfileAPI(requestBody) {
     // Send the HTTP request to the Messenger Profile API
 
