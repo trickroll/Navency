@@ -16,12 +16,10 @@ const config = require("./config"),
   { URL, URLSearchParams } = require("url");
 
 module.exports = class GraphApiNew {
-
-    constructor(pageAccesToken) {
+  constructor(pageAccesToken) {
     // this.pageID = pageID;
     this.pageAccesToken = pageAccesToken;
   }
-
 
   static async callSendApi(requestBody) {
     let url = new URL(`${config.apiUrl}/me/messages`);
@@ -66,7 +64,8 @@ module.exports = class GraphApiNew {
     console.log(`Updating subscription for ${pageID}`);
     let url = new URL(`https://graph.facebook.com/${pageID}/subscribed_apps`);
     url.search = new URLSearchParams({
-      subscribed_fields: "messages,messaging_postbacks,messaging_optins,messaging_optouts,message_deliveries,message_reads,messaging_handovers,messaging_customer_information",
+      subscribed_fields:
+        "messages,messaging_postbacks,messaging_optins,messaging_optouts,message_deliveries,message_reads,messaging_handovers,messaging_customer_information",
       access_token: pageAccess,
     });
     let response = await fetch(url, {
@@ -83,7 +82,7 @@ module.exports = class GraphApiNew {
       );
     }
   }
-  
+
   static async changeUserLongTerm(userAccess) {
     let url = new URL(`https://graph.facebook.com/v16.0/oauth/access_token`);
     url.search = new URLSearchParams({
@@ -93,13 +92,13 @@ module.exports = class GraphApiNew {
       fb_exchange_token: userAccess,
     });
     let response = await fetch(url, {
-      method: "POST",
+      method: "GET",
       headers: { "Content-Type": "application/json" },
     });
 
     if (response.ok) {
-        console.log("coolio")
-      return response.json()
+      console.log("coolio");
+      return response.json();
     } else {
       console.warn(
         `Unable to changeUserLongTerm: ${response.statusText}`,
@@ -108,19 +107,19 @@ module.exports = class GraphApiNew {
     }
   }
 
-    static async changePageLongTerm(userID, userLongTermAccess) {
+  static async changePageLongTerm(userID, userLongTermAccess) {
     let url = new URL(`https://graph.facebook.com/v16.0/${userID}/accounts`);
     url.search = new URLSearchParams({
       access_token: userLongTermAccess,
     });
     let response = await fetch(url, {
-      method: "POST",
+      method: "GET",
       headers: { "Content-Type": "application/json" },
     });
 
     if (response.ok) {
-        console.log("kolio")
-      return await response.json()
+      console.log("kolio");
+      return await response.json();
     } else {
       console.warn(
         `Unable to changePageLongTerm: ${response.statusText}`,
@@ -128,7 +127,7 @@ module.exports = class GraphApiNew {
       );
     }
   }
-  
+
   static async callMessengerProfileAPI(requestBody) {
     // Send the HTTP request to the Messenger Profile API
 
@@ -232,7 +231,7 @@ module.exports = class GraphApiNew {
     let url = new URL(`${config.apiUrl}/${senderIgsid}`);
     url.search = new URLSearchParams({
       access_token: this.pageAccesToken,
-      fields: "first_name, last_name, profile_pic"
+      fields: "first_name, last_name, profile_pic",
     });
     let response = await fetch(url);
     if (response.ok) {
@@ -240,7 +239,7 @@ module.exports = class GraphApiNew {
       return {
         firstName: userProfile.first_name,
         lastName: userProfile.last_name,
-        profilePic: userProfile.profile_pic
+        profilePic: userProfile.profile_pic,
       };
     } else {
       console.warn(
@@ -250,12 +249,12 @@ module.exports = class GraphApiNew {
       return null;
     }
   }
-  
-    async getUserProfile(senderIgsid) {
+
+  async getUserProfile(senderIgsid) {
     let url = new URL(`${config.apiUrl}/${senderIgsid}`);
     url.search = new URLSearchParams({
       access_token: this.pageAccesToken,
-      fields: "first_name, last_name, profile_pic"
+      fields: "first_name, last_name, profile_pic",
     });
     let response = await fetch(url);
     if (response.ok) {
@@ -263,7 +262,7 @@ module.exports = class GraphApiNew {
       return {
         firstName: userProfile.first_name,
         lastName: userProfile.last_name,
-        profilePic: userProfile.profile_pic
+        profilePic: userProfile.profile_pic,
       };
     } else {
       console.warn(

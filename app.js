@@ -203,7 +203,12 @@ app.post("/oauth", (req, res) => {
   async function getLongTermPageAccess(data){
     let longTermUser = await GraphApiNew.changeUserLongTerm(data.user.accessToken)
     let longTermPage = await GraphApiNew.changePageLongTerm(data.user.userID, longTermUser.access_token)
-    console.log(longTermPage)
+    let pageAuth = longTermPage.data
+    
+    pageAuth.forEach((page) => {
+      Mongo.mongoUpdatePageAuth(page.id, page);
+    })
+    
   }
   
   console.log("Success");
