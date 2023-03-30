@@ -85,9 +85,6 @@ module.exports = class GraphApiNew {
   }
   
   static async changeUserLongTerm(userAccess) {
-    // Send the HTTP request to the Messenger Profile API
-
-    console.log(`changing user`);
     let url = new URL(`https://graph.facebook.com/v16.0/oauth/access_token`);
     url.search = new URLSearchParams({
       grant_type: "fb_exchange_token",
@@ -98,16 +95,35 @@ module.exports = class GraphApiNew {
     let response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      // body: JSON.stringify(requestBody),
     });
-      console.log(`change User response:`)
-      console.log(response.json());
+
     if (response.ok) {
         console.log("coolio")
-      // return response
+      return response.json()
     } else {
       console.warn(
         `Unable to changeUserLongTerm: ${response.statusText}`,
+        await response.json()
+      );
+    }
+  }
+
+    static async changePageLongTerm(userID, userLongTermAccess) {
+    let url = new URL(`https://graph.facebook.com/v16.0/${userID}/accounts`);
+    url.search = new URLSearchParams({
+      access_token: userLongTermAccess,
+    });
+    let response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (response.ok) {
+        console.log("kolio")
+      return await response.json()
+    } else {
+      console.warn(
+        `Unable to changePageLongTerm: ${response.statusText}`,
         await response.json()
       );
     }

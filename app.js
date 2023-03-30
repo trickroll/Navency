@@ -202,7 +202,8 @@ app.post("/oauth", (req, res) => {
   
   async function getLongTermPageAccess(data){
     let longTermUser = await GraphApiNew.changeUserLongTerm(data.user.accessToken)
-    console.log(longTermUser)
+    let longTermPage = await GraphApiNew.changePageLongTerm(data.user.userID, longTermUser.access_token)
+    console.log(longTermPage)
   }
   
   console.log("Success");
