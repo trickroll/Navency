@@ -97,13 +97,14 @@ module.exports = class GraphApiNew {
     });
     let response = await fetch(url, {
       method: "POST",
-      // headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json" },
       // body: JSON.stringify(requestBody),
     });
-    if (response.ok) {
       console.log(`change User response:`)
-      console.dir(response);
-      return response
+      console.log(response.json());
+    if (response.ok) {
+        console.log("coolio")
+      // return response
     } else {
       console.warn(
         `Unable to changeUserLongTerm: ${response.statusText}`,
