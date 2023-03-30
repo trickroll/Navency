@@ -17,7 +17,7 @@
         if (response.status === "connected") {
           // Logged into your app and Facebook.
           console.log(response);
-          testAPI();
+          testAPI(response);
         } else {
           // The person is not logged into your app or we are unable to tell.
           document.getElementById("status").innerHTML =
@@ -73,12 +73,12 @@
 
       // Here we run a very simple test of the Graph API after login is
       // successful.  See statusChangeCallback() for when this call is made.
-
-      function testAPI() {
+  function testAPI(userAccess) {
         console.log("Welcome! Fetching your information.... ");
         FB.api("/me/accounts", function (response) {
           // console.log("Successful login for: " + response.name);
-          const data = response; // create an object with the necessary data
+          let data = {}
+          data[] = response; // create an object with the necessary data
           console.dir(data.data)
           fetch("/oauth", {
             method: "POST", // use POST method to send data to the server
@@ -101,6 +101,34 @@
             });
         });
       }
+      
+      // function testAPI() {
+      //   console.log("Welcome! Fetching your information.... ");
+      //   FB.api("/me/accounts", function (response) {
+      //     // console.log("Successful login for: " + response.name);
+      //     const data = response; // create an object with the necessary data
+      //     console.dir(data.data)
+      //     fetch("/oauth", {
+      //       method: "POST", // use POST method to send data to the server
+      //       headers: {
+      //         "Content-Type": "application/json", // set the content type to JSON
+      //       },
+      //       body: JSON.stringify(data), // convert data object to JSON string
+      //     })
+      //       .then((response) => {
+      //         if (!response.ok) {
+      //           throw new Error("Network response was not ok");
+      //         }
+      //         return response.json();
+      //       })
+      //       .catch((error) => {
+      //         console.error(
+      //           "There was a problem with the fetch operation:",
+      //           error
+      //         );
+      //       });
+      //   });
+      // }
     </script>
 
     <!--
