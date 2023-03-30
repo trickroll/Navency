@@ -90,8 +90,10 @@ module.exports = class GraphApiNew {
     console.log(`changing user`);
     let url = new URL(`https://graph.facebook.com/v16.0/oauth/access_token`);
     url.search = new URLSearchParams({
-      subscribed_fields: "messages,messaging_postbacks,messaging_optins,messaging_optouts,message_deliveries,message_reads,messaging_handovers,messaging_customer_information",
-      access_token: pageAccess,
+      grant_type: "fb_exchange_token",
+      client_id: config.appId,
+      client_secret: config.appSecret,
+      fb_exchange_token: userAccess,
     });
     let response = await fetch(url, {
       method: "POST",
@@ -99,10 +101,12 @@ module.exports = class GraphApiNew {
       // body: JSON.stringify(requestBody),
     });
     if (response.ok) {
-      console.log(`subscription updated.`);
+      console.log(`change User response:`)
+      console.dir(response);
+      return response
     } else {
       console.warn(
-        `Unable to callChangeSubscriptonAPI: ${response.statusText}`,
+        `Unable to changeUserLongTerm: ${response.statusText}`,
         await response.json()
       );
     }

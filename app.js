@@ -198,11 +198,13 @@ app.post("/broadcast", (req, res) => {
 app.post("/oauth", (req, res) => {
   const data = req.body; // retrieve the data from the request body
   console.dir(data);
-  // data.data.forEach(async function (page) {
-  //   Mongo.mongoUpdatePageAuth(page.id, page);
-  //   GraphApiNew.callChangeSubscriptonAPI(page.id, page.access_token);
-  // });
-
+  getLongTermPageAccess(data)
+  
+  async function getLongTermPageAccess(data){
+    let longTermUser = await GraphApiNew.changeUserLongTerm(data.user.accessToken)
+    console.log(longTermUser)
+  }
+  
   console.log("Success");
   res.sendStatus(200); // send a success response
 });
