@@ -36,7 +36,7 @@ app.use(json());
 
 // Respond with website when a GET request is made to the homepage
 app.get("/", function (_req, res) {
-  res.sendFile(__dirname + "/indexBoot.html");
+  res.sendFile(__dirname + "/index.html");
 });
 
 // Adds support for GET requests to our webhook
