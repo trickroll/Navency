@@ -6,9 +6,6 @@
     <meta charset="UTF-8" />
   </head>
   <body>
-    
-
-    
     <script>
       // This is called with the results from from FB.getLoginStatus().
       function statusChangeCallback(response) {
@@ -107,6 +104,33 @@
         });
       }
       
+      // function testAPI() {
+      //   console.log("Welcome! Fetching your information.... ");
+      //   FB.api("/me/accounts", function (response) {
+      //     // console.log("Successful login for: " + response.name);
+      //     const data = response; // create an object with the necessary data
+      //     console.dir(data.data)
+      //     fetch("/oauth", {
+      //       method: "POST", // use POST method to send data to the server
+      //       headers: {
+      //         "Content-Type": "application/json", // set the content type to JSON
+      //       },
+      //       body: JSON.stringify(data), // convert data object to JSON string
+      //     })
+      //       .then((response) => {
+      //         if (!response.ok) {
+      //           throw new Error("Network response was not ok");
+      //         }
+      //         return response.json();
+      //       })
+      //       .catch((error) => {
+      //         console.error(
+      //           "There was a problem with the fetch operation:",
+      //           error
+      //         );
+      //       });
+      //   });
+      // }
     </script>
 
     <!--
