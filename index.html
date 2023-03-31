@@ -9,6 +9,8 @@
     <meta charset="UTF-8" />
   </head>
   <body class="vh-100">
+<!--   <div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v16.0&appId=222155813674547&autoLogAppEvents=1" nonce="Ij2ujJiU"></script> -->
     <div class="container-fluid h-100">
       <div class="row h-100">
         <div class="col-sm-6 bg-black"></div>
@@ -16,12 +18,22 @@
           class="col-sm-6 bg-gray d-flex align-items-center justify-content-center"
         >
           <div class="container">
-            <h1>Log into Facebook</h1>
-            <fb:login-button
+            <h1>Log In To Continue</h1>
+<!--             <fb:login-button
               scope="public_profile,email,pages_messaging,pages_show_list,pages_manage_metadata"
               onlogin="checkLoginState();"
             >
-            </fb:login-button>
+            </fb:login-button> -->
+            <div
+              class="fb-login-button"
+              data-width=""
+              data-size="large"
+              data-button-type="continue_with"
+              data-layout=""
+              data-auto-logout-link="true"
+              data-use-continue-as="false"
+              data-scope="public_profile,email,pages_messaging,pages_show_list,pages_manage_metadata"
+            ></div>
           </div>
         </div>
       </div>
