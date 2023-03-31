@@ -9,8 +9,14 @@
     <meta charset="UTF-8" />
   </head>
   <body class="vh-100">
-<!--   <div id="fb-root"></div>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v16.0&appId=222155813674547&autoLogAppEvents=1" nonce="Ij2ujJiU"></script> -->
+    <div id="fb-root"></div>
+    <script
+      async
+      defer
+      crossorigin="anonymous"
+      src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v16.0&appId=222155813674547&autoLogAppEvents=1"
+      nonce="Ij2ujJiU"
+    ></script>
     <div class="container-fluid h-100">
       <div class="row h-100">
         <div class="col-sm-6 bg-black"></div>
@@ -19,7 +25,7 @@
         >
           <div class="container">
             <h1>Log In To Continue</h1>
-<!--             <fb:login-button
+            <!--             <fb:login-button
               scope="public_profile,email,pages_messaging,pages_show_list,pages_manage_metadata"
               onlogin="checkLoginState();"
             >
@@ -33,6 +39,7 @@
               data-auto-logout-link="true"
               data-use-continue-as="false"
               data-scope="public_profile,email,pages_messaging,pages_show_list,pages_manage_metadata"
+              data-onlogin="checkLoginState();"
             ></div>
           </div>
         </div>
@@ -63,6 +70,7 @@
       // Button.  See the onlogin handler attached to it in the sample
       // code below.
       function checkLoginState() {
+          console.log(`running checkLoginStatus`)
         FB.getLoginStatus(function (response) {
           statusChangeCallback(response);
         });
@@ -77,19 +85,8 @@
           version: "v16.0", // Specify the Graph API version to use
         });
 
-        // Now that we've initialized the JavaScript SDK, we call
-        // FB.getLoginStatus().  This function gets the state of the
-        // person visiting this page and can return one of three states to
-        // the callback you provide.  They can be:
-        //
-        // 1. Logged into your app ('connected')
-        // 2. Logged into Facebook, but not your app ('not_authorized')
-        // 3. Not logged into Facebook and can't tell if they are logged into
-        //    your app or not.
-        //
-        // These three cases are handled in the callback function.
-
         FB.getLoginStatus(function (response) {
+          console.log(`running getLoginStatus inside window`)
           statusChangeCallback(response);
         });
       };
@@ -108,7 +105,7 @@
       // Here we run a very simple test of the Graph API after login is
       // successful.  See statusChangeCallback() for when this call is made.
       function testAPI(userAccess) {
-        console.log("Welcome! Fetching your information.... ");
+        console.log("Running testAPI ");
         FB.api("/me/accounts", function (response) {
           // console.log("Successful login for: " + response.name);
           let data = {};
