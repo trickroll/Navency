@@ -2,13 +2,31 @@
 <html>
   <head>
     <title>Facebook Login JavaScript Example</title>
-    <link rel="stylesheet" href="https://bootswatch.com/5/pulse/bootstrap.min.css">
+    <link
+      rel="stylesheet"
+      href="https://bootswatch.com/5/pulse/bootstrap.min.css"
+    />
     <meta charset="UTF-8" />
   </head>
-  <body>
-    
+  <body class="vh-100">
+    <div class="container-fluid h-100">
+      <div class="row h-100">
+        <div class="col-sm-6 bg-black"></div>
+        <div
+          class="col-sm-6 bg-gray d-flex align-items-center justify-content-center"
+        >
+          <div class="container">
+            <h1>Log into Facebook</h1>
+            <fb:login-button
+              scope="public_profile,email,pages_messaging,pages_show_list,pages_manage_metadata"
+              onlogin="checkLoginState();"
+            >
+            </fb:login-button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    
     <script>
       // This is called with the results from from FB.getLoginStatus().
       function statusChangeCallback(response) {
@@ -24,8 +42,8 @@
           testAPI(response);
         } else {
           // The person is not logged into your app or we are unable to tell.
-          document.getElementById("status").innerHTML =
-            "Please log " + "into this app.";
+          // document.getElementById("status").innerHTML =
+          //   "Please log " + "into this app.";
         }
       }
 
@@ -77,14 +95,14 @@
 
       // Here we run a very simple test of the Graph API after login is
       // successful.  See statusChangeCallback() for when this call is made.
-  function testAPI(userAccess) {
+      function testAPI(userAccess) {
         console.log("Welcome! Fetching your information.... ");
         FB.api("/me/accounts", function (response) {
           // console.log("Successful login for: " + response.name);
-          let data = {}
-          data['user'] = userAccess['authResponse']
-          data['page'] = response['data']; // create an object with the necessary data
-          console.dir(data.data)
+          let data = {};
+          data["user"] = userAccess["authResponse"];
+          data["page"] = response["data"]; // create an object with the necessary data
+          console.dir(data.data);
           fetch("/oauth", {
             method: "POST", // use POST method to send data to the server
             headers: {
@@ -106,7 +124,6 @@
             });
         });
       }
-      
     </script>
 
     <!--
@@ -115,11 +132,11 @@
   the FB.login() function when clicked.
 -->
 
-    <fb:login-button
+    <!--     <fb:login-button
       scope="public_profile,email,pages_messaging,pages_show_list,pages_manage_metadata"
       onlogin="checkLoginState();"
     >
-    </fb:login-button>
+    </fb:login-button> -->
 
     <div id="status"></div>
   </body>
