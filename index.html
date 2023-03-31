@@ -8,7 +8,8 @@
     />
     <style media="screen">
       #fb-btn{margin-top:10px}
-      #
+      #login{display:block}
+      #broadcast{display:none}
     </style>
     <meta charset="UTF-8" />
   </head>
@@ -43,7 +44,7 @@
               id="fb-btn"
             ></div>
           </div>
-          <div class="container broadcast">
+          <div class="container" id="broadcast">
             <h1>Broadcast</h1>
 
           </div>
@@ -138,7 +139,8 @@
 
       function setElements(isLoggedIn) {
         if (isLoggedIn) {
-          document.getElementById;
+          document.getElementById("login").style.display='block';
+          document.getElementById("broadcast").style.display='none';
         } else {
         }
       }
