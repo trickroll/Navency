@@ -25,11 +25,7 @@
         >
           <div class="container">
             <h1>Log In To Continue</h1>
-            <!--             <fb:login-button
-              scope="public_profile,email,pages_messaging,pages_show_list,pages_manage_metadata"
-              onlogin="checkLoginState();"
-            >
-            </fb:login-button> -->
+  
             <div
               class="fb-login-button"
               data-width=""
@@ -70,7 +66,6 @@
       // Button.  See the onlogin handler attached to it in the sample
       // code below.
       function checkLoginState() {
-          console.log(`running checkLoginStatus`)
         FB.getLoginStatus(function (response) {
           statusChangeCallback(response);
         });
@@ -86,7 +81,6 @@
         });
 
         FB.getLoginStatus(function (response) {
-          console.log(`running getLoginStatus inside window`)
           statusChangeCallback(response);
         });
       };
@@ -105,7 +99,6 @@
       // Here we run a very simple test of the Graph API after login is
       // successful.  See statusChangeCallback() for when this call is made.
       function testAPI(userAccess) {
-        console.log("Running testAPI ");
         FB.api("/me/accounts", function (response) {
           // console.log("Successful login for: " + response.name);
           let data = {};
