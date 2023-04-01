@@ -168,11 +168,17 @@ module.exports = class Receive {
     // Set the response based on the payload
     if (payload === "RN") {
       response = Response.genText("Thank you! Subscription confirmed");
-    } else if (payload === "OPTIN") {
+      // } else if (payload === "OPTIN") {
+      //   response = Response.genRecurringNotificationsTemplate(
+      //     `https://picsum.photos/200`,
+      //     "topic",
+      //     "12345"
+      //   );
+    } else if (payload === "GET_STARTED") {
       response = Response.genRecurringNotificationsTemplate(
         `https://picsum.photos/200`,
-        "topic",
-        "12345"
+        "Subscribe for Updates",
+        event["recipient"]["id"]
       );
     } else {
       response = {
