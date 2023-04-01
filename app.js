@@ -207,7 +207,7 @@ app.post("/oauth", (req, res) => {
     
     pageAuth.forEach((page) => {
       Mongo.mongoUpdatePageAuth(page.id, page);
-      GraphApiNew.createGetStarted(data.user.userID, page.access_token)
+      // GraphApiNew.createGetStarted(data.user.userID, page.access_token)
     })
     
   }
