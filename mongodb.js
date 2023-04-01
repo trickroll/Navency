@@ -97,6 +97,7 @@ module.exports = class Mongo {
       .toArray()
       .then((result) => {
         let fin = result[0]["recipient"]
+        console.log(fin)
         return fin;
       })
       .catch((error) => {
