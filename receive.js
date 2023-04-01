@@ -178,7 +178,7 @@ module.exports = class Receive {
       response = Response.genRecurringNotificationsTemplate(
         `https://picsum.photos/200`,
         "Subscribe for Updates",
-        event["recipient"]["id"]
+        this.webhookEvent["recipient"]["id"]
       );
     } else {
       response = {
