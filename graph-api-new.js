@@ -129,12 +129,12 @@ module.exports = class GraphApiNew {
   }
 
   static async createGetStarted(userID, pageAccess) {
-    let url = new URL(`https://graph.facebook.com/v16.0/${userID}/messenger_profile`);
+    let url = new URL(`https://graph.facebook.com/v16.0/me/messenger_profile`);
     url.search = new URLSearchParams({
       access_token: pageAccess,
     });
     let response = await fetch(url, {
-      method: "GET",
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({"get_started": {"payload":"get_started"}}),
     });
