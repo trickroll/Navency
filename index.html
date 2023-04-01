@@ -8,7 +8,7 @@
     />
     <style media="screen">
       #fb-btn{margin-top:10px}
-      #login{display:block}
+/*       #login{display:block} */
       #broadcast{display:none}
     </style>
     <meta charset="UTF-8" />
@@ -64,11 +64,11 @@
         // for FB.getLoginStatus().
         if (response.status === "connected") {
           // Logged into your app and Facebook.
-          testAPI(response);
           setElements(true);
+          testAPI(response);
         } else {
-          console.log("not auth");
           setElements(false);
+          console.log("not auth");
         }
       }
 
@@ -139,10 +139,18 @@
 
       function setElements(isLoggedIn) {
         if (isLoggedIn) {
+          document.getElementById("login").style.display='none';
+          document.getElementById("broadcast").style.display='block';
+        } else {
           document.getElementById("login").style.display='block';
           document.getElementById("broadcast").style.display='none';
-        } else {
         }
+      }
+      
+      function logout(){
+        FB.logout(function(response){
+          setElements(false)
+        })
       }
     </script>
 
