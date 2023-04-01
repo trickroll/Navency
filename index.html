@@ -89,21 +89,6 @@
         });
       }
 
-      window.fbAsyncInit = function () {
-        console.log("loaded");
-        FB.init({
-          appId: "222155813674547",
-          cookie: true, // enable cookies to allow the server to access
-          // the session
-          xfbml: true, // parse social plugins on this page
-          version: "v16.0", // Specify the Graph API version to use
-        });
-
-        FB.getLoginStatus(function (response) {
-          statusChangeCallback(response);
-        });
-      };
-
       // Load the SDK asynchronously
       (function (d, s, id) {
         var js,
