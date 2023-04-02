@@ -106,7 +106,6 @@ module.exports = class Receive {
           event["recipient"]["id"]
         );
       }
-      // console.log(response)
       return response;
     });
   }
