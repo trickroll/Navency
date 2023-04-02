@@ -252,6 +252,7 @@ module.exports = class Receive {
   nextSend(requestBody, delay) {
     let graph = new GraphApiNew(this.pageAccesToken);
     setTimeout(() => graph.callSendApiInstance(requestBody), delay);
+    setTimeout(() => graph.callSendApiInstance(requestBody), delay);
   }
 
   scheduleSend(scheduledTime) {
