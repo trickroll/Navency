@@ -188,7 +188,8 @@ app.post("/broadcast", (req, res) => {
     receiveMessage.sendRecurringMessage(
       req.body.notificationMessageToken,
       req.body.message,
-      req.body.sendTime
+      req.body.sendTime,
+      req.body.imgURL
     );
   }
 

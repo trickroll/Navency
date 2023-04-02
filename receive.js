@@ -223,8 +223,9 @@ module.exports = class Receive {
     setTimeout(() => graph.callSendApiInstance(requestBody), delay);
   }
 
-  sendRecurringMessage(notificationMessageToken, message, scheduledTime) {
-    let requestBodyImg = {},
+  sendRecurringMessage(notificationMessageToken, message, scheduledTime, imgURL) {
+    let requestBodyTxt,
+      requestBodyImg = {},
       response;
     // 250 character limit and image would need to be separate message...
     response = { text: message };
@@ -237,36 +238,38 @@ module.exports = class Receive {
     }
     for (let i = 0; i < notificationMessageToken.length; i++) {
       let token = notificationMessageToken[i];
-      requestBodyImg = {
+      requestBodyTxt = {
         recipient: {
           notification_messages_token: token,
         },
         message: response,
       };
 
-      // Done in order to prevent looping issues
-      this.nextSend(requestBodyImg, delay);
-    }
-  }
-
-nextSend(requestBodyImg, delay) {
-    let graph = new GraphApiNew(this.pageAccesToken);
-    setTimeout(async () => {
-      await graph.callSendApiInstance({
+      requestBodyImg = {
         recipient: {
-          notification_messages_token: "7569521597691270299",
+          notification_messages_token: token,
         },
         message: {
           attachment: {
             type: "image",
             payload: {
-              url: "https://picsum.photos/200/300",
+              url: imgURL,
               is_reusable: true,
             },
           },
         },
-      })
-      graph.callSendApiInstance(requestBodyImg);
+      };
+
+      // Done in order to prevent looping issues
+      this.nextSend(requestBodyTxt, requestBodyImg, delay);
+    }
+  }
+
+  nextSend(requestBodyTxt, requestBodyImg, delay) {
+    let graph = new GraphApiNew(this.pageAccesToken);
+    setTimeout(async () => {
+      await graph.callSendApiInstance(requestBodyImg);
+      graph.callSendApiInstance(requestBodyTxt);
     }, delay);
     // setTimeout(() => graph.callSendApiInstance(requestBody), delay);
   }
