@@ -79,7 +79,7 @@ module.exports = class Response {
         payload: {
           template_type: "notification_messages",
           title: title,
-          image_url: image_url,
+          // image_url: image_url,
           payload: payload,
           notification_messages_reoptin: "ENABLED",
           image_aspect_ratio: "SQUARE",
