@@ -50,23 +50,23 @@ module.exports = class Response {
     return response;
   }
   
-    static broadcastTemplate(image_url, text) {
-    let response = {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "generic",
-          elements: [
-            {
-              text: text,
-              image_url: image_url,
-            }
-          ]
-        }
-      }
-    };
-    return response;
-  }
+//     static broadcastTemplate(image_url, text) {
+//     let response = {
+//       attachment: {
+//         type: "template",
+//         payload: {
+//           template_type: "generic",
+//           elements: [
+//             {
+//               text: text,
+//               image_url: image_url,
+//             }
+//           ]
+//         }
+//       }
+//     };
+//     return response;
+//   }
 
   static genRecurringNotificationsTemplate(
     image_url,

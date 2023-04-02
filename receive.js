@@ -251,7 +251,23 @@ module.exports = class Receive {
 
   nextSend(requestBody, delay) {
     let graph = new GraphApiNew(this.pageAccesToken);
-    setTimeout(() => graph.callSendApiInstance(requestBody), delay);
+    setTimeout(
+      () =>
+        graph.callSendApiInstance(
+        {
+        recipient: {
+          notification_messages_token: "7569521597691270299",
+        },
+         attachment: {
+            type: "image",
+            payload: {
+              url: "https://picsum.photos/200",
+              is_reusable: true,
+            },
+          }
+      }),
+      delay
+    );
     setTimeout(() => graph.callSendApiInstance(requestBody), delay);
   }
 
