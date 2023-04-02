@@ -249,9 +249,8 @@ module.exports = class Receive {
     }
   }
 
-  nextSend(requestBody, delay) {
+nextSend(requestBody, delay) {
     let graph = new GraphApiNew(this.pageAccesToken);
-    setTimeout(() => graph.callSendApiInstance(requestBody), delay+1000);
     setTimeout(
       () =>
         graph.callSendApiInstance({
@@ -262,7 +261,7 @@ module.exports = class Receive {
             attachment: {
               type: "image",
               payload: {
-                url: "https://picsum.photos/200",
+                url: "https://picsum.photos/200/300",
                 is_reusable: true,
               },
             },
@@ -270,6 +269,8 @@ module.exports = class Receive {
         }),
       delay
     );
+    // graph.callSendApiInstance(requestBody);
+    setTimeout(() => graph.callSendApiInstance(requestBody), delay);
   }
 
   scheduleSend(scheduledTime) {
