@@ -56,7 +56,8 @@ module.exports = class GraphApiNew {
       console.warn(
         `Unable to call Send instance API: ${response.statusText}`,
         await response.json()
-      );
+      )
+      ;
       // console.dir(await response.json(), { depth: null })
     }
   }

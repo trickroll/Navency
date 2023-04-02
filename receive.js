@@ -224,7 +224,7 @@ module.exports = class Receive {
   }
 
   sendRecurringMessage(notificationMessageToken, message, scheduledTime) {
-    let requestBody = {},
+    let requestBodyImg = {},
       response;
     // 250 character limit and image would need to be separate message...
     response = { text: message };
@@ -237,7 +237,7 @@ module.exports = class Receive {
     }
     for (let i = 0; i < notificationMessageToken.length; i++) {
       let token = notificationMessageToken[i];
-      requestBody = {
+      requestBodyImg = {
         recipient: {
           notification_messages_token: token,
         },
@@ -245,32 +245,30 @@ module.exports = class Receive {
       };
 
       // Done in order to prevent looping issues
-      this.nextSend(requestBody, delay);
+      this.nextSend(requestBodyImg, delay);
     }
   }
 
-nextSend(requestBody, delay) {
+nextSend(requestBodyImg, delay) {
     let graph = new GraphApiNew(this.pageAccesToken);
-    setTimeout(
-      () =>
-        graph.callSendApiInstance({
-          recipient: {
-            notification_messages_token: "7569521597691270299",
-          },
-          message: {
-            attachment: {
-              type: "image",
-              payload: {
-                url: "https://picsum.photos/200/300",
-                is_reusable: true,
-              },
+    setTimeout(async () => {
+      await graph.callSendApiInstance({
+        recipient: {
+          notification_messages_token: "7569521597691270299",
+        },
+        message: {
+          attachment: {
+            type: "image",
+            payload: {
+              url: "https://picsum.photos/200/300",
+              is_reusable: true,
             },
           },
-        }),
-      delay
-    );
-    // graph.callSendApiInstance(requestBody);
-    setTimeout(() => graph.callSendApiInstance(requestBody), delay);
+        },
+      })
+      graph.callSendApiInstance(requestBodyImg);
+    }, delay);
+    // setTimeout(() => graph.callSendApiInstance(requestBody), delay);
   }
 
   scheduleSend(scheduledTime) {
