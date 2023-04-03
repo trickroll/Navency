@@ -27,15 +27,15 @@ module.exports = class Mongo {
       .catch((error) => console.error(error));
   }
 
-   static async mongoUpdatePageAuth(requestBody, collection) {
+   static async mongoUpdateMessage(requestBody, collection) {
     db.collection(collection)
       .updateOne(
-        { id: pageID },
+        { sender: requestBody.sender, recipient:requestBody.recipient, watermark: {$gt:requestBody.watermark-30000} },
         { $set: requestBody },
         {upsert: true}
       )
       .then((result) => {
-        console.log(`PageAuth in Mongo`);
+        console.log(`Inserted event in Mongo`);
       })
       .catch((error) => console.error(error));
   } 

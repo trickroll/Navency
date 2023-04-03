@@ -112,8 +112,9 @@ app.post("/webhook", (req, res) => {
             watermark: webhookEvent["read"]["watermark"],
             event: "read",
           };
-          Mongo.mongoWrite(requestBody, "messageReads");
-
+          // Mongo.mongoWrite(requestBody, "messageReads");
+          Mongo.mongoUpdateMessage(requestBody, "messageReads");
+          
           return;
         } else if ("delivery" in webhookEvent) {
           console.log("Got a delivery event");
@@ -124,7 +125,8 @@ app.post("/webhook", (req, res) => {
             watermark: webhookEvent["delivery"]["watermark"],
             event: "deliveries",
           };
-          Mongo.mongoWrite(requestBody, "messageDeliveries");
+          // Mongo.mongoWrite(requestBody, "messageDeliveries");
+          Mongo.mongoUpdateMessage(requestBody, "messageDeliveries");
 
           return;
         } else if (webhookEvent.message && webhookEvent.message.is_echo) {
