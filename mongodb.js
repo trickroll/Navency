@@ -27,6 +27,19 @@ module.exports = class Mongo {
       .catch((error) => console.error(error));
   }
 
+   static async mongoUpdatePageAuth(requestBody, collection) {
+    db.collection(collection)
+      .updateOne(
+        { id: pageID },
+        { $set: requestBody },
+        {upsert: true}
+      )
+      .then((result) => {
+        console.log(`PageAuth in Mongo`);
+      })
+      .catch((error) => console.error(error));
+  } 
+  
   static async mongoUpdateToken(token, isActive, collection) {
     db.collection(collection)
       .updateOne(
