@@ -112,7 +112,7 @@ app.post("/webhook", (req, res) => {
             watermark: webhookEvent["read"]["watermark"],
             event: "read",
           };
-          // Mongo.mongoWrite(requestBody, "messageReads");
+          Mongo.mongoWrite(requestBody, "messageReadsTwo");
           Mongo.mongoUpdateMessage(requestBody, "messageReads");
           
           return;
@@ -125,7 +125,7 @@ app.post("/webhook", (req, res) => {
             watermark: webhookEvent["delivery"]["watermark"],
             event: "deliveries",
           };
-          // Mongo.mongoWrite(requestBody, "messageDeliveries");
+          Mongo.mongoWrite(requestBody, "messageDeliveriesTwo");
           Mongo.mongoUpdateMessage(requestBody, "messageDeliveries");
 
           return;
