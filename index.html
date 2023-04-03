@@ -51,9 +51,6 @@
         }
       }
 
-      // This function is called when someone finishes with the Login
-      // Button.  See the onlogin handler attached to it in the sample
-      // code below.
       function checkLoginState() {
         FB.getLoginStatus(function (response) {
           statusChangeCallback(response);
@@ -119,13 +116,7 @@
       }
     </script>
 <!--             <div id="fb-root"></div> -->
-<!--     <script
-      async
-      defer
-      crossorigin="anonymous"
-      src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v16.0&appId=222155813674547&autoLogAppEvents=1"
-      nonce="Ij2ujJiU"
-    ></script> -->
+
     <div class="container-fluid h-100">
       <div class="row h-100">
         <div class="col-sm-6 bg-black"></div>
@@ -161,5 +152,12 @@
         </div>
       </div>
     </div>
+<!--         <script
+      async
+      defer
+      crossorigin="anonymous"
+      src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v16.0&appId=222155813674547&autoLogAppEvents=1"
+      nonce="Ij2ujJiU"
+    ></script> -->
   </body>
 </html>
