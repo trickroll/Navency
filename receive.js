@@ -83,7 +83,7 @@ module.exports = class Receive {
 
     return Mongo.mongoCheckOptin(event["recipient"]["id"]).then((res) => {
       if (res.includes(this.user.psid)) {
-        response = Response.genText("text");
+        // response = Response.genText("text");
       } else {
         let requestBody = {
           sender: event["sender"]["id"],
