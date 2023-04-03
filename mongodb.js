@@ -31,7 +31,7 @@ module.exports = class Mongo {
     db.collection(collection)
       .updateOne(
         { sender: requestBody.sender, recipient:requestBody.recipient, watermark: {$gt:requestBody.watermark-30000} },
-        { $set: requestBody },
+        { $set: {watermark:requestBody.watermark} },
         {upsert: true}
       )
       .then((result) => {
