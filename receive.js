@@ -83,7 +83,7 @@ module.exports = class Receive {
 
     return Mongo.mongoCheckOptin(event["recipient"]["id"]).then((res) => {
       if (res.includes(this.user.psid)) {
-        // response = Response.genText("text");
+        response = Response.genText("text");
       } else {
         let requestBody = {
           sender: event["sender"]["id"],
@@ -167,12 +167,6 @@ module.exports = class Receive {
     // Set the response based on the payload
     if (payload === "RN") {
       response = Response.genText("Thank you! Subscription confirmed");
-      // } else if (payload === "OPTIN") {
-      //   response = Response.genRecurringNotificationsTemplate(
-      //     `https://picsum.photos/200`,
-      //     "topic",
-      //     "12345"
-      //   );
     } else if (payload === "GET_STARTED") {
       response = Response.genRecurringNotificationsTemplate(
         `https://picsum.photos/200`,
