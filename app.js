@@ -12,11 +12,10 @@ const request = require("request"),
   { urlencoded, json } = require("body-parser"),
   Receive = require("./receive"),
   User = require("./user"),
-  GraphApi = require("./graph-api"),
   GraphApiNew = require("./graph-api-new"),
-  Mongo = require("./mongodb"),
-  app = express(),
-  MongoClient= require('mongodb').MongoClient;
+  // Mongo = require("./mongodb"),
+  app = express();
+  // MongoClient= require('mongodb').MongoClient;
 
 let users = {};
 
@@ -114,7 +113,8 @@ app.post("/webhook", (req, res) => {
           }
         }
       }
-
+      console.log("***********************")
+      console.log("move into messaging loops")      
       // Iterate over webhook events - there may be multiple
       entry.messaging.forEach(async function (webhookEvent) {
         // Discard uninteresting events
