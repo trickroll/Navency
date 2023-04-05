@@ -91,6 +91,7 @@ module.exports = class Mongo {
       .toArray()
       .then((result) => {
         let fin = [];
+        console.log("run checkin")
         for (let i = 0; i < result.length; i++) {
           fin.push(result[i]["sender"]);
         }
