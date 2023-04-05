@@ -15,9 +15,14 @@ const request = require("request"),
   GraphApi = require("./graph-api"),
   GraphApiNew = require("./graph-api-new"),
   Mongo = require("./mongodb"),
-  app = express();
+  app = express(),
+  { MongoClient } = require('mongodb');
 
 let users = {};
+
+// For Cyclic Mongodb
+const uri = process.env.MONGO_CONNECTION_STRING
+const client = new MongoClient(uri)
 
 // Parse application/x-www-form-urlencoded
 app.use(urlencoded({ extended: true }));
@@ -231,7 +236,16 @@ function receiveAndReturn(user, webhookEvent, isUserRef, pageAccesToken) {
   return receiveMessage.handleMessage();
 }
 
-// listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
-  console.log("Your app is listening on port " + listener.address().port);
+client.connect(err => {
+  if(err){ console.error(err); return false;}
+  // connection to mongo is successful, listen for requests
+  app.listen(process.env.PORT, () => {
+      console.log("listening for requests");
+  })
 });
+
+
+// listen for requests :)
+// var listener = app.listen(process.env.PORT, function () {
+//   console.log("Your app is listening on port " + listener.address().port);
+// });
