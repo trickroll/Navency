@@ -247,6 +247,7 @@ module.exports = class GraphApiNew {
     }
   }
   static async getUserProfile(senderIgsid) {
+    console.log(`${config.apiUrl}/${senderIgsid}`)
     let url = new URL(`${config.apiUrl}/${senderIgsid}`);
     url.search = new URLSearchParams({
       access_token: this.pageAccesToken,
