@@ -15,7 +15,7 @@ const request = require("request"),
   GraphApiNew = require("./graph-api-new"),
   // Mongo = require("./mongodb"),
   app = express();
-  // MongoClient= require('mongodb').MongoClient;
+// MongoClient= require('mongodb').MongoClient;
 
 let users = {};
 
@@ -89,105 +89,81 @@ app.post("/webhook", (req, res) => {
     // Returns a '200 OK' response to all requests
     res.status(200).send("EVENT_RECEIVED");
 
-    // Iterate over each entry - there may be multiple if batched
-    body.entry.forEach(async function (entry) {
-      if ("changes" in entry) {
-        // Handle Page Changes event
-        let receiveMessage = new Receive();
-        if (entry.changes[0].field === "feed") {
-          let change = entry.changes[0].value;
-          switch (change.item) {
-            case "post":
-              return receiveMessage.handlePrivateReply(
-                "post_id",
-                change.post_id
-              );
-            case "comment":
-              return receiveMessage.handlePrivateReply(
-                "comment_id",
-                change.comment_id
-              );
-            default:
-              console.warn("Unsupported feed change type.");
-              return;
-          }
-        }
+    console.log("***********************");
+    console.log("move into messaging loops");
+    // Iterate over webhook events - there may be multiple
+
+    for (const webhookEvent of entry.messaging) {
+      // Discard uninteresting events
+      if ("read" in webhookEvent) {
+        console.log("Got a read event");
+
+        let requestBody = {
+          sender: webhookEvent["sender"]["id"],
+          recipient: webhookEvent["recipient"]["id"],
+          watermark: webhookEvent["read"]["watermark"],
+          event: "read",
+        };
+        // Mongo.mongoUpdateMessage(requestBody, "messageReads");
+
+        return;
+      } else if ("delivery" in webhookEvent) {
+        console.log("Got a delivery event");
+
+        let requestBody = {
+          sender: webhookEvent["sender"]["id"],
+          recipient: webhookEvent["recipient"]["id"],
+          watermark: webhookEvent["delivery"]["watermark"],
+          event: "deliveries",
+        };
+        // Mongo.mongoUpdateMessage(requestBody, "messageDeliveries");
+
+        return;
+      } else if (webhookEvent.message && webhookEvent.message.is_echo) {
+        console.log(
+          "Got an echo of our send, mid = " + webhookEvent.message.mid
+        );
+        return;
       }
-      console.log("***********************")
-      console.log("move into messaging loops")      
-      // Iterate over webhook events - there may be multiple
-      entry.messaging.forEach(async function (webhookEvent) {
-        // Discard uninteresting events
-        if ("read" in webhookEvent) {
-          console.log("Got a read event");
 
-          let requestBody = {
-            sender: webhookEvent["sender"]["id"],
-            recipient: webhookEvent["recipient"]["id"],
-            watermark: webhookEvent["read"]["watermark"],
-            event: "read",
-          };
-          // Mongo.mongoUpdateMessage(requestBody, "messageReads");
+      //         Get access token
 
-          return;
-        } else if ("delivery" in webhookEvent) {
-          console.log("Got a delivery event");
+      // let pageAccesToken = await Mongo.mongoGetPageAuth(
+      //   webhookEvent["recipient"]["id"]
+      // );
 
-          let requestBody = {
-            sender: webhookEvent["sender"]["id"],
-            recipient: webhookEvent["recipient"]["id"],
-            watermark: webhookEvent["delivery"]["watermark"],
-            event: "deliveries",
-          };
-          // Mongo.mongoUpdateMessage(requestBody, "messageDeliveries");
+      let pageAccesToken =
+        "EAADKDK5b3jMBAEzfXpucj8ZAVRYFxMgtjfozPlwKdVy5YYD2KYqZBJ1nNgLtWVzKEiHqxorMqHRjZBGW7RKjn5h9vSWmZCtdCutFZAUqMHI610Q5IKO6cwutlbHskZASKbsYUqxwlipRskvQIOUm6hmYsEUmay1GcZBPckUqjNUJFKAw0QsliFq";
 
-          return;
-        } else if (webhookEvent.message && webhookEvent.message.is_echo) {
-          console.log(
-            "Got an echo of our send, mid = " + webhookEvent.message.mid
+      // Get the sender PSID
+      let senderPsid = webhookEvent.sender.id;
+
+      let user = new User(senderPsid);
+      let graph = new GraphApiNew(pageAccesToken);
+      graph
+        .getUserProfile(senderPsid)
+        .then((userProfile) => {
+          user.setProfile(userProfile);
+          // console.dir(userProfile)
+        })
+        .catch((error) => {
+          // The profile is unavailable
+          console.log(JSON.stringify(body));
+          console.log("Profile is unavailable:", error);
+        })
+        .finally(() => {
+          users[senderPsid] = user;
+          // console.log("New Profile PSID:", senderPsid);
+          console.log("***********************");
+          console.log("about to call receiveAndReturn");
+          return receiveAndReturn(
+            users[senderPsid],
+            webhookEvent,
+            false,
+            pageAccesToken
           );
-          return;
-        }
-
-        //         Get access token
-
-        // let pageAccesToken = await Mongo.mongoGetPageAuth(
-        //   webhookEvent["recipient"]["id"]
-        // );
-
-        
-        let pageAccesToken = "EAADKDK5b3jMBAEzfXpucj8ZAVRYFxMgtjfozPlwKdVy5YYD2KYqZBJ1nNgLtWVzKEiHqxorMqHRjZBGW7RKjn5h9vSWmZCtdCutFZAUqMHI610Q5IKO6cwutlbHskZASKbsYUqxwlipRskvQIOUm6hmYsEUmay1GcZBPckUqjNUJFKAw0QsliFq"
-
-        // Get the sender PSID
-        let senderPsid = webhookEvent.sender.id;
-
-        let user = new User(senderPsid);
-        let graph = new GraphApiNew(pageAccesToken);
-        graph
-          .getUserProfile(senderPsid)
-          .then((userProfile) => {
-            user.setProfile(userProfile);
-            // console.dir(userProfile)
-          })
-          .catch((error) => {
-            // The profile is unavailable
-            console.log(JSON.stringify(body));
-            console.log("Profile is unavailable:", error);
-          })
-          .finally(() => {
-            users[senderPsid] = user;
-            // console.log("New Profile PSID:", senderPsid);
-            console.log("***********************")
-            console.log("about to call receiveAndReturn")
-            return receiveAndReturn(
-              users[senderPsid],
-              webhookEvent,
-              false,
-              pageAccesToken
-            );
-          });
-      });
-    });
+        });
+    }
   } else {
     // Return a '404 Not Found' if event is not from a page subscription
     res.sendStatus(404);
@@ -240,7 +216,6 @@ app.post("/oauth", (req, res) => {
   res.sendStatus(200); // send a success response
 });
 
-
 function setDefaultUser(id) {
   let user = new User(id);
   users[id] = user;
@@ -272,7 +247,6 @@ function receiveAndReturn(user, webhookEvent, isUserRef, pageAccesToken) {
 //       console.log("listening for requests");
 //   })
 // });
-
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
