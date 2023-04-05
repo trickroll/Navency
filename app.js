@@ -144,6 +144,8 @@ app.post("/webhook", (req, res) => {
       console.log("***********************");
       console.log(`finished creating user class`);
       let graph = new GraphApiNew(pageAccesToken);
+      console.log("***********************");
+      console.log(`finished creating graph class`);
       graph
         .getUserProfile(senderPsid)
         .then((userProfile) => {
