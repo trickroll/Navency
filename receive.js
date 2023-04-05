@@ -30,7 +30,7 @@ module.exports = class Receive {
     let pageID = this.webhookEvent.recipient.id;
 
     // this.pageAccesToken = await Mongo.mongoGetPageAuth(pageID)
-
+    console.log("handlemsg called")
     try {
       if (event.message) {
         let message = event.message;
