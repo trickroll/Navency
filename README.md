@@ -1,6 +1,5 @@
 # Navency Recurring Notifications Bot
 
-Welcome to your first step toward building awesome Messenger apps!
 
 This project contains the code for a simple webhook you can use to get started using the Messenger Platform.
 
