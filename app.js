@@ -137,7 +137,8 @@ app.post("/webhook", (req, res) => {
 
       // Get the sender PSID
       let senderPsid = webhookEvent.sender.id;
-
+      console.log("***********************");
+      console.log(`moving onto finding ${senderPsid}`);
       let user = new User(senderPsid);
       let graph = new GraphApiNew(pageAccesToken);
       graph
