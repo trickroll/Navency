@@ -177,7 +177,8 @@ app.post("/webhook", (req, res) => {
           .finally(() => {
             users[senderPsid] = user;
             // console.log("New Profile PSID:", senderPsid);
-
+            console.log("***********************")
+            console.log("about to call receiveAndReturn")
             return receiveAndReturn(
               users[senderPsid],
               webhookEvent,
