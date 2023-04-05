@@ -11,7 +11,6 @@
 "use strict";
 
 const Response = require("./response"),
-  // GraphApi = require("./graph-api"),
   GraphApiNew = require("./graph-api-new"),
   Mongo = require("./mongodb");
 
@@ -216,7 +215,12 @@ module.exports = class Receive {
     setTimeout(() => graph.callSendApiInstance(requestBody), delay);
   }
 
-  sendRecurringMessage(notificationMessageToken, message, scheduledTime, imgURL) {
+  sendRecurringMessage(
+    notificationMessageToken,
+    message,
+    scheduledTime,
+    imgURL
+  ) {
     let requestBodyTxt,
       requestBodyImg = {},
       response;

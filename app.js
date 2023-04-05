@@ -21,8 +21,24 @@ const request = require("request"),
 let users = {};
 
 // For Cyclic Mongodb
-const uri = process.env.MONGO_CONNECTION_STRING
-const client = new MongoClient(uri)
+// const uri = process.env.MONGO_CONNECTION_STRING
+// const client = new MongoClient(uri)
+
+const connectDB = async () => {
+  try {
+    const conn = await MongoClient.connect(process.env.MONGO_CONNECTION_STRING, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+      useCreateIndex: true,
+    });
+
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
+};
 
 // Parse application/x-www-form-urlencoded
 app.use(urlencoded({ extended: true }));
@@ -236,13 +252,22 @@ function receiveAndReturn(user, webhookEvent, isUserRef, pageAccesToken) {
   return receiveMessage.handleMessage();
 }
 
-client.connect(err => {
-  if(err){ console.error(err); return false;}
-  // connection to mongo is successful, listen for requests
+//Connect To Database
+connectDB().then(() => {
+  //Server Running
   app.listen(process.env.PORT, () => {
-      console.log("listening for requests");
-  })
-});
+    console.log(
+      `Server is running on ${process.env.PORT}, you better catch it!`
+    );
+  });});
+
+// client.connect(err => {
+//   if(err){ console.error(err); return false;}
+//   // connection to mongo is successful, listen for requests
+//   app.listen(process.env.PORT, () => {
+//       console.log("listening for requests");
+//   })
+// });
 
 
 // listen for requests :)
