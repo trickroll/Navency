@@ -91,10 +91,10 @@ app.post("/webhook", (req, res) => {
 
     console.log("***********************");
     console.log("move into messaging loops");
-    console.dir(body.entry.messaging)
     // Iterate over webhook events - there may be multiple
 
-    for (const webhookEvent of body.entry.messaging) {
+    for (const webhookEntry of body.entry) {
+      let webhookEvent = webhookEntry.messaging
       // Discard uninteresting events
       if ("read" in webhookEvent) {
         console.log("Got a read event");
