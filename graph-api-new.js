@@ -252,6 +252,7 @@ module.exports = class GraphApiNew {
       access_token: this.pageAccesToken,
       fields: "first_name, last_name, profile_pic",
     });
+    console.log("******FirstuserProfile**********")
     let response = await fetch(url);
     console.log("******userProfile**********")
     console.log(response)
