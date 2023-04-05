@@ -95,6 +95,7 @@ app.post("/webhook", (req, res) => {
 
     for (const webhookEntry of body.entry) {
       let webhookEvent = webhookEntry.messaging
+      console.log(webhookEvent)
       // Discard uninteresting events
       if ("read" in webhookEvent) {
         console.log("Got a read event");
