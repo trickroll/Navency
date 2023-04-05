@@ -141,6 +141,8 @@ app.post("/webhook", (req, res) => {
       console.log("***********************");
       console.log(`moving onto finding ${senderPsid}`);
       let user = new User(senderPsid);
+      console.log("***********************");
+      console.log(`finished creating user class`);
       let graph = new GraphApiNew(pageAccesToken);
       graph
         .getUserProfile(senderPsid)
