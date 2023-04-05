@@ -253,8 +253,8 @@ module.exports = class GraphApiNew {
       fields: "first_name, last_name, profile_pic",
     });
     let response = await fetch(url);
-    console.log("******userProfile**********")
-    console.log(response)
+    // console.log("******userProfile**********")
+    // console.log(response)
     if (response.ok) {
       let userProfile = await response.json();
       return {
