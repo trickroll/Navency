@@ -1,4 +1,4 @@
-# Messenger Platform Quick Start
+# Navency Recurring Notifications Bot
 
 Welcome to your first step toward building awesome Messenger apps!
 
