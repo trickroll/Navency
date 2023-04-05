@@ -56,9 +56,7 @@ module.exports = class GraphApiNew {
       console.warn(
         `Unable to call Send instance API: ${response.statusText}`,
         await response.json()
-      )
-      ;
-      // console.dir(await response.json(), { depth: null })
+      );
     }
   }
   static async callChangeSubscriptonAPI(pageID, pageAccess) {
@@ -139,7 +137,7 @@ module.exports = class GraphApiNew {
     let response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({"get_started": {"payload":"get_started"}}),
+      body: JSON.stringify({ get_started: { payload: "get_started" } }),
     });
 
     if (!response.ok) {

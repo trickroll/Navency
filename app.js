@@ -1,15 +1,5 @@
 /**
- * Copyright 2021-present, Facebook, Inc. All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * Messenger Platform Quick Start Tutorial
- *
- * This is the completed code for the Messenger Platform quick start tutorial
- *
  * https://developers.facebook.com/docs/messenger-platform/getting-started/quick-start/
- *
  *
  */
 
@@ -18,6 +8,7 @@
 // Imports dependencies and set up http server
 const request = require("request"),
   express = require("express"),
+  path = require("path"),
   { urlencoded, json } = require("body-parser"),
   Receive = require("./receive"),
   User = require("./user"),
@@ -30,6 +21,9 @@ let users = {};
 
 // Parse application/x-www-form-urlencoded
 app.use(urlencoded({ extended: true }));
+
+// Serving static files in Express
+app.use(express.static(path.join(path.resolve(), "public")));
 
 // Parse application/json
 app.use(json());
@@ -113,7 +107,7 @@ app.post("/webhook", (req, res) => {
             event: "read",
           };
           Mongo.mongoUpdateMessage(requestBody, "messageReads");
-          
+
           return;
         } else if ("delivery" in webhookEvent) {
           console.log("Got a delivery event");
@@ -184,7 +178,7 @@ app.post("/broadcast", (req, res) => {
   async function getPageAccessFromNotif(notificationMessageToken) {
     let recipient = await Mongo.mongoGetRecipient(notificationMessageToken);
     let pageAccesToken = await Mongo.mongoGetAccess(recipient);
-    receiveMessage = new Receive('','','', pageAccesToken);
+    receiveMessage = new Receive("", "", "", pageAccesToken);
     receiveMessage.sendRecurringMessage(
       req.body.notificationMessageToken,
       req.body.message,
@@ -199,35 +193,28 @@ app.post("/broadcast", (req, res) => {
 app.post("/oauth", (req, res) => {
   const data = req.body; // retrieve the data from the request body
   console.dir(data);
-  getLongTermPageAccess(data)
-  
-  async function getLongTermPageAccess(data){
-    let longTermUser = await GraphApiNew.changeUserLongTerm(data.user.accessToken)
-    let longTermPage = await GraphApiNew.changePageLongTerm(data.user.userID, longTermUser.access_token)
-    let pageAuth = longTermPage.data
-    
+  getLongTermPageAccess(data);
+
+  async function getLongTermPageAccess(data) {
+    let longTermUser = await GraphApiNew.changeUserLongTerm(
+      data.user.accessToken
+    );
+    let longTermPage = await GraphApiNew.changePageLongTerm(
+      data.user.userID,
+      longTermUser.access_token
+    );
+    let pageAuth = longTermPage.data;
+
     pageAuth.forEach((page) => {
       Mongo.mongoUpdatePageAuth(page.id, page);
       // GraphApiNew.createGetStarted(data.user.userID, page.access_token)
-    })
-    
+    });
   }
-  
+
   console.log("Success");
   res.sendStatus(200); // send a success response
 });
 
-// app.post("/oauth", (req, res) => {
-//   const data = req.body; // retrieve the data from the request body
-//   console.dir(data);
-//   data.data.forEach(async function (page) {
-//     Mongo.mongoUpdatePageAuth(page.id, page);
-//     GraphApiNew.callChangeSubscriptonAPI(page.id, page.access_token);
-//   });
-
-//   console.log("Success");
-//   res.sendStatus(200); // send a success response
-// });
 
 function setDefaultUser(id) {
   let user = new User(id);
