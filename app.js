@@ -21,8 +21,8 @@ const request = require("request"),
 let users = {};
 
 // For Cyclic Mongodb
-const uri = process.env.MONGO_CONNECTION_STRING
-const client = new MongoClient(uri)
+// const uri = process.env.MONGO_CONNECTION_STRING
+// const client = new MongoClient(uri)
 
 // const connectDB = async () => {
 //   try {
@@ -261,16 +261,16 @@ function receiveAndReturn(user, webhookEvent, isUserRef, pageAccesToken) {
 //     );
 //   });});
 
-client.connect(err => {
-  if(err){ console.error(err); return false;}
-  // connection to mongo is successful, listen for requests
-  app.listen(process.env.PORT, () => {
-      console.log("listening for requests");
-  })
-});
+// client.connect(err => {
+//   if(err){ console.error(err); return false;}
+//   // connection to mongo is successful, listen for requests
+//   app.listen(process.env.PORT, () => {
+//       console.log("listening for requests");
+//   })
+// });
 
 
 // listen for requests :)
-// var listener = app.listen(process.env.PORT, function () {
-//   console.log("Your app is listening on port " + listener.address().port);
-// });
+var listener = app.listen(process.env.PORT, function () {
+  console.log("Your app is listening on port " + listener.address().port);
+});

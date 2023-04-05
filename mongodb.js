@@ -5,9 +5,8 @@ const fetch = require("node-fetch"),
   MongoClient = require("mongodb").MongoClient,
   { URL, URLSearchParams } = require("url");
 
-let connectionString =
-    "mongodb+srv://leebeensg:SbQ6tS7QJahoR7Do@cluster0.qj3dtfz.mongodb.net/?retryWrites=true&w=majority",
-  db,
+let connectionString = process.env.MONGO_CONNECTION_STRING
+    db,
   dbName = "message";
 
 MongoClient.connect(connectionString, { useUnifiedTopology: true })
