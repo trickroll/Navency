@@ -27,6 +27,19 @@ module.exports = class Mongo {
       .catch((error) => console.error(error));
   }
 
+   static async mongoUpdateMessage(requestBody, collection) {
+    db.collection(collection)
+      .updateOne(
+        { sender: requestBody.sender, recipient:requestBody.recipient, watermark: {$gt:requestBody.watermark-30000} },
+        { $set: {watermark:requestBody.watermark} },
+        {upsert: true}
+      )
+      .then((result) => {
+        console.log(`Inserted event in Mongo`);
+      })
+      .catch((error) => console.error(error));
+  } 
+  
   static async mongoUpdateToken(token, isActive, collection) {
     db.collection(collection)
       .updateOne(
