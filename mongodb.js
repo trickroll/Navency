@@ -5,7 +5,7 @@ const fetch = require("node-fetch"),
   MongoClient = require("mongodb").MongoClient,
   { URL, URLSearchParams } = require("url");
 
-let connectionString = process.env.MONGO_CONNECTION_STRING
+let connectionString = process.env.MONGO_CONNECTION_STRING,
     db,
   dbName = "message";
 
