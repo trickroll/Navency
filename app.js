@@ -95,7 +95,6 @@ app.post("/webhook", (req, res) => {
 
     for (const webhookEntry of body.entry) {
       let webhookEvent = webhookEntry.messaging[0]
-      console.log(webhookEvent)
       // Discard uninteresting events
       if ("read" in webhookEvent) {
         console.log("Got a read event");
@@ -147,7 +146,8 @@ app.post("/webhook", (req, res) => {
         .getUserProfile(senderPsid)
         .then((userProfile) => {
           user.setProfile(userProfile);
-          // console.dir(userProfile)
+          console.log("***********************");
+          console.dir(userProfile)
         })
         .catch((error) => {
           // The profile is unavailable
