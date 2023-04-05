@@ -80,33 +80,37 @@ module.exports = class Receive {
     let response;
     let event = this.webhookEvent;
 
-    return Mongo.mongoCheckOptin(event["recipient"]["id"]).then((res) => {
-      if (res.includes(this.user.psid)) {
-        response = Response.genText("text");
-      } else {
-        let requestBody = {
-          sender: event["sender"]["id"],
-          recipient: event["recipient"]["id"],
-          message: event["message"]["text"],
-          time: event["timestamp"],
-          // User info; might want to remove in later versions
-          firstName: this.user.firstName,
-          lastName: this.user.lastName,
-          profilePic: this.user.profilePic,
-        };
+    response = Response.genText("No Mong")
 
-        Mongo.mongoWrite(requestBody, "textMessage");
-
-        let message = event.message.text.trim().toLowerCase();
-
-        response = Response.genRecurringNotificationsTemplate(
-          `https://picsum.photos/200`,
-          "Subscribe",
-          event["recipient"]["id"]
-        );
-      }
       return response;
-    });
+
+    // return Mongo.mongoCheckOptin(event["recipient"]["id"]).then((res) => {
+    //   if (res.includes(this.user.psid)) {
+    //     response = Response.genText("text");
+    //   } else {
+    //     let requestBody = {
+    //       sender: event["sender"]["id"],
+    //       recipient: event["recipient"]["id"],
+    //       message: event["message"]["text"],
+    //       time: event["timestamp"],
+    //       // User info; might want to remove in later versions
+    //       firstName: this.user.firstName,
+    //       lastName: this.user.lastName,
+    //       profilePic: this.user.profilePic,
+    //     };
+
+    //     Mongo.mongoWrite(requestBody, "textMessage");
+
+    //     let message = event.message.text.trim().toLowerCase();
+
+    //     response = Response.genRecurringNotificationsTemplate(
+    //       `https://picsum.photos/200`,
+    //       "Subscribe",
+    //       event["recipient"]["id"]
+    //     );
+    //   }
+    //   return response;
+    // });
   }
 
   // Handles postbacks events

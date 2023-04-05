@@ -21,8 +21,8 @@ const request = require("request"),
 let users = {};
 
 // For Cyclic Mongodb
-const uri = process.env.MONGO_CONNECTION_STRING
-const client = new MongoClient(uri)
+// const uri = process.env.MONGO_CONNECTION_STRING
+// const client = new MongoClient(uri)
 
 // const connectDB = async () => {
 //   try {
@@ -127,7 +127,7 @@ app.post("/webhook", (req, res) => {
             watermark: webhookEvent["read"]["watermark"],
             event: "read",
           };
-          Mongo.mongoUpdateMessage(requestBody, "messageReads");
+          // Mongo.mongoUpdateMessage(requestBody, "messageReads");
 
           return;
         } else if ("delivery" in webhookEvent) {
@@ -139,7 +139,7 @@ app.post("/webhook", (req, res) => {
             watermark: webhookEvent["delivery"]["watermark"],
             event: "deliveries",
           };
-          Mongo.mongoUpdateMessage(requestBody, "messageDeliveries");
+          // Mongo.mongoUpdateMessage(requestBody, "messageDeliveries");
 
           return;
         } else if (webhookEvent.message && webhookEvent.message.is_echo) {
@@ -151,9 +151,12 @@ app.post("/webhook", (req, res) => {
 
         //         Get access token
 
-        let pageAccesToken = await Mongo.mongoGetPageAuth(
-          webhookEvent["recipient"]["id"]
-        );
+        // let pageAccesToken = await Mongo.mongoGetPageAuth(
+        //   webhookEvent["recipient"]["id"]
+        // );
+
+        
+        let pageAccesToken = "EAADKDK5b3jMBAEzfXpucj8ZAVRYFxMgtjfozPlwKdVy5YYD2KYqZBJ1nNgLtWVzKEiHqxorMqHRjZBGW7RKjn5h9vSWmZCtdCutFZAUqMHI610Q5IKO6cwutlbHskZASKbsYUqxwlipRskvQIOUm6hmYsEUmay1GcZBPckUqjNUJFKAw0QsliFq"
 
         // Get the sender PSID
         let senderPsid = webhookEvent.sender.id;
@@ -261,16 +264,16 @@ function receiveAndReturn(user, webhookEvent, isUserRef, pageAccesToken) {
 //     );
 //   });});
 
-client.connect(err => {
-  if(err){ console.error(err); return false;}
-  // connection to mongo is successful, listen for requests
-  app.listen(process.env.PORT, () => {
-      console.log("listening for requests");
-  })
-});
+// client.connect(err => {
+//   if(err){ console.error(err); return false;}
+//   // connection to mongo is successful, listen for requests
+//   app.listen(process.env.PORT, () => {
+//       console.log("listening for requests");
+//   })
+// });
 
 
 // listen for requests :)
-// var listener = app.listen(process.env.PORT, function () {
-//   console.log("Your app is listening on port " + listener.address().port);
-// });
+var listener = app.listen(process.env.PORT, function () {
+  console.log("Your app is listening on port " + listener.address().port);
+});
